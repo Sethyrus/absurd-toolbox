@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:starter/screens/notas_screen.dart';
+import 'package:starter/screens/notes_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed(NotasScreen.routeName);
+                      Navigator.of(context).pushNamed(NotesScreen.routeName);
                     },
                     child: Text(
                       'Notas',
