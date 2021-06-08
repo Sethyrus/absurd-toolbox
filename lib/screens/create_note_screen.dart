@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:starter/models/note.dart';
+import 'package:starter/providers/notes.dart';
 
 class CreateNoteScreen extends StatefulWidget {
   static const routeName = '/create-note';
@@ -57,6 +59,24 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Notes().addNote(
+            Note(
+              title: 'title',
+              content: 'content',
+              color: Colors.red,
+              tags: [],
+              pinned: false,
+              archived: false,
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            ),
+          );
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.save),
       ),
     );
   }
