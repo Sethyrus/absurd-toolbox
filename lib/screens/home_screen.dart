@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
         padding: EdgeInsets.all(8),
         children: [
           Grid(
-            cols: 3,
+            cols: 4,
             outterMarginsOffset: 8,
             children: List.generate(
               mainNavigation.length,

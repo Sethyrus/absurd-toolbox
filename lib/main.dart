@@ -6,7 +6,12 @@ import 'package:starter/screens/notes_screen.dart';
 import 'package:starter/widgets/material_app.dart';
 
 final List<own.Route> mainNavigation = [
-  own.Route(label: 'Notas', color: Colors.yellow, route: NotesScreen.routeName),
+  own.Route(
+    label: 'Notas',
+    color: Colors.yellow,
+    route: NotesScreen.routeName,
+    icon: Icons.description,
+  ),
 ];
 
 void main() async {
