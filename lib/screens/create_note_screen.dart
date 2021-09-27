@@ -66,7 +66,6 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
             Note(
               title: 'title',
               content: 'content',
-              color: CustomColor.yellow,
               tags: [],
               pinned: false,
               archived: false,

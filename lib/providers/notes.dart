@@ -1,10 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:starter/models/note.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Notes with ChangeNotifier {
   List<Note> _items = [];
   bool _loaded = false;
+  bool _loading = false;
 
   List<Note> get items {
     return [..._items];
@@ -12,33 +15,33 @@ class Notes with ChangeNotifier {
 
   void addNote(Note note) async {
     _items.add(note);
-    final box = await Hive.openBox<List<dynamic>>('mainBox');
-    box.put('notes', _items);
+
+    final storedNotes =
+        File('${(await getApplicationDocumentsDirectory()).path}/notes.json');
+
+    if (storedNotes.existsSync())
+      storedNotes
+          .writeAsString(json.encode(_items.map((e) => e.toJson()).toList()));
+
     notifyListeners();
   }
 
-  // En la línea List<Note>? storedNotes = box.get('notes'); hay que buscar una
-  // forma de que devuelva tipo List<Note> y no List<dynamic> cuando hay almace-
-  // nado [].
   void reloadNotesFromStorage() async {
-    // print('_loaded: $_loaded');
+    if (!_loaded && !_loading) {
+      _loading = true;
 
-    if (!_loaded) {
       List<Note> notes = [];
-      final box = await Hive.openBox<List<dynamic>>('mainBox');
-      List<dynamic>? storedNotes = box.get('notes');
 
-      print('Notes 1');
-      print(storedNotes);
+      final storedNotes =
+          File('${(await getApplicationDocumentsDirectory()).path}/notes.json');
 
-      if (storedNotes == null) {
-        box.put('notes', notes);
+      if (storedNotes.existsSync()) {
+        json.decode(storedNotes.readAsStringSync()).forEach((storedNote) {
+          notes.add(Note.fromJson(storedNote));
+        });
       } else {
-        notes = storedNotes.map((e) => e as Note).toList();
+        storedNotes.writeAsString(json.encode([]));
       }
-
-      print('Notes 2');
-      print(notes);
 
       _items = notes;
       _loaded = true;

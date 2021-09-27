@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:starter/helpers.dart';
 import 'package:starter/providers/notes.dart';
 
 class NotesList extends StatelessWidget {
@@ -24,9 +23,7 @@ class NotesList extends StatelessWidget {
                       style: TextStyle(color: Colors.black),
                     ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        convertCustomColorToColor(n.color),
-                      ),
+                      backgroundColor: MaterialStateProperty.all(Colors.yellow),
                     ),
                   ),
                 ),

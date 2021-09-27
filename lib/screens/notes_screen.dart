@@ -35,7 +35,6 @@ class NotesScreen extends StatelessWidget {
                 Note(
                   title: 'title',
                   content: 'content',
-                  color: CustomColor.yellow,
                   tags: [],
                   pinned: false,
                   archived: false,
