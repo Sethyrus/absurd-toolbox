@@ -3,7 +3,7 @@ import 'package:starter/models/note.dart';
 import 'package:starter/providers/notes.dart';
 
 class CreateNoteScreen extends StatefulWidget {
-  static const routeName = '/create-note';
+  static const String routeName = '/create-note';
 
   @override
   _CreateNoteScreenState createState() => _CreateNoteScreenState();
@@ -66,7 +66,7 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
             Note(
               title: 'title',
               content: 'content',
-              color: Colors.red,
+              color: CustomColor.yellow,
               tags: [],
               pinned: false,
               archived: false,

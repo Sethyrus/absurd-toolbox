@@ -3,10 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:starter/models/note.dart';
 import 'package:starter/providers/notes.dart';
 import 'package:starter/widgets/notes_list.dart';
-// import 'package:starter/screens/create_note_screen.dart';
 
 class NotesScreen extends StatelessWidget {
-  static const routeName = '/notes';
+  static const String routeName = '/notes';
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +30,23 @@ class NotesScreen extends StatelessWidget {
           onPressed: () {
             print(notes.items);
             // Navigator.of(context).pushNamed(CreateNoteScreen.routeName);
-            notes.addNote(
-              Note(
-                title: 'title',
-                content: 'content',
-                color: Colors.red,
-                tags: [],
-                pinned: false,
-                archived: false,
-                createdAt: DateTime.now(),
-                updatedAt: DateTime.now(),
-              ),
-            );
+            try {
+              notes.addNote(
+                Note(
+                  title: 'title',
+                  content: 'content',
+                  color: CustomColor.yellow,
+                  tags: [],
+                  pinned: false,
+                  archived: false,
+                  createdAt: DateTime.now(),
+                  updatedAt: DateTime.now(),
+                ),
+              );
+            } catch (e) {
+              print('ERROR!:');
+              print(e);
+            }
           },
           child: Icon(
             Icons.add,
