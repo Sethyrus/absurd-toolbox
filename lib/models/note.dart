@@ -1,8 +1,10 @@
 import 'dart:core';
 
+// TODO las notas requieren de un id para identificarlas en las modificaciones
 class Note {
-  final String title;
-  final String content;
+  final String id;
+  String title;
+  String content;
   final List<String> tags;
   final bool pinned;
   final bool archived;
@@ -10,6 +12,7 @@ class Note {
   final DateTime updatedAt;
 
   Note({
+    required this.id,
     required this.title,
     required this.content,
     required this.tags,
@@ -20,7 +23,8 @@ class Note {
   });
 
   Note.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
+      : id = json['id'],
+        title = json['title'],
         content = json['content'],
         tags = json['tags'].cast<String>(),
         pinned = json['pinned'],
@@ -29,6 +33,7 @@ class Note {
         updatedAt = DateTime.parse(json['updatedAt']);
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'title': title,
         'content': content,
         'tags': tags,

@@ -16,12 +16,28 @@ class Notes with ChangeNotifier {
   void addNote(Note note) async {
     _items.add(note);
 
-    final storedNotes =
-        File('${(await getApplicationDocumentsDirectory()).path}/notes.json');
+    final storedNotes = File(
+      '${(await getApplicationDocumentsDirectory()).path}/notes.json',
+    );
 
     if (storedNotes.existsSync())
-      storedNotes
-          .writeAsString(json.encode(_items.map((e) => e.toJson()).toList()));
+      storedNotes.writeAsString(
+        json.encode(
+          _items.map((e) => e.toJson()).toList(),
+        ),
+      );
+
+    notifyListeners();
+  }
+
+  void updateNote(Note note) async {
+    _items.asMap().forEach(
+      (i, n) {
+        if (note.id == n.id) {
+          _items[i] = n;
+        }
+      },
+    );
 
     notifyListeners();
   }

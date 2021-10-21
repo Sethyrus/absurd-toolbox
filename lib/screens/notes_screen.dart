@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:starter/models/note.dart';
 import 'package:starter/providers/notes.dart';
+import 'package:starter/screens/note_screen.dart';
 import 'package:starter/widgets/notes_list.dart';
 
 class NotesScreen extends StatelessWidget {
@@ -28,24 +28,7 @@ class NotesScreen extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            print(notes.items);
-            // Navigator.of(context).pushNamed(CreateNoteScreen.routeName);
-            try {
-              notes.addNote(
-                Note(
-                  title: 'title',
-                  content: 'content',
-                  tags: [],
-                  pinned: false,
-                  archived: false,
-                  createdAt: DateTime.now(),
-                  updatedAt: DateTime.now(),
-                ),
-              );
-            } catch (e) {
-              print('ERROR!:');
-              print(e);
-            }
+            Navigator.of(context).pushNamed(NoteScreen.routeName);
           },
           child: Icon(
             Icons.add,
