@@ -1,6 +1,5 @@
 import 'dart:core';
 
-// TODO las notas requieren de un id para identificarlas en las modificaciones
 class Note {
   final String id;
   String title;

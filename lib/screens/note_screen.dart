@@ -12,10 +12,6 @@ class NoteScreen extends StatefulWidget {
 }
 
 class NoteScreenState extends State<NoteScreen> {
-  // String id = '';
-  // String title = '';
-  // String content = '';
-  bool initialized = false;
   Note note = Note(
     id: '',
     title: '',
@@ -38,15 +34,7 @@ class NoteScreenState extends State<NoteScreen> {
       final originalNote = ModalRoute.of(context)!.settings.arguments as Note?;
 
       if (originalNote != null) {
-        print('Hay nota');
         setState(() {
-          // id = originalNote.id;
-          // title = originalNote.title;
-          // content = originalNote.content;
-          print('Seteando nota');
-          print(originalNote.toJson());
-
-          initialized = true;
           note = Note(
             id: originalNote.id,
             title: originalNote.title,
@@ -65,76 +53,23 @@ class NoteScreenState extends State<NoteScreen> {
             TextPosition(offset: originalNote.title.length),
           ),
         );
+
         contentController.value = TextEditingValue(
           text: originalNote.content,
           selection: TextSelection.fromPosition(
             TextPosition(offset: originalNote.content.length),
           ),
         );
-      } else {
-        print('Qué va no hay nota');
       }
     });
-    // new Future.delayed(Duration.zero, () {
-    //   final originalNote = ModalRoute.of(context)!.settings.arguments as Note?;
-
-    //   if (originalNote != null) {
-    //     print('Hay nota');
-    //     // setState(() {
-    //     // id = originalNote.id;
-    //     // title = originalNote.title;
-    //     // content = originalNote.content;
-    //     print('Seteando nota');
-    //     print(originalNote.toJson());
-
-    //     initialized = true;
-    //     note = Note(
-    //       id: originalNote.id,
-    //       title: originalNote.title,
-    //       content: originalNote.content,
-    //       tags: originalNote.tags,
-    //       pinned: originalNote.pinned,
-    //       archived: originalNote.archived,
-    //       createdAt: originalNote.createdAt,
-    //       updatedAt: originalNote.updatedAt,
-    //     );
-    //     // });
-    //   } else {
-    //     print('Qué va no hay nota');
-    //   }
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final originalNote = ModalRoute.of(context)!.settings.arguments as Note?;
-
-    // if (!initialized && originalNote != null) {
-    //   print('Hay nota');
-    //   setState(() {
-    //     // id = originalNote.id;
-    //     // title = originalNote.title;
-    //     // content = originalNote.content;
-
-    //     initialized = true;
-    //     note = Note(
-    //       id: originalNote.id,
-    //       title: originalNote.title,
-    //       content: originalNote.content,
-    //       tags: originalNote.tags,
-    //       pinned: originalNote.pinned,
-    //       archived: originalNote.archived,
-    //       createdAt: originalNote.createdAt,
-    //       updatedAt: originalNote.updatedAt,
-    //     );
-    //   });
-    // }
-
     return Consumer<Notes>(
       builder: (context, notes, child) => Scaffold(
         appBar: AppBar(
           title: Text(
-            // id == '' ? 'Nueva nota' : 'Editar nota',
             note.id == '' ? 'Nueva nota' : 'Editar nota',
             style: TextStyle(color: Colors.black),
           ),
@@ -147,14 +82,7 @@ class NoteScreenState extends State<NoteScreen> {
             child: ListView(
               children: [
                 TextFormField(
-                  onChanged: (v) {
-                    setState(() {
-                      note.title = v;
-                      // title = v;
-                    });
-                  },
                   controller: titleController,
-                  // initialValue: title,
                   decoration: InputDecoration(
                     hintText: 'Título',
                     border: InputBorder.none,
@@ -173,15 +101,7 @@ class NoteScreenState extends State<NoteScreen> {
                   ),
                 ),
                 TextFormField(
-                  onChanged: (v) {
-                    setState(() {
-                      // content = v;
-                      note.content = v;
-                    });
-                  },
                   controller: contentController,
-                  // initialValue: note.content,
-                  // initialValue: content,
                   decoration: InputDecoration(
                     hintText: 'Nota',
                     border: InputBorder.none,
@@ -199,44 +119,40 @@ class NoteScreenState extends State<NoteScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // if (title != '' || content != '') {
             if (note.title != '' || note.content != '') {
               if (note.id == "") {
-                // if (id == "") {
-                print(000000000);
-                print(note.title);
-                print(note.content);
                 notes.addNote(
-                  note: Note(
+                  Note(
                     id: Uuid().v4(),
-                    title: note.title,
-                    content: note.content,
-                    tags: [],
-                    pinned: false,
-                    archived: false,
+                    title: titleController.value.text,
+                    content: contentController.value.text,
+                    tags: note.tags,
+                    pinned: note.pinned,
+                    archived: note.archived,
                     createdAt: DateTime.now(),
                     updatedAt: DateTime.now(),
                   ),
                 );
-                // notes.addNote(title: note.title, content: note.content);
-                // notes.addNote(title: title, content: content);
               } else {
-                print(1111111);
-                print(titleController.value.text);
-                // print(title);
                 notes.updateNote(
-                  // id: id,
-                  // title: title,
-                  // content: content,
-
-                  note: note,
+                  Note(
+                    id: note.id,
+                    title: titleController.value.text,
+                    content: contentController.value.text,
+                    tags: note.tags,
+                    pinned: note.pinned,
+                    archived: note.archived,
+                    createdAt: note.createdAt,
+                    updatedAt: DateTime.now(),
+                  ),
                 );
               }
+
               Navigator.pop(context);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('La nota está vacía'),
+                  content: Text('No se pueden crear notas vacías'),
                   duration: Duration(seconds: 3),
                 ),
               );
