@@ -8,7 +8,8 @@ import 'package:starter/screens/notes_screen.dart';
 class MyMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Provider.of<Notes>(context, listen: true).reloadNotesFromStorage();
+    Provider.of<Notes>(context, listen: false).reloadNotesFromStorage();
+
     return MaterialApp(
       initialRoute: '/',
       routes: {
