@@ -3,18 +3,34 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:starter/models/note.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class Notes with ChangeNotifier {
   List<Note> _items = [];
-  bool _loaded = false;
   bool _loading = false;
+  bool _loaded = false;
 
   List<Note> get items {
     return [..._items];
   }
 
-  void addNote(Note note) async {
-    _items.add(note);
+  void addNote(
+      {
+      // required String title,
+      // required String content,
+      required Note note}) async {
+    _items.add(
+        // Note(
+        //   id: Uuid().v4(),
+        //   title: title,
+        //   content: content,
+        //   tags: [],
+        //   pinned: false,
+        //   archived: false,
+        //   createdAt: DateTime.now(),
+        //   updatedAt: DateTime.now(),
+        // ),
+        note);
 
     final storedNotes = File(
       '${(await getApplicationDocumentsDirectory()).path}/notes.json',
@@ -30,14 +46,44 @@ class Notes with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateNote(Note note) async {
+  void updateNote(
+      {
+      // required String id,
+      // required String title,
+      // required String content,
+      required Note note}) async {
+    print(2222222);
+    print(note.title);
+    // print(title);
     _items.asMap().forEach(
       (i, n) {
         if (note.id == n.id) {
-          _items[i] = n;
+          // if (id == n.id) {
+          // _items[i] = Note(
+          //   id: id,
+          //   title: title,
+          //   content: content,
+          //   tags: n.tags,
+          //   pinned: n.pinned,
+          //   archived: n.archived,
+          //   createdAt: n.createdAt,
+          //   updatedAt: DateTime.now(),
+          // );
+          _items[i] = note;
         }
       },
     );
+
+    final storedNotes = File(
+      '${(await getApplicationDocumentsDirectory()).path}/notes.json',
+    );
+
+    if (storedNotes.existsSync())
+      storedNotes.writeAsString(
+        json.encode(
+          _items.map((e) => e.toJson()).toList(),
+        ),
+      );
 
     notifyListeners();
   }
@@ -48,8 +94,9 @@ class Notes with ChangeNotifier {
 
       List<Note> notes = [];
 
-      final storedNotes =
-          File('${(await getApplicationDocumentsDirectory()).path}/notes.json');
+      final storedNotes = File(
+        '${(await getApplicationDocumentsDirectory()).path}/notes.json',
+      );
 
       if (storedNotes.existsSync()) {
         json.decode(storedNotes.readAsStringSync()).forEach((storedNote) {
@@ -61,6 +108,7 @@ class Notes with ChangeNotifier {
 
       _items = notes;
       _loaded = true;
+
       notifyListeners();
     }
   }

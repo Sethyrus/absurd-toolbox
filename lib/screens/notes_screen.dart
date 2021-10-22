@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:starter/providers/notes.dart';
 import 'package:starter/screens/note_screen.dart';
 import 'package:starter/widgets/notes_list.dart';
 
@@ -9,33 +7,31 @@ class NotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Notes>(
-      builder: (context, notes, child) => Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Notas',
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.yellow,
-          iconTheme: IconThemeData(color: Colors.black),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Notas',
+          style: TextStyle(color: Colors.black),
         ),
-        body: Container(
-          padding: EdgeInsets.all(8),
-          width: double.infinity,
-          child: Wrap(alignment: WrapAlignment.spaceAround, children: [
-            NotesList(),
-          ]),
+        backgroundColor: Colors.yellow,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(8),
+        width: double.infinity,
+        child: Wrap(alignment: WrapAlignment.spaceAround, children: [
+          NotesList(),
+        ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(NoteScreen.routeName);
+        },
+        child: Icon(
+          Icons.add,
+          color: Colors.black,
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed(NoteScreen.routeName);
-          },
-          child: Icon(
-            Icons.add,
-            color: Colors.black,
-          ),
-          backgroundColor: Colors.yellow,
-        ),
+        backgroundColor: Colors.yellow,
       ),
     );
   }

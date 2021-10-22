@@ -7,10 +7,10 @@ class NotesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<Notes>(
-      builder: (context, notes, child) => Container(
+      builder: (context, stateNotes, child) => Container(
         width: double.infinity,
         child: Wrap(
-          children: notes.items
+          children: stateNotes.items
               .map(
                 (n) => NoteListItem(
                   note: n,
