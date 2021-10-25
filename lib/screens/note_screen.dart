@@ -51,7 +51,7 @@ class NoteScreenState extends State<NoteScreen> {
   }
 
   bool _onSubmitForm({bool popScreen = false}) {
-    log(key: 'Submit');
+    log(key: 'Save note', debug: true, value: _editedNote.toJson());
 
     _form.currentState!.save();
 
