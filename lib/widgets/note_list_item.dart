@@ -16,7 +16,7 @@ class NoteListItem extends StatelessWidget {
         onTap: () {
           Navigator.of(context).pushNamed(
             NoteScreen.routeName,
-            arguments: note,
+            arguments: note.id,
           );
         },
         child: Ink(

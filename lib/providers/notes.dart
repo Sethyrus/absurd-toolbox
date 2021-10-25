@@ -77,4 +77,6 @@ class Notes with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Note findById(String id) => _items.firstWhere((element) => element.id == id);
 }
