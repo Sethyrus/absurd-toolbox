@@ -1,25 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:starter/main.dart';
-import 'package:starter/widgets/grid.dart';
 import 'package:starter/widgets/home_button.dart';
+import 'package:starter/widgets/home_logo.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Inicio')),
-      body: ListView(
-        padding: EdgeInsets.all(8),
-        children: [
-          Grid(
-            cols: 4,
-            outterMarginsOffset: 8,
-            children: List.generate(
-              mainNavigation.length,
-              (index) => HomeButton(route: mainNavigation[index]),
-            ),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: Colors.blue[400],
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HomeLogo(),
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.all(4),
+                  child: GridView.count(
+                    crossAxisCount: 4,
+                    children: List.generate(
+                      mainNavigation.length,
+                      (index) => Padding(
+                        padding: EdgeInsets.all(4),
+                        child: HomeButton(route: mainNavigation[0]),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

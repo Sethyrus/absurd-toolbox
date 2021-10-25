@@ -155,7 +155,15 @@ class NoteScreenState extends State<NoteScreen> {
                       itemBuilder: (BuildContext context) => [
                         PopupMenuItem<String>(
                           value: 'DELETE',
-                          child: Text('Eliminar nota'),
+                          child: Row(
+                            children: [
+                              Container(
+                                child: Icon(Icons.delete),
+                                margin: EdgeInsets.only(right: 6),
+                              ),
+                              Text('Eliminar nota'),
+                            ],
+                          ),
                         ),
                       ],
                     )

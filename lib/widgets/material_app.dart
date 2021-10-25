@@ -12,6 +12,9 @@ class MyMaterialApp extends StatelessWidget {
 
     return MaterialApp(
       initialRoute: '/',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       routes: {
         '/': (context) => HomeScreen(),
         NotesScreen.routeName: (context) => NotesScreen(),

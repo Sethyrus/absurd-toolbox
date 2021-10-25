@@ -9,14 +9,8 @@ class NotesList extends StatelessWidget {
     return Consumer<Notes>(
       builder: (context, stateNotes, child) => Container(
         width: double.infinity,
-        child: Wrap(
-          children: stateNotes.items
-              .map(
-                (n) => NoteListItem(
-                  note: n,
-                ),
-              )
-              .toList(),
+        child: Column(
+          children: stateNotes.items.map((n) => NoteListItem(n)).toList(),
         ),
       ),
     );
