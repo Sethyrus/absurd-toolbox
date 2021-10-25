@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:starter/helpers.dart';
 import 'package:starter/models/note.dart';
 import 'package:starter/providers/notes.dart';
 import 'package:uuid/uuid.dart';
@@ -49,7 +50,9 @@ class NoteScreenState extends State<NoteScreen> {
     super.dispose();
   }
 
-  void _onSubmitForm() {
+  bool _onSubmitForm({bool popScreen = false}) {
+    log(key: 'Submit');
+
     _form.currentState!.save();
 
     if (_editedNote.title != '' || _editedNote.content != '') {
@@ -83,81 +86,98 @@ class NoteScreenState extends State<NoteScreen> {
         );
       }
 
-      Navigator.pop(context);
+      if (popScreen) Navigator.pop(context);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('No se pueden crear notas vacías'),
-          duration: Duration(seconds: 3),
-        ),
-      );
+      if (_editedNote.id != '') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No se pueden guardar notas vacías'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+
+        return false;
+      }
     }
+
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _editedNote.id == '' ? 'Nueva nota' : 'Editar nota',
-          style: TextStyle(color: Colors.black),
+    return WillPopScope(
+      onWillPop: () => Future(() => _onSubmitForm()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            _editedNote.id == '' ? 'Nueva nota' : 'Editar nota',
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.yellow,
+          iconTheme: IconThemeData(color: Colors.black),
+          actions: [
+            ..._editedNote.id != ''
+                ? [
+                    PopupMenuButton<String>(
+                      onSelected: (actionValue) {
+                        if (actionValue == 'DELETE') {
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: Text('Confirmar'),
+                              content:
+                                  Text('¿Seguro que quieres eliminar la nota?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context, 'Cancel');
+                                  },
+                                  child: Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Provider.of<Notes>(
+                                      context,
+                                      listen: false,
+                                    ).deleteNote(_editedNote);
+
+                                    // Se lanza 2 veces, la primera para cerrar el alert y la segunda para volver al listado de notas
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                      itemBuilder: (BuildContext context) => [
+                        PopupMenuItem<String>(
+                          value: 'DELETE',
+                          child: Text('Eliminar nota'),
+                        ),
+                      ],
+                    )
+                  ]
+                : [],
+          ],
         ),
-        backgroundColor: Colors.yellow,
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
-      body: Form(
-        key: _form,
-        child: Container(
-          color: Colors.yellow[100],
-          height: double.infinity,
-          child: Column(
-            children: [
-              TextFormField(
-                textInputAction: TextInputAction.next,
-                onSaved: (value) {
-                  if (value != null)
-                    _editedNote = Note(
-                      id: _editedNote.id,
-                      title: value,
-                      content: _editedNote.content,
-                      tags: _editedNote.tags,
-                      pinned: _editedNote.pinned,
-                      archived: _editedNote.archived,
-                      createdAt: _editedNote.createdAt,
-                      updatedAt: _editedNote.updatedAt,
-                    );
-                },
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus(_contentFocusNode);
-                },
-                decoration: InputDecoration(
-                  hintText: 'Título',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 2,
-                    horizontal: 8,
-                  ),
-                ),
-                initialValue: _editedNote.title,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Expanded(
-                child: TextFormField(
-                  expands: true,
-                  focusNode: _contentFocusNode,
+        body: Form(
+          key: _form,
+          child: Container(
+            color: Colors.yellow[100],
+            height: double.infinity,
+            child: Column(
+              children: [
+                TextFormField(
+                  textInputAction: TextInputAction.next,
                   onSaved: (value) {
                     if (value != null)
                       _editedNote = Note(
                         id: _editedNote.id,
-                        title: _editedNote.title,
-                        content: value,
+                        title: value,
+                        content: _editedNote.content,
                         tags: _editedNote.tags,
                         pinned: _editedNote.pinned,
                         archived: _editedNote.archived,
@@ -165,28 +185,63 @@ class NoteScreenState extends State<NoteScreen> {
                         updatedAt: _editedNote.updatedAt,
                       );
                   },
-                  textAlign: TextAlign.start,
-                  textAlignVertical: TextAlignVertical.top,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_contentFocusNode);
+                  },
                   decoration: InputDecoration(
-                    hintText: 'Nota',
+                    hintText: 'Título',
                     border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
                     contentPadding: EdgeInsets.symmetric(
                       vertical: 2,
                       horizontal: 8,
                     ),
                   ),
-                  initialValue: _editedNote.content,
-                  maxLines: null,
-                  minLines: null,
+                  initialValue: _editedNote.title,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: TextFormField(
+                    expands: true,
+                    focusNode: _contentFocusNode,
+                    onSaved: (value) {
+                      if (value != null)
+                        _editedNote = Note(
+                          id: _editedNote.id,
+                          title: _editedNote.title,
+                          content: value,
+                          tags: _editedNote.tags,
+                          pinned: _editedNote.pinned,
+                          archived: _editedNote.archived,
+                          createdAt: _editedNote.createdAt,
+                          updatedAt: _editedNote.updatedAt,
+                        );
+                    },
+                    textAlign: TextAlign.start,
+                    textAlignVertical: TextAlignVertical.top,
+                    decoration: InputDecoration(
+                      hintText: 'Nota',
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 2,
+                        horizontal: 8,
+                      ),
+                    ),
+                    initialValue: _editedNote.content,
+                    maxLines: null,
+                    minLines: null,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _onSubmitForm,
-        child: Icon(Icons.save),
       ),
     );
   }
