@@ -8,10 +8,6 @@ class NotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   statusBarColor: Colors.yellow[600],
-    // ));
-
     return Scaffold(
       appBar: AppBar(
         title: Text(

@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                       mainNavigation.length,
                       (index) => Padding(
                         padding: EdgeInsets.all(4),
-                        child: HomeButton(route: mainNavigation[0]),
+                        child: HomeButton(route: mainNavigation[index]),
                       ),
                     ),
                   ),

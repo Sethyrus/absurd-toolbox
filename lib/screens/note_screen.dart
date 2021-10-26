@@ -9,10 +9,10 @@ class NoteScreen extends StatefulWidget {
   static const String routeName = '/note';
 
   @override
-  NoteScreenState createState() => NoteScreenState();
+  _NoteScreenState createState() => _NoteScreenState();
 }
 
-class NoteScreenState extends State<NoteScreen> {
+class _NoteScreenState extends State<NoteScreen> {
   var _initialized = false;
   Note _originalNote = Note(
     id: '',
