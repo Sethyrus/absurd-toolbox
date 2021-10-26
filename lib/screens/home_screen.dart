@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:starter/main.dart';
-import 'package:starter/widgets/home/home_button.dart';
-import 'package:starter/widgets/home/home_logo.dart';
+import 'package:absurd_toolbox/main.dart';
+import 'package:absurd_toolbox/widgets/home/home_button.dart';
+import 'package:absurd_toolbox/widgets/home/home_logo.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-          statusBarColor: Colors.blue[400],
+          statusBarColor: Colors.indigo[700],
         ),
         child: SafeArea(
           child: Column(

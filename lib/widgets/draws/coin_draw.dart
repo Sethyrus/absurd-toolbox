@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:starter/models/coin.dart';
+import 'package:absurd_toolbox/models/coin.dart';
 
 class CoinDraw extends StatefulWidget {
   CoinDraw({Key? key}) : super(key: key);

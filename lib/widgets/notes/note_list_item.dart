@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:starter/models/note.dart';
-import 'package:starter/screens/note_screen.dart';
+import 'package:absurd_toolbox/models/note.dart';
+import 'package:absurd_toolbox/screens/note_screen.dart';
 
 class NoteListItem extends StatelessWidget {
   final Note note;

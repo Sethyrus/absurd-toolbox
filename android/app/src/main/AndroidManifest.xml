@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.starter">
+    package="com.sethbase.absurd_toolbox">
    <application
-        android:label="starter"
+        android:label="Absurd Toolbox"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:starter/helpers.dart';
-import 'package:starter/models/note.dart';
-import 'package:starter/providers/notes.dart';
+import 'package:absurd_toolbox/helpers.dart';
+import 'package:absurd_toolbox/models/note.dart';
+import 'package:absurd_toolbox/providers/notes.dart';
 import 'package:uuid/uuid.dart';
 
 class NoteScreen extends StatefulWidget {

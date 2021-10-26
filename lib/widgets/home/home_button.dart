@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:starter/models/route.dart' as own;
+import 'package:absurd_toolbox/models/route.dart' as own;
 
 class HomeButton extends StatelessWidget {
   final own.Route route;

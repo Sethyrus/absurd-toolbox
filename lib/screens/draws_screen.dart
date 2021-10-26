@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:starter/widgets/draws/coin_draw.dart';
+import 'package:absurd_toolbox/widgets/draws/coin_draw.dart';
 
 class DrawsScreen extends StatelessWidget {
   static const String routeName = '/draws';
