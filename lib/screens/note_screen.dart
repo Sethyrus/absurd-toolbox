@@ -14,6 +14,16 @@ class NoteScreen extends StatefulWidget {
 
 class NoteScreenState extends State<NoteScreen> {
   var _initialized = false;
+  Note _originalNote = Note(
+    id: '',
+    title: '',
+    content: '',
+    tags: [],
+    pinned: false,
+    archived: false,
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
   Note _editedNote = Note(
     id: '',
     title: '',
@@ -34,11 +44,17 @@ class NoteScreenState extends State<NoteScreen> {
 
       final noteId = ModalRoute.of(context)!.settings.arguments as String?;
 
-      if (noteId != null)
+      if (noteId != null) {
+        _originalNote = Provider.of<Notes>(
+          context,
+          listen: false,
+        ).findById(noteId);
+
         _editedNote = Provider.of<Notes>(
           context,
           listen: false,
         ).findById(noteId);
+      }
     }
 
     super.didChangeDependencies();
@@ -51,14 +67,14 @@ class NoteScreenState extends State<NoteScreen> {
   }
 
   bool _onSubmitForm({bool popScreen = false}) {
-    log(key: 'Save note', debug: true, value: _editedNote.toJson());
-
     _form.currentState!.save();
 
     if (_editedNote.title != '' || _editedNote.content != '') {
       Notes notes = Provider.of<Notes>(context, listen: false);
 
       if (_editedNote.id == "") {
+        log(key: 'Save new note', debug: true, value: _editedNote.toJson());
+
         notes.addNote(
           Note(
             id: Uuid().v4(),
@@ -72,18 +88,23 @@ class NoteScreenState extends State<NoteScreen> {
           ),
         );
       } else {
-        notes.updateNote(
-          Note(
-            id: _editedNote.id,
-            title: _editedNote.title,
-            content: _editedNote.content,
-            tags: _editedNote.tags,
-            pinned: _editedNote.pinned,
-            archived: _editedNote.archived,
-            createdAt: _editedNote.createdAt,
-            updatedAt: DateTime.now(),
-          ),
-        );
+        if (!(_originalNote.title == _editedNote.title &&
+            _originalNote.content == _editedNote.content)) {
+          log(key: 'Edit note', debug: true, value: _editedNote.toJson());
+
+          notes.updateNote(
+            Note(
+              id: _editedNote.id,
+              title: _editedNote.title,
+              content: _editedNote.content,
+              tags: _editedNote.tags,
+              pinned: _editedNote.pinned,
+              archived: _editedNote.archived,
+              createdAt: _editedNote.createdAt,
+              updatedAt: DateTime.now(),
+            ),
+          );
+        }
       }
 
       if (popScreen) Navigator.pop(context);
