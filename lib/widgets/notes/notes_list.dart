@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:starter/providers/notes.dart';
-import 'package:starter/widgets/note_list_item.dart';
+import 'package:starter/widgets/notes/note_list_item.dart';
 
 class NotesList extends StatelessWidget {
   @override

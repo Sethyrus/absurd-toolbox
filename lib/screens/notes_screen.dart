@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:starter/screens/note_screen.dart';
-import 'package:starter/widgets/notes_list.dart';
+import 'package:starter/widgets/notes/notes_list.dart';
 
 class NotesScreen extends StatelessWidget {
   static const String routeName = '/notes';

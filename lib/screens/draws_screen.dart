@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:starter/widgets/draws/coin_draw.dart';
 
 class DrawsScreen extends StatefulWidget {
   static const String routeName = '/draws';
@@ -24,6 +25,7 @@ class _DrawsScreenState extends State<DrawsScreen> {
         backgroundColor: Colors.green[400],
         iconTheme: IconThemeData(color: Colors.black),
       ),
+      body: CoinDraw(),
     );
   }
 }

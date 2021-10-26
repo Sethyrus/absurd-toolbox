@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:starter/main.dart';
-import 'package:starter/widgets/home_button.dart';
-import 'package:starter/widgets/home_logo.dart';
+import 'package:starter/widgets/home/home_button.dart';
+import 'package:starter/widgets/home/home_logo.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
