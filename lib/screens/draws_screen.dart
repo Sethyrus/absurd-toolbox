@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:absurd_toolbox/widgets/draws/raffle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:absurd_toolbox/widgets/draws/coin_draw.dart';
@@ -26,6 +26,7 @@ class DrawsScreen extends StatelessWidget {
           children: [
             CoinDraw(),
             Divider(color: Colors.black54, thickness: 2, height: 32),
+            Raffle(),
           ],
         ),
       ),

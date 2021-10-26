@@ -26,11 +26,18 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  // Foco dummy
+  final FocusNode _focusNode = new FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (ctx) => Notes(),
-      child: MyMaterialApp(),
+      child: GestureDetector(
+        // Elimina el foco de cualquier input al pulsar sobre un espacio libre
+        onTap: () => FocusScope.of(context).requestFocus(_focusNode),
+        child: MyMaterialApp(),
+      ),
     );
   }
 }

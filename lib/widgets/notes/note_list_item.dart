@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/models/note.dart';
 import 'package:absurd_toolbox/screens/note_screen.dart';

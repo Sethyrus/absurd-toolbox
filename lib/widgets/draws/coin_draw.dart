@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/models/coin.dart';
 
@@ -10,7 +9,7 @@ class CoinDraw extends StatefulWidget {
 }
 
 class _CoinDrawState extends State<CoinDraw> {
-  Coin coin = Coin();
+  Coin _coin = Coin();
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +25,18 @@ class _CoinDrawState extends State<CoinDraw> {
             padding: EdgeInsets.symmetric(vertical: 12),
             child: Image(
               height: 140,
-              image: AssetImage(coin.coinValue == CoinValue.heads
+              image: AssetImage(_coin.coinValue == CoinValue.heads
                   ? 'lib/assets/images/coin_head.png'
                   : 'lib/assets/images/coin_tail.png'),
             ),
           ),
           ElevatedButton(
-            onPressed: () => setState(() => coin = Coin()),
+            onPressed: () => setState(() => _coin = Coin()),
             child: Text('Tirar la moneda'),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.green.shade400),
+              foregroundColor: MaterialStateProperty.all(Colors.black),
+            ),
           ),
         ],
       ),
