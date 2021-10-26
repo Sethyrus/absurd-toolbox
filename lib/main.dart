@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/models/route.dart' as own;
@@ -18,6 +19,12 @@ final List<own.Route> mainNavigation = [
     color: Colors.green.shade400,
     route: DrawsScreen.routeName,
     icon: Icons.casino,
+  ),
+  own.Route(
+    label: 'QR scan',
+    color: Colors.teal.shade300,
+    route: BarcodeScannerScreen.routeName,
+    icon: Icons.qr_code_scanner,
   ),
 ];
 
