@@ -225,7 +225,7 @@ class _NoteScreenState extends State<NoteScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                     contentPadding: EdgeInsets.symmetric(
-                      vertical: 2,
+                      vertical: 0,
                       horizontal: 8,
                     ),
                   ),
@@ -258,7 +258,7 @@ class _NoteScreenState extends State<NoteScreen> {
                       hintText: 'Nota',
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(
-                        vertical: 2,
+                        vertical: 0,
                         horizontal: 8,
                       ),
                     ),

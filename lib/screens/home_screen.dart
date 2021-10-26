@@ -19,16 +19,14 @@ class HomeScreen extends StatelessWidget {
             children: [
               HomeLogo(),
               Flexible(
-                child: Padding(
+                child: GridView.count(
                   padding: EdgeInsets.all(4),
-                  child: GridView.count(
-                    crossAxisCount: 4,
-                    children: List.generate(
-                      mainNavigation.length,
-                      (index) => Padding(
-                        padding: EdgeInsets.all(4),
-                        child: HomeButton(route: mainNavigation[index]),
-                      ),
+                  crossAxisCount: 4,
+                  children: List.generate(
+                    mainNavigation.length,
+                    (index) => Padding(
+                      padding: EdgeInsets.all(4),
+                      child: HomeButton(route: mainNavigation[index]),
                     ),
                   ),
                 ),

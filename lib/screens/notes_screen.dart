@@ -20,11 +20,7 @@ class NotesScreen extends StatelessWidget {
         backgroundColor: Colors.yellow,
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: Container(
-        padding: EdgeInsets.all(8),
-        width: double.infinity,
-        child: NotesList(),
-      ),
+      body: NotesList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed(NoteScreen.routeName);

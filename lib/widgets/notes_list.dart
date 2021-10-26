@@ -9,8 +9,11 @@ class NotesList extends StatelessWidget {
     return Consumer<Notes>(
       builder: (context, stateNotes, child) => Container(
         width: double.infinity,
-        child: Column(
-          children: stateNotes.items.map((n) => NoteListItem(n)).toList(),
+        child: ListView.builder(
+          padding: EdgeInsets.all(8),
+          itemCount: stateNotes.items.length,
+          itemBuilder: (context, index) =>
+              NoteListItem(stateNotes.items[index]),
         ),
       ),
     );
