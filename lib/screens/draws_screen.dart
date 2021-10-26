@@ -3,14 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:starter/widgets/draws/coin_draw.dart';
 
-class DrawsScreen extends StatefulWidget {
+class DrawsScreen extends StatelessWidget {
   static const String routeName = '/draws';
 
-  @override
-  _DrawsScreenState createState() => _DrawsScreenState();
-}
-
-class _DrawsScreenState extends State<DrawsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +20,15 @@ class _DrawsScreenState extends State<DrawsScreen> {
         backgroundColor: Colors.green[400],
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      body: CoinDraw(),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          children: [
+            CoinDraw(),
+            Divider(color: Colors.black54, thickness: 2, height: 32),
+          ],
+        ),
+      ),
     );
   }
 }
