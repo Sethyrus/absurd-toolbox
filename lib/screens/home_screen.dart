@@ -7,10 +7,10 @@ import 'package:absurd_toolbox/widgets/home/home_logo.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Layout(
-        statusBarColor: Colors.indigo.shade700,
-        content: Column(
+    return Layout(
+      statusBarColor: Colors.indigo.shade700,
+      content: SafeArea(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
