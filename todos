@@ -1,3 +1,7 @@
+[ ] Optimizar
+-o Mejorar estructura de los layouts, regularizando y creando componentes y es-
+tilos generales
+
 [ ] El toast usado debe cambiarse por un mensaje flotante
 
 [ ] Crear widgets con estilos específicos a reutilizar en la app

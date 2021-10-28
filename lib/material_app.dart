@@ -1,4 +1,5 @@
 import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
+import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/providers/notes.dart';
@@ -23,6 +24,7 @@ class MyMaterialApp extends StatelessWidget {
         NoteScreen.routeName: (context) => NoteScreen(),
         DrawsScreen.routeName: (context) => DrawsScreen(),
         BarcodeScannerScreen.routeName: (context) => BarcodeScannerScreen(),
+        SoundRecorderScreen.routeName: (context) => SoundRecorderScreen(),
       },
     );
   }
