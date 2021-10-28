@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -16,19 +17,12 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'QR/barcode scan',
-          style: TextStyle(color: Colors.black),
-        ),
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.teal.shade400,
-        ),
-        backgroundColor: Colors.teal.shade300,
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
-      body: Container(
+    return Layout(
+      statusBarColor: Colors.teal.shade400,
+      themeColor: Colors.teal.shade300,
+      showAppBar: true,
+      title: 'QR/barcode scan',
+      content: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * (1 / 6)),
@@ -90,7 +84,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      fab: FloatingActionButton(
         onPressed: () async {
           String newValue = await FlutterBarcodeScanner.scanBarcode(
             '#ff6666',

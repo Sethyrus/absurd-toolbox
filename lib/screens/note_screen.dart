@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/helpers.dart';
@@ -128,71 +129,60 @@ class _NoteScreenState extends State<NoteScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => Future(() => _onSubmitForm()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _editedNote.id == '' ? 'Nueva nota' : 'Editar nota',
-            style: TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.yellow,
-          iconTheme: IconThemeData(color: Colors.black),
-          actions: [
-            ..._editedNote.id != ''
-                ? [
-                    PopupMenuButton<String>(
-                      onSelected: (actionValue) {
-                        if (actionValue == 'DELETE') {
-                          showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title: Text('Confirmar'),
-                              content:
-                                  Text('¿Seguro que quieres eliminar la nota?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context, 'Cancel');
-                                  },
-                                  child: Text('Cancelar'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Provider.of<Notes>(
-                                      context,
-                                      listen: false,
-                                    ).deleteNote(_editedNote);
+      child: Layout(
+        statusBarColor: Colors.yellow.shade600,
+        themeColor: Colors.yellow,
+        showAppBar: true,
+        title: _editedNote.id == '' ? 'Nueva nota' : 'Editar nota',
+        statusBarActions: _editedNote.id != ''
+            ? [
+                PopupMenuItem<String>(
+                  value: 'DELETE',
+                  child: Row(
+                    children: [
+                      Container(
+                        child: Icon(Icons.delete),
+                        margin: EdgeInsets.only(right: 6),
+                      ),
+                      Text('Eliminar nota'),
+                    ],
+                  ),
+                ),
+              ]
+            : null,
+        onStatusBarActionSelected: (actionValue) {
+          if (actionValue == 'DELETE') {
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: Text('Confirmar'),
+                content: Text('¿Seguro que quieres eliminar la nota?'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context, 'Cancel');
+                    },
+                    child: Text('Cancelar'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Provider.of<Notes>(
+                        context,
+                        listen: false,
+                      ).deleteNote(_editedNote);
 
-                                    // Se lanza 2 veces, la primera para cerrar el alert y la segunda para volver al listado de notas
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                      itemBuilder: (BuildContext context) => [
-                        PopupMenuItem<String>(
-                          value: 'DELETE',
-                          child: Row(
-                            children: [
-                              Container(
-                                child: Icon(Icons.delete),
-                                margin: EdgeInsets.only(right: 6),
-                              ),
-                              Text('Eliminar nota'),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ]
-                : [],
-          ],
-        ),
-        body: Form(
+                      // Se lanza 2 veces, la primera para cerrar el alert y la segunda para volver al listado de notas
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
+        content: Form(
           key: _form,
           child: Container(
             color: Colors.yellow[100],

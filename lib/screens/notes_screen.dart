@@ -1,5 +1,5 @@
+import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:absurd_toolbox/screens/note_screen.dart';
 import 'package:absurd_toolbox/widgets/notes/notes_list.dart';
 
@@ -8,27 +8,15 @@ class NotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Notas',
-          style: TextStyle(color: Colors.black),
-        ),
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.yellow[600],
-        ),
-        backgroundColor: Colors.yellow,
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
-      body: NotesList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed(NoteScreen.routeName);
-        },
-        child: Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
+    return Layout(
+      showAppBar: true,
+      statusBarColor: Colors.yellow.shade600,
+      themeColor: Colors.yellow,
+      title: 'Notas',
+      content: NotesList(),
+      fab: FloatingActionButton(
+        onPressed: () => Navigator.of(context).pushNamed(NoteScreen.routeName),
+        child: Icon(Icons.add, color: Colors.black),
         backgroundColor: Colors.yellow,
       ),
     );

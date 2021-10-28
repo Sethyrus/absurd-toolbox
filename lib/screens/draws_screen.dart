@@ -1,6 +1,6 @@
+import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/widgets/draws/raffle.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:absurd_toolbox/widgets/draws/coin_draw.dart';
 
 class DrawsScreen extends StatelessWidget {
@@ -8,19 +8,12 @@ class DrawsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Sorteos',
-          style: TextStyle(color: Colors.black),
-        ),
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.green,
-        ),
-        backgroundColor: Colors.green[400],
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
-      body: SingleChildScrollView(
+    return Layout(
+      statusBarColor: Colors.green,
+      themeColor: Colors.green.shade400,
+      showAppBar: true,
+      title: 'Sorteos',
+      content: SingleChildScrollView(
         padding: EdgeInsets.all(8),
         child: Column(
           children: [
