@@ -5,9 +5,9 @@ tilos generales
 [ ] El toast usado debe cambiarse por un mensaje flotante
 
 [ ] Crear widgets con estilos específicos a reutilizar en la app
+-x Layout
 -o Button
 - -o Definir modos Outline, Flat, Raised, y Text configurables por props
--x Layout
 - -o Recibirá un título y colores específicos para StatusBar, AppBar, etc
 - -o Consistirá en un Scaffold que recibirá poco más que el child, evitando
 bastante boilerplating

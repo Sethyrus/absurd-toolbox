@@ -15,6 +15,24 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   String _scannedValue = '';
   bool _isValidLink = false;
 
+  void startScanning() async {
+    String newValue = await FlutterBarcodeScanner.scanBarcode(
+      '#ff6666',
+      'Cancelar',
+      false,
+      ScanMode.BARCODE,
+    );
+
+    if (newValue != '' && newValue != '-1' && _scannedValue != newValue) {
+      bool isValidLink = await canLaunch(newValue);
+
+      setState(() {
+        _scannedValue = newValue;
+        _isValidLink = isValidLink;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Layout(
@@ -25,7 +43,8 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
       content: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * (1 / 6)),
+          horizontal: MediaQuery.of(context).size.width * (1 / 6),
+        ),
         height: double.infinity,
         alignment: Alignment.center,
         child: Column(
@@ -43,10 +62,12 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                     Divider(color: Colors.transparent, thickness: 0, height: 8),
                     ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.teal.shade300),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.black),
+                        backgroundColor: MaterialStateProperty.all(
+                          Colors.teal.shade300,
+                        ),
+                        foregroundColor: MaterialStateProperty.all(
+                          Colors.black,
+                        ),
                       ),
                       onPressed: () => Clipboard.setData(
                         ClipboardData(text: _scannedValue),
@@ -80,28 +101,12 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16),
                     )
-                  ]
+                  ],
           ],
         ),
       ),
       fab: FloatingActionButton(
-        onPressed: () async {
-          String newValue = await FlutterBarcodeScanner.scanBarcode(
-            '#ff6666',
-            'Cancelar',
-            false,
-            ScanMode.BARCODE,
-          );
-
-          if (newValue != '' && newValue != '-1' && _scannedValue != newValue) {
-            bool isValidLink = await canLaunch(newValue);
-
-            setState(() {
-              _scannedValue = newValue;
-              _isValidLink = isValidLink;
-            });
-          }
-        },
+        onPressed: startScanning,
         child: Icon(
           Icons.photo_camera,
           color: Colors.black,
