@@ -5,12 +5,14 @@ class Layout extends StatelessWidget {
   final Color statusBarColor;
   final Widget content;
 
+  final bool? showAppBar;
   final String? title;
   final Color? themeColor;
   final Widget? fab;
-  final bool? showAppBar;
   final List<PopupMenuEntry<String>>? statusBarActions;
   final Function(String)? onStatusBarActionSelected;
+  final List<Widget>? tabBarItems;
+  final Color? tabBarIndicatorColor;
 
   Layout({
     required this.statusBarColor,
@@ -21,6 +23,8 @@ class Layout extends StatelessWidget {
     this.showAppBar,
     this.statusBarActions,
     this.onStatusBarActionSelected,
+    this.tabBarItems,
+    this.tabBarIndicatorColor,
   });
 
   @override
@@ -45,7 +49,14 @@ class Layout extends StatelessWidget {
                             statusBarActions ?? [],
                       )
                     ]
-                  : null)
+                  : null,
+              bottom: tabBarItems != null
+                  ? TabBar(
+                      tabs: tabBarItems ?? [],
+                      indicatorColor: tabBarIndicatorColor,
+                    )
+                  : null,
+            )
           : null,
       body: showAppBar != true
           ? AnnotatedRegion<SystemUiOverlayStyle>(

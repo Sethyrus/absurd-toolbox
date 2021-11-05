@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/providers/permissions.dart';
 import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
 import 'package:flutter/material.dart';
@@ -45,8 +46,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => Notes(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Notes>(create: (_) => Notes()),
+        ChangeNotifierProvider<Permissions>(create: (_) => Permissions()),
+      ],
+      // create: (ctx) => Notes(),
       child: GestureDetector(
         // Elimina el foco de cualquier input al pulsar sobre un espacio libre
         onTap: () => FocusScope.of(context).requestFocus(_focusNode),
