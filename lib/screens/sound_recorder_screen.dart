@@ -1,12 +1,17 @@
 import 'dart:io';
 import 'package:absurd_toolbox/helpers.dart';
+import 'package:absurd_toolbox/models/permission_control.dart';
+import 'package:absurd_toolbox/providers/permissions.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
+import 'package:absurd_toolbox/widgets/sound_recorder/recorder.dart';
 import 'package:absurd_toolbox/widgets/sound_recorder/recordings.dart';
 import 'package:absurd_toolbox/widgets/sound_recorder/sound_buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class SoundRecorderScreen extends StatefulWidget {
   static const String routeName = '/sound-recorder';
@@ -25,62 +30,104 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
   FlutterSoundPlayer _player = FlutterSoundPlayer();
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   // Controla si el usuario ha concedido acceso al micrófono
-  PermissionStatus? _hasMicPermission;
+  // PermissionStatus? _hasMicPermission;
   // Controla si el usuario ha concedido acceso al almacenamiento
-  PermissionStatus? _hasStoragePermission;
+  // PermissionStatus? _hasStoragePermission;
   // Códec usado en la grabación
   Codec _codec = Codec.aacMP4;
   // Controla si hay algún cçodec soportado
   bool _isCodecSupported = true;
   // Nombre del archivo temporal
-  String _filename = 'temp_recording.mp4';
+  String _fileExtension = 'mp4';
   // Directorio temporal
   Directory? _tempDir;
   // Controla si se ha hecho alguna grabación
-  bool _isPlaybackReady = false;
-  bool _isRecording = false;
+  // bool _isPlaybackReady = false;
 
   @override
   void initState() {
-    _player.openAudioSession().then(
-          (value) => setState(
-            () {
-              _playerInit = true;
-            },
+    super.initState();
+
+    SchedulerBinding.instance!.addPostFrameCallback((_) async {
+      final Permissions permissions = Provider.of<Permissions>(
+        context,
+        listen: false,
+      );
+
+      PermissionStatus? hasMicPermission;
+      PermissionStatus? hasStoragePermission;
+
+      if (permissions.items.length > 0) {
+        hasMicPermission = permissions.items
+            .firstWhere(
+              (p) => p.name == AppPermission.microphone,
+            )
+            .status;
+
+        hasStoragePermission = permissions.items
+            .firstWhere(
+              (p) => p.name == AppPermission.storage,
+            )
+            .status;
+      }
+
+      if (hasMicPermission == null) {
+        permissions.setPermission(
+          PermissionControl(
+            name: AppPermission.microphone,
+            status: await Permission.microphone.request(),
           ),
         );
+      }
 
-    _initRecorder().then(
-      (value) => setState(
-        () {
-          _recorderInit = true;
-          _isInit = true;
-        },
-      ),
-    );
+      if (hasStoragePermission == null) {
+        permissions.setPermission(
+          PermissionControl(
+            name: AppPermission.storage,
+            status: await Permission.storage.request(),
+          ),
+        );
+      }
 
-    super.initState();
+      _player.openAudioSession().then(
+            (value) => setState(
+              () {
+                _playerInit = true;
+              },
+            ),
+          );
+
+      _initRecorder().then(
+        (value) => setState(
+          () {
+            _recorderInit = true;
+            _isInit = true;
+          },
+        ),
+      );
+    });
   }
 
   _initRecorder() async {
-    _hasMicPermission = await Permission.microphone.request();
-    _hasStoragePermission = await Permission.storage.request();
+    // _hasMicPermission = await Permission.microphone.request();
+    // _hasStoragePermission = await Permission.storage.request();
     _tempDir = await getTemporaryDirectory();
 
-    if (_hasMicPermission == PermissionStatus.granted &&
-        _hasStoragePermission == PermissionStatus.granted) {
-      await _recorder.openAudioSession();
+    // if (_hasMicPermission == PermissionStatus.granted &&
+    //     _hasStoragePermission == PermissionStatus.granted) {
+    await _recorder.openAudioSession();
+
+    if (!await _recorder.isEncoderSupported(_codec)) {
+      _codec = Codec.opusWebM;
+      _fileExtension = 'webm';
 
       if (!await _recorder.isEncoderSupported(_codec)) {
-        _codec = Codec.opusWebM;
-        _filename = 'temp_recording.webm';
-
-        if (!await _recorder.isEncoderSupported(_codec)) {
-          _isCodecSupported = false;
-          return;
-        }
+        _isCodecSupported = false;
+        return;
       }
     }
+    // }
+    // await _recorder.openAudioSession();
   }
 
   // _initRecorder() async {
@@ -134,69 +181,11 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
   //   // }
   // }
 
-  void _startRecording() {
-    log(key: 'Start recording');
-
-    _recorder
-        .startRecorder(
-          toFile: (_tempDir?.path ?? '') + '/' + _filename,
-          codec: _codec,
-        )
-        .then(
-          (value) => setState(
-            () {
-              _isRecording = true;
-            },
-          ),
-        );
-  }
-
-  void _stopRecording() async {
-    log(key: 'Stop recording');
-
-    await _recorder.stopRecorder().then((value) {
-      setState(() {
-        _isRecording = false;
-        _isPlaybackReady = true;
-      });
-    });
-  }
-
-  Function()? _getRecordingAction() =>
-      _recorder.isStopped ? _startRecording : _stopRecording;
-
-  Function()? _getPlaybackAction() {
-    if (!_isPlaybackReady || !_recorder.isStopped) {
-      return null;
-    }
-
-    return _player.isStopped ? _play : _stopPlayer;
-  }
-
-  void _play() {
-    _player.startPlayer(
-      fromURI: (_tempDir?.path ?? '') + '/' + _filename,
-      // whenFinished: () {
-      //   setState(() {});
-      // }
-    )
-        //     .then((value) {
-        //   setState(() {});
-        // })
-        ;
-  }
-
-  void _stopPlayer() {
-    _player.stopPlayer().then((value) {
-      setState(() {});
-    });
-  }
-
   bool _isEverythingOk() =>
       _playerInit &&
       _recorderInit &&
-      _hasMicPermission == PermissionStatus.granted &&
-      _hasStoragePermission == PermissionStatus.granted &&
+      // _hasMicPermission == PermissionStatus.granted &&
+      // _hasStoragePermission == PermissionStatus.granted &&
       _isCodecSupported &&
       _tempDir != null;
 
@@ -215,27 +204,27 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
         'El servicio de grabación no se ha iniciado\n',
       );
 
-    if (_hasMicPermission == PermissionStatus.denied)
-      _errors.add(
-        'No has concedido acceso al micrófono\n',
-      );
+    // if (_hasMicPermission == PermissionStatus.denied)
+    //   _errors.add(
+    //     'No has concedido acceso al micrófono\n',
+    //   );
 
-    if (_hasMicPermission == PermissionStatus.permanentlyDenied)
-      _errors.add(
-        'Se ha denegado el acceso al micrófono permanentemente\n'
-        'Puedes cambiar esto desde los ajustes del teléfono\n',
-      );
+    // if (_hasMicPermission == PermissionStatus.permanentlyDenied)
+    //   _errors.add(
+    //     'Se ha denegado el acceso al micrófono permanentemente\n'
+    //     'Puedes cambiar esto desde los ajustes del teléfono\n',
+    //   );
 
-    if (_hasStoragePermission == PermissionStatus.denied)
-      _errors.add(
-        'No has concedido acceso al almacenamiento\n',
-      );
+    // if (_hasStoragePermission == PermissionStatus.denied)
+    //   _errors.add(
+    //     'No has concedido acceso al almacenamiento\n',
+    //   );
 
-    if (_hasStoragePermission == PermissionStatus.permanentlyDenied)
-      _errors.add(
-        'Se ha denegado el acceso al almacenamiento permanentemente\n'
-        'Puedes cambiar esto desde los ajustes del teléfono\n',
-      );
+    // if (_hasStoragePermission == PermissionStatus.permanentlyDenied)
+    //   _errors.add(
+    //     'Se ha denegado el acceso al almacenamiento permanentemente\n'
+    //     'Puedes cambiar esto desde los ajustes del teléfono\n',
+    //   );
 
     if (!_isCodecSupported)
       _errors.add(
@@ -252,99 +241,75 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Layout(
-        statusBarColor: Colors.red,
-        themeColor: Colors.red.shade400,
-        title: 'Grabadora de sonidos',
-        showAppBar: true,
-        tabBarIndicatorColor: Colors.white,
-        tabBarItems: [
-          Tab(
-            child: Text(
-              'Grabar',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          Tab(
-            child: Text(
-              'Grabaciones',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          Tab(
-            child: Text(
-              'Sound buttons',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
-        content:
-            // _isEverythingOk()
-            //     ?
-            TabBarView(
-          children: [
-            Container(
-              padding: EdgeInsets.all(8),
-              width: double.infinity,
-              child: Column(
-                children: [
-                  ..._isRecording
-                      ? [
-                          Text(
-                            'Grabando...',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 24,
-                            ),
-                          )
-                        ]
-                      : [
-                          ..._isPlaybackReady
-                              ? [
-                                  ElevatedButton(
-                                    onPressed: _getPlaybackAction(),
-                                    child: Text(
-                                        _player.isPlaying ? 'Stop' : 'Play'),
-                                  ),
-                                ]
-                              : [
-                                  Text(
-                                    'Pulsa sobre el botón para iniciar una grabación',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ]
-                        ],
-                ],
+    final Permissions permissions = Provider.of<Permissions>(
+      context,
+      listen: false,
+    );
+
+    return Consumer<Permissions>(builder: (context, cart, child) {
+      return DefaultTabController(
+        length: 3,
+        child: Layout(
+          statusBarColor: Colors.red,
+          themeColor: Colors.red.shade400,
+          title: 'Grabadora de sonidos',
+          showAppBar: true,
+          tabBarIndicatorColor: Colors.white,
+          tabBarItems: [
+            Tab(
+              child: Text(
+                'Grabar',
+                style: TextStyle(color: Colors.black),
               ),
             ),
-            Recordings(),
-            SoundButtons(),
+            Tab(
+              child: Text(
+                'Grabaciones',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            Tab(
+              child: Text(
+                'Sound buttons',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
           ],
-        )
-        // : Column(
-        //     children: _getErrors()
-        //         .map((e) => Text(
-        //               e,
-        //               textAlign: TextAlign.center,
-        //             ))
-        //         .toList())
-        ,
-        // fab: _isEverythingOk()
-        //     ? FloatingActionButton(
-        //         onPressed: _getRecordingAction(),
-        //         child: Icon(
-        //           _isRecording ? Icons.pause : Icons.mic,
-        //           color: Colors.black,
-        //         ),
-        //         backgroundColor: Colors.red.shade400,
-        //       )
-        //     : null,
-      ),
-    );
+          content:
+              // _isEverythingOk()
+              //     ?
+              TabBarView(
+            children: [
+              Recorder(
+                player: _player,
+                recorder: _recorder,
+                codec: _codec,
+                fileExtension: _fileExtension,
+              ),
+              Recordings(),
+              SoundButtons(),
+            ],
+          )
+          // : Column(
+          //     children: _getErrors()
+          //         .map((e) => Text(
+          //               e,
+          //               textAlign: TextAlign.center,
+          //             ))
+          //         .toList())
+          ,
+          // fab: _isEverythingOk()
+          //     ? FloatingActionButton(
+          //         onPressed: _getRecordingAction(),
+          //         child: Icon(
+          //           _isRecording ? Icons.pause : Icons.mic,
+          //           color: Colors.black,
+          //         ),
+          //         backgroundColor: Colors.red.shade400,
+          //       )
+          //     : null,
+        ),
+      );
+    });
   }
 }

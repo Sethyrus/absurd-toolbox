@@ -8,5 +8,5 @@ class Permissions with ChangeNotifier {
     return [..._items];
   }
 
-  void setPermission() {}
+  void setPermission(PermissionControl permission) {}
 }

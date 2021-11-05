@@ -2,6 +2,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 enum AppPermission {
   storage,
+  microphone,
 }
 
 class PermissionControl {
