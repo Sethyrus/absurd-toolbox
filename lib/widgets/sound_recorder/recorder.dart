@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:absurd_toolbox/helpers.dart';
+import 'package:absurd_toolbox/providers/permissions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 class Recorder extends StatefulWidget {
   final FlutterSoundPlayer player;
@@ -93,46 +95,68 @@ class _RecorderState extends State<Recorder> {
     super.initState();
 
     getTemporaryDirectory().then((value) => setState(() => _tempDir = value));
+
+    // _tempDir = await getTemporaryDirectory();
+
+    // if (_hasMicPermission == PermissionStatus.granted &&
+    //     _hasStoragePermission == PermissionStatus.granted) {
+    // await _recorder.openAudioSession();
+
+    // // widget
+
+    // if (!await _recorder.isEncoderSupported(_codec)) {
+    //   _codec = Codec.opusWebM;
+    //   _fileExtension = 'webm';
+
+    //   if (!await _recorder.isEncoderSupported(_codec)) {
+    //     _isCodecSupported = false;
+    //     return;
+    //   }
+    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      width: double.infinity,
-      child: Column(
-        children: [
-          ..._isRecording
-              ? [
-                  Text(
-                    'Grabando...',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 24,
-                    ),
-                  )
-                ]
-              : [
-                  ..._isPlaybackReady
-                      ? [
-                          ElevatedButton(
-                            onPressed: _getPlaybackAction(),
-                            child:
-                                Text(widget.player.isPlaying ? 'Stop' : 'Play'),
-                          ),
-                        ]
-                      : [
-                          Text(
-                            'Pulsa sobre el botón para iniciar una grabación',
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ]
-                ],
-        ],
-      ),
+    return Consumer<Permissions>(
+      builder: (context, cart, child) {
+        return Container(
+          padding: EdgeInsets.all(8),
+          width: double.infinity,
+          child: Column(
+            children: [
+              ..._isRecording
+                  ? [
+                      Text(
+                        'Grabando...',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 24,
+                        ),
+                      )
+                    ]
+                  : [
+                      ..._isPlaybackReady
+                          ? [
+                              ElevatedButton(
+                                onPressed: _getPlaybackAction(),
+                                child: Text(
+                                    widget.player.isPlaying ? 'Stop' : 'Play'),
+                              ),
+                            ]
+                          : [
+                              Text(
+                                'Pulsa sobre el botón para iniciar una grabación',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ]
+                    ],
+            ],
+          ),
+        );
+      },
     );
   }
 }

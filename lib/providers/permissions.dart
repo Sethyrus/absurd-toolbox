@@ -9,4 +9,11 @@ class Permissions with ChangeNotifier {
   }
 
   void setPermission(PermissionControl permission) {}
+
+  PermissionControl? getPermission(
+    AppPermission permissionName,
+  ) =>
+      items.firstWhere(
+        (p) => p.name == permissionName,
+      );
 }
