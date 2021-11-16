@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:absurd_toolbox/helpers.dart';
 import 'package:absurd_toolbox/providers/permissions.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +8,11 @@ import 'package:provider/provider.dart';
 
 class Recorder extends StatefulWidget {
   final FlutterSoundPlayer player;
-  final FlutterSoundRecorder recorder;
-  final Codec codec;
-  final String fileExtension;
 
   Recorder({
     required this.player,
-    required this.recorder,
-    required this.codec,
-    required this.fileExtension,
+    // required this.codec,
+    // required this.fileExtension,
   });
 
   @override
@@ -25,19 +20,61 @@ class Recorder extends StatefulWidget {
 }
 
 class _RecorderState extends State<Recorder> {
+  // Controla si se está realizando una grabación
   bool _isRecording = false;
+  // Controla si hay alguna grabación previsualizable
   bool _isPlaybackReady = false;
+  // Servicio de grabación
+  FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  // Controla si se ha iniciado el servicio de grabación
+  bool _recorderInit = false;
+  // Directorio temporal a usar para las grabaciones en proceso
   Directory? _tempDir;
+  // Códec usado en la grabación
+  Codec _codec = Codec.aacMP4;
+  // Controla si hay algún codec soportado
+  bool _isCodecSupported = true;
+  // Nombre del archivo temporal
+  String _fileExtension = 'mp4';
+
+  @override
+  void initState() {
+    super.initState();
+
+    getTemporaryDirectory().then((value) => setState(() => _tempDir = value));
+
+    // SchedulerBinding.instance!.addPostFrameCallback((_) async {
+    _initRecorder().then(
+      (value) => setState(() => _recorderInit = true),
+    );
+    // });
+  }
+
+  _initRecorder() async {
+    await _recorder.openAudioSession();
+
+    if (!await _recorder.isEncoderSupported(_codec)) {
+      _codec = Codec.opusWebM;
+      _fileExtension = 'webm';
+
+      if (!await _recorder.isEncoderSupported(_codec)) {
+        _isCodecSupported = false;
+        return;
+      }
+    }
+  }
+
+  String getTempRecordingDir() {
+    return (_tempDir?.path ?? '') + '/temp_recording.' + _fileExtension;
+  }
 
   void _startRecording() {
     log(key: 'Start recording');
 
-    widget.recorder
+    _recorder
         .startRecorder(
-          toFile: (_tempDir?.path ?? '') +
-              '/temp_recording.' +
-              widget.fileExtension,
-          codec: widget.codec,
+          toFile: getTempRecordingDir(),
+          codec: _codec,
         )
         .then(
           (value) => setState(
@@ -51,7 +88,7 @@ class _RecorderState extends State<Recorder> {
   void _stopRecording() async {
     log(key: 'Stop recording');
 
-    await widget.recorder.stopRecorder().then((value) {
+    await _recorder.stopRecorder().then((value) {
       setState(() {
         _isRecording = false;
         _isPlaybackReady = true;
@@ -60,10 +97,10 @@ class _RecorderState extends State<Recorder> {
   }
 
   Function()? _getRecordingAction() =>
-      widget.recorder.isStopped ? _startRecording : _stopRecording;
+      _recorder.isStopped ? _startRecording : _stopRecording;
 
   Function()? _getPlaybackAction() {
-    if (!_isPlaybackReady || !widget.recorder.isStopped) {
+    if (!_isPlaybackReady || !_recorder.isStopped) {
       return null;
     }
 
@@ -72,8 +109,7 @@ class _RecorderState extends State<Recorder> {
 
   void _play() {
     widget.player.startPlayer(
-      fromURI:
-          (_tempDir?.path ?? '') + '/temp_recording' + widget.fileExtension,
+      fromURI: getTempRecordingDir(),
       // whenFinished: () {
       //   setState(() {});
       // }
@@ -88,31 +124,6 @@ class _RecorderState extends State<Recorder> {
     widget.player.stopPlayer().then((value) {
       setState(() {});
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    getTemporaryDirectory().then((value) => setState(() => _tempDir = value));
-
-    // _tempDir = await getTemporaryDirectory();
-
-    // if (_hasMicPermission == PermissionStatus.granted &&
-    //     _hasStoragePermission == PermissionStatus.granted) {
-    // await _recorder.openAudioSession();
-
-    // // widget
-
-    // if (!await _recorder.isEncoderSupported(_codec)) {
-    //   _codec = Codec.opusWebM;
-    //   _fileExtension = 'webm';
-
-    //   if (!await _recorder.isEncoderSupported(_codec)) {
-    //     _isCodecSupported = false;
-    //     return;
-    //   }
-    // }
   }
 
   @override

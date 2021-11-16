@@ -1,4 +1,5 @@
-import 'package:absurd_toolbox/models/permission_control.dart';
+// import 'package:absurd_toolbox/models/permission_control.dart';
+import 'package:absurd_toolbox/models/app_permissions.dart';
 import 'package:absurd_toolbox/providers/permissions.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/widgets/sound_recorder/recorder.dart';
@@ -22,16 +23,16 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
   bool _isInit = false;
   // Controla si se ha iniciado el servicio de reproducción
   bool _playerInit = false;
-  // Controla si se ha iniciado el servicio de grabación
-  bool _recorderInit = false;
+  // // Controla si se ha iniciado el servicio de grabación
+  // bool _recorderInit = false;
   FlutterSoundPlayer _player = FlutterSoundPlayer();
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-  // Códec usado en la grabación
-  Codec _codec = Codec.aacMP4;
-  // Controla si hay algún cçodec soportado
-  bool _isCodecSupported = true;
-  // Nombre del archivo temporal
-  String _fileExtension = 'mp4';
+  // // Códec usado en la grabación
+  // Codec _codec = Codec.aacMP4;
+  // // Controla si hay algún cçodec soportado
+  // bool _isCodecSupported = true;
+  // // Nombre del archivo temporal
+  // String _fileExtension = 'mp4';
 
   @override
   void initState() {
@@ -43,39 +44,20 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
         listen: false,
       );
 
-      PermissionStatus? hasMicPermission =
-          permissions.getPermission(AppPermission.microphone).status;
-      PermissionStatus? hasStoragePermission;
-
-      if (permissions.items.length > 0) {
-        hasMicPermission = permissions.items
-            .firstWhere(
-              (p) => p.name == AppPermission.microphone,
-            )
-            .status;
-
-        hasStoragePermission = permissions.items
-            .firstWhere(
-              (p) => p.name == AppPermission.storage,
-            )
-            .status;
-      }
+      PermissionStatus? hasMicPermission = permissions.permissions.microphone;
+      PermissionStatus? hasStoragePermission = permissions.permissions.storage;
 
       if (hasMicPermission == null) {
         permissions.setPermission(
-          PermissionControl(
-            name: AppPermission.microphone,
-            status: await Permission.microphone.request(),
-          ),
+          PermissionName.microphone,
+          await Permission.microphone.request(),
         );
       }
 
       if (hasStoragePermission == null) {
         permissions.setPermission(
-          PermissionControl(
-            name: AppPermission.storage,
-            status: await Permission.storage.request(),
-          ),
+          PermissionName.storage,
+          await Permission.storage.request(),
         );
       }
 
@@ -87,30 +69,30 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
             ),
           );
 
-      _initRecorder().then(
-        (value) => setState(
-          () {
-            _recorderInit = true;
-            _isInit = true;
-          },
-        ),
-      );
+      // _initRecorder().then(
+      //   (value) => setState(
+      //     () {
+      //       _recorderInit = true;
+      //       _isInit = true;
+      //     },
+      //   ),
+      // );
     });
   }
 
-  _initRecorder() async {
-    await _recorder.openAudioSession();
+  // _initRecorder() async {
+  //   await _recorder.openAudioSession();
 
-    if (!await _recorder.isEncoderSupported(_codec)) {
-      _codec = Codec.opusWebM;
-      _fileExtension = 'webm';
+  //   if (!await _recorder.isEncoderSupported(_codec)) {
+  //     _codec = Codec.opusWebM;
+  //     _fileExtension = 'webm';
 
-      if (!await _recorder.isEncoderSupported(_codec)) {
-        _isCodecSupported = false;
-        return;
-      }
-    }
-  }
+  //     if (!await _recorder.isEncoderSupported(_codec)) {
+  //       _isCodecSupported = false;
+  //       return;
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -144,12 +126,7 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
           ],
           content: TabBarView(
             children: [
-              Recorder(
-                player: _player,
-                recorder: _recorder,
-                codec: _codec,
-                fileExtension: _fileExtension,
-              ),
+              Recorder(player: _player),
               Recordings(),
               SoundButtons(),
             ],

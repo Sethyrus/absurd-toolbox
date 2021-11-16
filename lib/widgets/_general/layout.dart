@@ -1,6 +1,7 @@
 import 'package:absurd_toolbox/widgets/empty_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:io';
 
 class Layout extends StatelessWidget {
   final Color statusBarColor;
@@ -30,16 +31,6 @@ class Layout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   SystemUiOverlayStyle(
-    //     statusBarColor: statusBarColor,
-    //     systemNavigationBarColor: statusBarColor,
-    //     systemNavigationBarDividerColor: statusBarColor,
-    //     systemNavigationBarIconBrightness: Brightness.light,
-    //     statusBarBrightness: Brightness.light,
-    //     statusBarIconBrightness: Brightness.light,
-    //   ),
-    // );
     return Scaffold(
       appBar: showAppBar == true
           ? AppBar(
@@ -68,22 +59,17 @@ class Layout extends StatelessWidget {
                     )
                   : null,
             )
-          : EmptyAppBar(
-              statusBarColor: statusBarColor,
-            ),
-      body: showAppBar != true
-          ? AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle(
-                statusBarColor: statusBarColor,
-                systemNavigationBarColor: statusBarColor,
-                systemNavigationBarDividerColor: statusBarColor,
-                systemNavigationBarIconBrightness: Brightness.light,
-                statusBarBrightness: Brightness.light,
-                statusBarIconBrightness: Brightness.light,
-              ),
-              child: content,
-            )
-          : content,
+          : Platform.isIOS
+              ? EmptyAppBar(
+                  statusBarColor: statusBarColor,
+                )
+              : null,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: statusBarColor,
+        ),
+        child: content,
+      ),
       floatingActionButton: fab,
     );
   }

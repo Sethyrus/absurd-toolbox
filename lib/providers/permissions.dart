@@ -1,19 +1,34 @@
-import 'package:absurd_toolbox/models/permission_control.dart';
+import 'package:absurd_toolbox/models/app_permissions.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Permissions with ChangeNotifier {
-  List<PermissionControl> _items = [];
+  AppPermissions _permissions = AppPermissions();
 
-  List<PermissionControl> get items {
-    return [..._items];
+  AppPermissions get permissions {
+    return AppPermissions(
+      storage: _permissions.storage,
+      microphone: _permissions.microphone,
+    );
   }
 
-  void setPermission(PermissionControl permission) {}
+  void setPermission(
+    PermissionName name,
+    PermissionStatus status,
+  ) {
+    switch (name) {
+      case PermissionName.storage:
+        {
+          _permissions.storage = status;
+          break;
+        }
+      case PermissionName.microphone:
+        {
+          _permissions.microphone = status;
+          break;
+        }
+    }
 
-  PermissionControl? getPermission(
-    AppPermission permissionName,
-  ) =>
-      items.firstWhere(
-        (p) => p.name == permissionName,
-      );
+    notifyListeners();
+  }
 }
