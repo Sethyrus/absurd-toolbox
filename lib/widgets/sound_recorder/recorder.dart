@@ -7,14 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class Recorder extends StatefulWidget {
-  final FlutterSoundPlayer player;
-
-  Recorder({
-    required this.player,
-    // required this.codec,
-    // required this.fileExtension,
-  });
-
   @override
   _RecorderState createState() => _RecorderState();
 }
@@ -24,8 +16,12 @@ class _RecorderState extends State<Recorder> {
   bool _isRecording = false;
   // Controla si hay alguna grabación previsualizable
   bool _isPlaybackReady = false;
-  // Servicio de grabación
+  // Servicio de reproducción de audio
+  FlutterSoundPlayer _player = FlutterSoundPlayer();
+  // Servicio de grabación de audio
   FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+  // Controla si se ha iniciado el servicio de reproducción
+  bool _playerInit = false;
   // Controla si se ha iniciado el servicio de grabación
   bool _recorderInit = false;
   // Directorio temporal a usar para las grabaciones en proceso
@@ -41,9 +37,13 @@ class _RecorderState extends State<Recorder> {
   void initState() {
     super.initState();
 
+    // SchedulerBinding.instance!.addPostFrameCallback((_) async {
     getTemporaryDirectory().then((value) => setState(() => _tempDir = value));
 
-    // SchedulerBinding.instance!.addPostFrameCallback((_) async {
+    _player.openAudioSession().then(
+          (value) => setState(() => _playerInit = true),
+        );
+
     _initRecorder().then(
       (value) => setState(() => _recorderInit = true),
     );
@@ -104,11 +104,11 @@ class _RecorderState extends State<Recorder> {
       return null;
     }
 
-    return widget.player.isStopped ? _play : _stopPlayer;
+    return _player.isStopped ? _play : _stopPlayer;
   }
 
   void _play() {
-    widget.player.startPlayer(
+    _player.startPlayer(
       fromURI: getTempRecordingDir(),
       // whenFinished: () {
       //   setState(() {});
@@ -121,7 +121,7 @@ class _RecorderState extends State<Recorder> {
   }
 
   void _stopPlayer() {
-    widget.player.stopPlayer().then((value) {
+    _player.stopPlayer().then((value) {
       setState(() {});
     });
   }
@@ -150,8 +150,8 @@ class _RecorderState extends State<Recorder> {
                           ? [
                               ElevatedButton(
                                 onPressed: _getPlaybackAction(),
-                                child: Text(
-                                    widget.player.isPlaying ? 'Stop' : 'Play'),
+                                child:
+                                    Text(_player.isPlaying ? 'Stop' : 'Play'),
                               ),
                             ]
                           : [
