@@ -38,8 +38,7 @@ class _RecorderState extends State<Recorder> {
   void initState() {
     super.initState();
 
-    // SchedulerBinding.instance!.addPostFrameCallback((_) async {
-    getTemporaryDirectory().then((value) => setState(() => _tempDir = value));
+    _initTempDir();
 
     _player!.openAudioSession().then(
           (value) => setState(() => _playerInit = true),
@@ -48,7 +47,6 @@ class _RecorderState extends State<Recorder> {
     _initRecorder().then(
       (value) => setState(() => _recorderInit = true),
     );
-    // });
   }
 
   @override
@@ -59,6 +57,25 @@ class _RecorderState extends State<Recorder> {
     _recorder!.closeAudioSession();
     _player = null;
     super.dispose();
+  }
+
+  void _initTempDir() {
+    getTemporaryDirectory().then(
+      (value) => setState(
+        () {
+          _tempDir = value;
+
+          if (Directory(_tempDir?.path ?? '')
+                  .listSync()
+                  .toList()
+                  .where((element) => element.path == _getTempRecordingDir())
+                  .length >
+              0) {
+            _isPlaybackReady = true;
+          }
+        },
+      ),
+    );
   }
 
   _initRecorder() async {
@@ -75,7 +92,7 @@ class _RecorderState extends State<Recorder> {
     }
   }
 
-  String getTempRecordingDir() {
+  String _getTempRecordingDir() {
     return (_tempDir?.path ?? '') + '/temp_recording.' + _fileExtension;
   }
 
@@ -84,7 +101,7 @@ class _RecorderState extends State<Recorder> {
 
     _recorder!
         .startRecorder(
-          toFile: getTempRecordingDir(),
+          toFile: _getTempRecordingDir(),
           codec: _codec,
         )
         .then(
@@ -118,10 +135,14 @@ class _RecorderState extends State<Recorder> {
     return _player!.isStopped ? _play : _stopPlayer;
   }
 
+  void _savePlayback() {
+    if (!_player!.isStopped) _stopPlayer();
+  }
+
   void _play() {
     _player!
         .startPlayer(
-            fromURI: getTempRecordingDir(),
+            fromURI: _getTempRecordingDir(),
             whenFinished: () {
               setState(() {});
             })
@@ -136,7 +157,7 @@ class _RecorderState extends State<Recorder> {
     });
   }
 
-  List<String> _getErrors(Permissions permissions) {
+  List<Widget>? _getErrors(Permissions permissions) {
     List<String> errors = [];
 
     if (permissions.permissions.microphone != PermissionStatus.granted)
@@ -148,63 +169,89 @@ class _RecorderState extends State<Recorder> {
     if (!_isCodecSupported)
       errors.add('Tu teléfono no soporta ningún códec usado por la app');
 
-    return errors;
+    if (_tempDir?.path == null)
+      errors.add('No se ha podido encontrar un directorio temporal');
+
+    if (errors.length > 0) {
+      return List<Widget>.generate(
+        errors.length,
+        (index) => Container(
+          padding: EdgeInsets.only(
+            bottom: 8,
+          ),
+          child: Text(
+            errors[index],
+          ),
+        ),
+      );
+    } else {
+      return null;
+    }
+  }
+
+  bool _isInit() {
+    return _playerInit && _recorderInit;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Permissions>(
-      builder: (context, permissions, child) {
-        final List<String> errors = _getErrors(permissions);
-
-        return Container(
-          padding: EdgeInsets.all(8),
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            mainAxisAlignment: errors.length == 0
-                ? MainAxisAlignment.spaceBetween
-                : MainAxisAlignment.start,
-            children: errors.length == 0
-                ? [
+    if (_isInit()) {
+      return Consumer<Permissions>(
+        builder: (context, permissions, child) {
+          return Container(
+            padding: EdgeInsets.all(8),
+            width: double.infinity,
+            height: double.infinity,
+            child: Column(
+              children: _getErrors(permissions) ??
+                  [
                     Container(
-                      child: Column(
-                        children: [
-                          ..._isRecording
-                              ? [
-                                  Text(
-                                    'Grabando...',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 24,
-                                    ),
-                                  )
-                                ]
-                              : [
-                                  ..._isPlaybackReady
-                                      ? [
-                                          ElevatedButton(
-                                            onPressed: _getPlaybackAction(),
-                                            child: Text(_player!.isPlaying
-                                                ? 'Stop'
-                                                : 'Play'),
-                                          ),
-                                        ]
-                                      : [
-                                          Text(
-                                            'Pulsa sobre el botón para iniciar una grabación',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ]
-                                ],
-                        ],
-                      ),
+                        child: Column(children: [
+                      ..._isRecording
+                          ? [
+                              Text(
+                                'Grabando...',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 24,
+                                ),
+                              )
+                            ]
+                          : [
+                              ..._isPlaybackReady
+                                  ? [
+                                      ElevatedButton(
+                                        onPressed: _getPlaybackAction(),
+                                        child: Text(
+                                          _player!.isPlaying
+                                              ? 'Parar'
+                                              : 'Reproducir',
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: _savePlayback,
+                                        child: Text('Guardar grabación'),
+                                      ),
+                                    ]
+                                  : [
+                                      Text(
+                                        'Pulsa sobre el botón para iniciar la grabación',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ]
+                            ]
+                    ])),
+                    Expanded(
+                      flex: 1,
+                      child: Container(),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 8,
+                      ),
                       width: double.infinity,
                       alignment: Alignment.center,
                       child: Container(
@@ -222,21 +269,13 @@ class _RecorderState extends State<Recorder> {
                         ),
                       ),
                     ),
-                  ]
-                : List<Widget>.generate(
-                    errors.length,
-                    (index) => Container(
-                      padding: EdgeInsets.only(
-                        bottom: 8,
-                      ),
-                      child: Text(
-                        errors[index],
-                      ),
-                    ),
-                  ),
-          ),
-        );
-      },
-    );
+                  ],
+            ),
+          );
+        },
+      );
+    } else {
+      return Container();
+    }
   }
 }

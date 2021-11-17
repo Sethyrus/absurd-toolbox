@@ -171,7 +171,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         listen: false,
                       ).deleteNote(_editedNote);
 
-                      // Se lanza 2 veces, la primera para cerrar el alert y la segunda para volver al listado de notas
+                      // Se lanza 2 veces, la primera cierra el alert y la segunda vuelve al listado de notas
                       Navigator.pop(context);
                       Navigator.pop(context);
                     },
