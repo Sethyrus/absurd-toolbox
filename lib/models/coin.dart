@@ -1,4 +1,7 @@
-enum CoinValue { heads, tails }
+enum CoinValue {
+  heads,
+  tails,
+}
 
 class Coin {
   CoinValue? coinValue;

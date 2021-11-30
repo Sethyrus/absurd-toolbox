@@ -1,0 +1,4 @@
+enum ListMode {
+  normal,
+  selection,
+}

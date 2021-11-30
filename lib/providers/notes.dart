@@ -70,6 +70,25 @@ class Notes with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteNotes(List<String> noteIds) async {
+    noteIds.forEach((id) {
+      _items.removeWhere((originalNote) => originalNote.id == id);
+    });
+
+    final storedNotes = File(
+      '${(await getApplicationDocumentsDirectory()).path}/notes.json',
+    );
+
+    if (storedNotes.existsSync())
+      storedNotes.writeAsString(
+        json.encode(
+          _items.map((e) => e.toJson()).toList(),
+        ),
+      );
+
+    notifyListeners();
+  }
+
   void reloadNotesFromStorage() async {
     if (!_loaded && !_loading) {
       _loading = true;
