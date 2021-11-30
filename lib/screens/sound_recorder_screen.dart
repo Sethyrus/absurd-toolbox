@@ -50,38 +50,39 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
     return DefaultTabController(
       length: 3,
       child: Layout(
-          statusBarColor: Colors.red,
-          themeColor: Colors.red.shade400,
-          title: 'Grabadora de sonidos',
-          showAppBar: true,
-          tabBarIndicatorColor: Colors.white,
-          tabBarItems: [
-            Tab(
-              child: Text(
-                'Grabar',
-                style: TextStyle(color: Colors.black),
-              ),
+        statusBarColor: Colors.red,
+        themeColor: Colors.red.shade400,
+        title: 'Grabadora de sonidos',
+        showAppBar: true,
+        tabBarIndicatorColor: Colors.white,
+        tabBarItems: [
+          Tab(
+            child: Text(
+              'Grabar',
+              style: TextStyle(color: Colors.black),
             ),
-            Tab(
-              child: Text(
-                'Grabaciones',
-                style: TextStyle(color: Colors.black),
-              ),
+          ),
+          Tab(
+            child: Text(
+              'Grabaciones',
+              style: TextStyle(color: Colors.black),
             ),
-            Tab(
-              child: Text(
-                'Sound buttons',
-                style: TextStyle(color: Colors.black),
-              ),
+          ),
+          Tab(
+            child: Text(
+              'Sound buttons',
+              style: TextStyle(color: Colors.black),
             ),
+          ),
+        ],
+        content: TabBarView(
+          children: [
+            Recorder(),
+            Recordings(),
+            SoundButtons(),
           ],
-          content: TabBarView(
-            children: [
-              Recorder(),
-              Recordings(),
-              SoundButtons(),
-            ],
-          )),
+        ),
+      ),
     );
   }
 }

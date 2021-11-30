@@ -55,7 +55,7 @@ class _RecorderState extends State<Recorder> {
     _player!.closeAudioSession();
     _player = null;
     _recorder!.closeAudioSession();
-    _player = null;
+    _recorder = null;
     super.dispose();
   }
 
@@ -68,7 +68,8 @@ class _RecorderState extends State<Recorder> {
           if (Directory(_tempDir?.path ?? '')
                   .listSync()
                   .toList()
-                  .where((element) => element.path == _getTempRecordingDir())
+                  .where(
+                      (element) => element.path == _getTempRecordingFullPath())
                   .length >
               0) {
             _isPlaybackReady = true;
@@ -92,7 +93,7 @@ class _RecorderState extends State<Recorder> {
     }
   }
 
-  String _getTempRecordingDir() {
+  String _getTempRecordingFullPath() {
     return (_tempDir?.path ?? '') + '/temp_recording.' + _fileExtension;
   }
 
@@ -101,7 +102,7 @@ class _RecorderState extends State<Recorder> {
 
     _recorder!
         .startRecorder(
-          toFile: _getTempRecordingDir(),
+          toFile: _getTempRecordingFullPath(),
           codec: _codec,
         )
         .then(
@@ -135,14 +136,37 @@ class _RecorderState extends State<Recorder> {
     return _player!.isStopped ? _play : _stopPlayer;
   }
 
-  void _savePlayback() {
+  void _savePlayback() async {
     if (!_player!.isStopped) _stopPlayer();
+
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+
+    if (!Directory(appDocumentsDirectory.path + '/recordings').existsSync())
+      Directory(appDocumentsDirectory.path + '/recordings').createSync();
+
+    String fileName =
+        DateTime.now().millisecondsSinceEpoch.toString() + _fileExtension;
+
+    try {
+      File(_getTempRecordingFullPath())
+          .renameSync(appDocumentsDirectory.path + '/recordings/' + fileName);
+    } on FileSystemException catch (e) {
+      log(key: "Saving record method 2", value: e);
+
+      File(_getTempRecordingFullPath())
+          .copySync(appDocumentsDirectory.path + '/recordings/' + fileName);
+      File(_getTempRecordingFullPath()).deleteSync();
+    }
+
+    setState(() {
+      _isPlaybackReady = false;
+    });
   }
 
   void _play() {
     _player!
         .startPlayer(
-            fromURI: _getTempRecordingDir(),
+            fromURI: _getTempRecordingFullPath(),
             whenFinished: () {
               setState(() {});
             })
