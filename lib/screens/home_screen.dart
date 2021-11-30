@@ -21,10 +21,7 @@ class HomeScreen extends StatelessWidget {
                 crossAxisCount: 4,
                 children: List.generate(
                   mainNavigation.length,
-                  (index) => Padding(
-                    padding: EdgeInsets.all(4),
-                    child: HomeButton(route: mainNavigation[index]),
-                  ),
+                  (index) => HomeButton(route: mainNavigation[index]),
                 ),
               ),
             ),

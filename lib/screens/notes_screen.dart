@@ -14,17 +14,34 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
+  // Controla si se está en modo de visualización normal o selección
   ListMode listMode = ListMode.normal;
+  // Notas seleccionadas (en modo selección)
   List<String> selectedNotes = [];
 
-  void setSelectionListMode(String id) {
-    if (listMode == ListMode.normal)
+  // Acción al pulsar sobre una nota
+  void onNoteTap(String id) {
+    if (listMode == ListMode.normal) {
+      Navigator.of(context).pushNamed(
+        NoteScreen.routeName,
+        arguments: id,
+      );
+    } else {
+      toggleNoteSelection(id);
+    }
+  }
+
+  // Inicia el modo selección
+  void startSelection(String id) {
+    if (listMode == ListMode.normal) {
       setState(() {
         listMode = ListMode.selection;
         selectedNotes = [id];
       });
+    }
   }
 
+  // Alterna la selección de una nota
   void toggleNoteSelection(String id) {
     setState(() {
       if (selectedNotes.contains(id)) {
@@ -38,7 +55,8 @@ class _NotesScreenState extends State<NotesScreen> {
     });
   }
 
-  void deleteSelectedNotes() {
+  // Abre el Alert de confirmación de borrado de notas
+  void tryDeleteSelectedNotes() {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -55,20 +73,23 @@ class _NotesScreenState extends State<NotesScreen> {
             onPressed: () {
               // Cierra el alert
               Navigator.pop(context);
-
-              Provider.of<Notes>(context, listen: false)
-                  .deleteNotes(selectedNotes);
-
-              setState(() {
-                listMode = ListMode.normal;
-                selectedNotes = [];
-              });
+              deleteSelectedNotes();
             },
             child: Text('OK'),
           ),
         ],
       ),
     );
+  }
+
+  // Borra las notas seleccionadas y sale del modo selección
+  void deleteSelectedNotes() {
+    Provider.of<Notes>(context, listen: false).deleteNotes(selectedNotes);
+
+    setState(() {
+      listMode = ListMode.normal;
+      selectedNotes = [];
+    });
   }
 
   @override
@@ -79,8 +100,8 @@ class _NotesScreenState extends State<NotesScreen> {
       themeColor: Colors.yellow,
       title: 'Notas',
       content: NotesList(
-        listMode: listMode,
-        onLongPress: setSelectionListMode,
+        onNoteTap: onNoteTap,
+        onNoteLongPress: startSelection,
         onSelectionToggle: toggleNoteSelection,
         selectedNotes: selectedNotes,
       ),
@@ -89,7 +110,7 @@ class _NotesScreenState extends State<NotesScreen> {
           if (listMode == ListMode.normal) {
             Navigator.of(context).pushNamed(NoteScreen.routeName);
           } else {
-            deleteSelectedNotes();
+            tryDeleteSelectedNotes();
           }
         },
         child: Icon(
