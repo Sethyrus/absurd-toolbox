@@ -30,12 +30,12 @@ class NoteListItem extends StatelessWidget {
             ),
           )
         : BoxDecoration(
-            color: Colors.grey,
+            color: Colors.grey.shade400,
             border: Border(
-              top: BorderSide(color: Colors.grey.shade700, width: 2),
-              bottom: BorderSide(color: Colors.grey.shade700, width: 2),
-              right: BorderSide(color: Colors.grey.shade700, width: 2),
-              left: BorderSide(color: Colors.grey.shade700, width: 10),
+              top: BorderSide(color: Colors.grey.shade500, width: 2),
+              bottom: BorderSide(color: Colors.grey.shade500, width: 2),
+              right: BorderSide(color: Colors.grey.shade500, width: 2),
+              left: BorderSide(color: Colors.grey.shade500, width: 10),
             ),
           );
   }

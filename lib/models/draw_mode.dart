@@ -1,0 +1,4 @@
+enum DrawMode {
+  coinDraw,
+  raffle,
+}
