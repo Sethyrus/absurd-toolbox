@@ -49,60 +49,66 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ..._scannedValue != ''
-                ? [
-                    Text('Valor escaneado:'),
-                    Divider(color: Colors.transparent, thickness: 0, height: 8),
-                    Text(
+          children: _scannedValue != ''
+              ? [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: Text('Valor escaneado:'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
                       _scannedValue,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 18),
                     ),
-                    Divider(color: Colors.transparent, thickness: 0, height: 8),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.teal.shade300,
-                        ),
-                        foregroundColor: MaterialStateProperty.all(
-                          Colors.black,
-                        ),
+                  ),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.teal.shade300,
                       ),
-                      onPressed: () => Clipboard.setData(
-                        ClipboardData(text: _scannedValue),
+                      foregroundColor: MaterialStateProperty.all(
+                        Colors.black,
                       ),
-                      child: Text('Copiar al portapapeles'),
                     ),
-                    ..._isValidLink
-                        ? [
-                            ElevatedButton(
-                              onPressed: () => launch(_scannedValue),
-                              child: Text('Abrir enlace'),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.teal.shade300),
-                                foregroundColor:
-                                    MaterialStateProperty.all(Colors.black),
+                    onPressed: () => Clipboard.setData(
+                      ClipboardData(text: _scannedValue),
+                    ),
+                    child: Text('Copiar al portapapeles'),
+                  ),
+                  ..._isValidLink
+                      ? [
+                          ElevatedButton(
+                            onPressed: () => launch(_scannedValue),
+                            child: Text('Abrir enlace'),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                Colors.teal.shade300,
                               ),
-                            )
-                          ]
-                        : []
-                  ]
-                : [
-                    Text(
+                              foregroundColor: MaterialStateProperty.all(
+                                Colors.black,
+                              ),
+                            ),
+                          )
+                        ]
+                      : []
+                ]
+              : [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: Text(
                       'Ningún valor escaneado',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 18),
                     ),
-                    Divider(color: Colors.transparent, thickness: 0, height: 8),
-                    Text(
-                      'Pulsa el botón para escanear un QR/código de barras',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16),
-                    )
-                  ],
-          ],
+                  ),
+                  Text(
+                    'Pulsa el botón para escanear un QR/código de barras',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
         ),
       ),
       fab: FloatingActionButton(
