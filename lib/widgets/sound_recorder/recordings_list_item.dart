@@ -36,7 +36,9 @@ class RecordingsListItem extends StatelessWidget {
             children: [
               Text(
                 file.path.substring(
-                    file.path.lastIndexOf('/') + 1, file.path.length),
+                  file.path.lastIndexOf('/') + 1,
+                  file.path.length,
+                ),
               ),
               Icon(
                 isPlaying ? Icons.pause : Icons.play_arrow,

@@ -35,14 +35,6 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
           await Permission.microphone.request(),
         );
       }
-
-      if (permissionsProvider.permissions.storage == null ||
-          permissionsProvider.permissions.storage == PermissionStatus.denied) {
-        permissionsProvider.setPermission(
-          PermissionName.storage,
-          await Permission.storage.request(),
-        );
-      }
     });
   }
 

@@ -187,9 +187,6 @@ class _RecorderState extends State<Recorder> {
     if (permissions.permissions.microphone != PermissionStatus.granted)
       errors.add('Debes conceder acceso al micrófono');
 
-    if (permissions.permissions.storage != PermissionStatus.granted)
-      errors.add('Debes conceder acceso al almacenamiento');
-
     if (!_isCodecSupported)
       errors.add('Tu teléfono no soporta ningún códec usado por la app');
 
