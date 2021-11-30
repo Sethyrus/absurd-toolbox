@@ -2,7 +2,7 @@ import 'package:absurd_toolbox/models/app_permissions.dart';
 import 'package:absurd_toolbox/providers/permissions.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/widgets/sound_recorder/recorder.dart';
-import 'package:absurd_toolbox/widgets/sound_recorder/recordings.dart';
+import 'package:absurd_toolbox/widgets/sound_recorder/recordings_list.dart';
 import 'package:absurd_toolbox/widgets/sound_recorder/sound_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -22,22 +22,23 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
     super.initState();
 
     SchedulerBinding.instance!.addPostFrameCallback((_) async {
-      final Permissions permissions = Provider.of<Permissions>(
+      final Permissions permissionsProvider = Provider.of<Permissions>(
         context,
         listen: false,
       );
 
-      if (permissions.permissions.microphone == null ||
-          permissions.permissions.microphone == PermissionStatus.denied) {
-        permissions.setPermission(
+      if (permissionsProvider.permissions.microphone == null ||
+          permissionsProvider.permissions.microphone ==
+              PermissionStatus.denied) {
+        permissionsProvider.setPermission(
           PermissionName.microphone,
           await Permission.microphone.request(),
         );
       }
 
-      if (permissions.permissions.storage == null ||
-          permissions.permissions.storage == PermissionStatus.denied) {
-        permissions.setPermission(
+      if (permissionsProvider.permissions.storage == null ||
+          permissionsProvider.permissions.storage == PermissionStatus.denied) {
+        permissionsProvider.setPermission(
           PermissionName.storage,
           await Permission.storage.request(),
         );
@@ -78,7 +79,7 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
         content: TabBarView(
           children: [
             Recorder(),
-            Recordings(),
+            RecordingsList(),
             SoundButtons(),
           ],
         ),
