@@ -1,0 +1,4 @@
+enum RaffleMode {
+  headsOrTails,
+  raffle,
+}

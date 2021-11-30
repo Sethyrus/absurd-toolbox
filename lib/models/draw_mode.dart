@@ -1,4 +1,0 @@
-enum DrawMode {
-  coinDraw,
-  raffle,
-}

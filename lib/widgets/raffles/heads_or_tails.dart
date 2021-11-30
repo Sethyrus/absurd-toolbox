@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/models/coin.dart';
 
-class CoinDraw extends StatefulWidget {
-  CoinDraw({Key? key}) : super(key: key);
-
+class HeadsOrTails extends StatefulWidget {
   @override
-  _CoinDrawState createState() => _CoinDrawState();
+  _HeadsOrTailsState createState() => _HeadsOrTailsState();
 }
 
-class _CoinDrawState extends State<CoinDraw> {
+class _HeadsOrTailsState extends State<HeadsOrTails> {
   Coin _coin = Coin();
+
+  String headOrTailImage() {
+    switch (_coin.coinValue!) {
+      case CoinValue.heads:
+        return 'lib/assets/images/coin_head.png';
+      case CoinValue.tails:
+        return 'lib/assets/images/coin_tail.png';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +32,7 @@ class _CoinDrawState extends State<CoinDraw> {
             padding: EdgeInsets.symmetric(vertical: 12),
             child: Image(
               height: 140,
-              image: AssetImage(_coin.coinValue == CoinValue.heads
-                  ? 'lib/assets/images/coin_head.png'
-                  : 'lib/assets/images/coin_tail.png'),
+              image: AssetImage(headOrTailImage()),
             ),
           ),
           ElevatedButton(

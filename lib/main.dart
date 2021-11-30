@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/models/route.dart' as own;
 import 'package:absurd_toolbox/providers/notes.dart';
-import 'package:absurd_toolbox/screens/draws_screen.dart';
+import 'package:absurd_toolbox/screens/raffles_screen.dart';
 import 'package:absurd_toolbox/screens/notes_screen.dart';
 import 'package:absurd_toolbox/material_app.dart';
 
@@ -19,7 +19,7 @@ final List<own.Route> mainNavigation = [
   own.Route(
     label: 'Sorteos',
     color: Colors.green.shade400,
-    route: DrawsScreen.routeName,
+    route: RafflesScreen.routeName,
     icon: Icons.casino,
   ),
   own.Route(

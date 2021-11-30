@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Raffle extends StatefulWidget {
-  Raffle({Key? key}) : super(key: key);
-
   @override
   _RaffleState createState() => _RaffleState();
 }
@@ -125,7 +123,9 @@ class _RaffleState extends State<Raffle> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
                               borderSide: BorderSide(
-                                  color: Colors.green.shade400, width: 2),
+                                color: Colors.green.shade400,
+                                width: 2,
+                              ),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -145,9 +145,11 @@ class _RaffleState extends State<Raffle> {
                           child: Text('Añadir'),
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                                Colors.green.shade400),
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.black),
+                              Colors.green.shade400,
+                            ),
+                            foregroundColor: MaterialStateProperty.all(
+                              Colors.black,
+                            ),
                           ),
                         ),
                       ),
@@ -189,18 +191,21 @@ class _RaffleState extends State<Raffle> {
                         (index) => Container(
                           margin: EdgeInsets.only(bottom: 6, right: 8),
                           child: InkWell(
-                            onTap: () =>
-                                setState(() => _participants.removeAt(index)),
+                            onTap: () => setState(
+                              () => _participants.removeAt(index),
+                            ),
                             child: Ink(
                               padding: EdgeInsets.symmetric(
                                 vertical: 4,
                                 horizontal: 8,
                               ),
                               decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(6)),
-                                border:
-                                    Border.all(color: Colors.green.shade400),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(6),
+                                ),
+                                border: Border.all(
+                                  color: Colors.green.shade400,
+                                ),
                               ),
                               child: Text(_participants[index]),
                             ),
