@@ -181,10 +181,11 @@ class _RecorderState extends State<Recorder> {
     });
   }
 
-  List<Widget>? _getErrors(Permissions permissions) {
+  List<Widget>? _getErrors(Permissions permissionsProvider) {
     List<String> errors = [];
 
-    if (permissions.permissions.microphone != PermissionStatus.granted)
+    // TODO comprobar si es necesario, en iOS parece funcionar el micrófono aún habiendo rechazado el permiso
+    if (permissionsProvider.permissions.microphone != PermissionStatus.granted)
       errors.add('Debes conceder acceso al micrófono');
 
     if (!_isCodecSupported)
