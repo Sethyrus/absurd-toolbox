@@ -8,22 +8,71 @@ import 'package:absurd_toolbox/screens/raffles_screen.dart';
 import 'package:absurd_toolbox/screens/note_screen.dart';
 import 'package:absurd_toolbox/screens/home_screen.dart';
 import 'package:absurd_toolbox/screens/notes_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-const test1 = "test1";
-const periodicTask = "periodicTask";
+const periodicTask = "PERIODIC_TASK";
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> _showNotificationWithNoSound(int totalExecutions) async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'silent channel id',
+    'silent channel name',
+    channelDescription: 'silent channel description',
+    playSound: false,
+    styleInformation: DefaultStyleInformation(true, true),
+  );
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+  );
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    '<b>totalExecutions:</b> $totalExecutions,',
+    '<b>silent</b> body',
+    platformChannelSpecifics,
+  );
+}
+
+/// Proceso en segundo plano.
+/// Carga un int almacenado en shared-preferences (=1 si no existe), lo muestra
+/// en una notificación  y le suma 1.
+/// Si el int > 2 se cancela el proceso.
 void backgroundDispatcher() {
-  print("Background START!!");
-
-  Workmanager().executeTask((task, inputData) {
+  Workmanager().executeTask((task, inputData) async {
     print("Ejecutada tarea: $task");
 
     switch (task) {
       case periodicTask:
         {
           print("MATCH CASE " + periodicTask);
+
+          int? totalExecutions;
+          final _sharedPreference = await SharedPreferences.getInstance();
+
+          try {
+            totalExecutions = _sharedPreference.getInt("totalExecutions");
+
+            if (totalExecutions == null) {
+              totalExecutions = 1;
+            } else {
+              totalExecutions += 1;
+            }
+
+            _showNotificationWithNoSound(totalExecutions);
+
+            if (totalExecutions > 2) Workmanager().cancelByUniqueName("1");
+
+            _sharedPreference.setInt("totalExecutions", totalExecutions);
+          } catch (err) {
+            print(err.toString());
+
+            throw Exception(err);
+          }
+
           break;
         }
       default:
@@ -35,8 +84,6 @@ void backgroundDispatcher() {
 
     return Future.value(true);
   });
-
-  print("Background END!!");
 }
 
 class MyMaterialApp extends StatelessWidget {
@@ -45,50 +92,29 @@ class MyMaterialApp extends StatelessWidget {
     Provider.of<Notes>(context, listen: false).reloadNotesFromStorage();
 
     return StatefulWrapper(
-      onInit: () {
+      onInit: () async {
+        const AndroidInitializationSettings initializationSettingsAndroid =
+            AndroidInitializationSettings('ic_notification');
+        final InitializationSettings initializationSettings =
+            InitializationSettings(
+          android: initializationSettingsAndroid,
+        );
+        await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+            onSelectNotification: (String? payload) async {
+          if (payload != null) {
+            debugPrint('notification payload: $payload');
+          }
+        });
+
         Workmanager()
             .initialize(backgroundDispatcher, isInDebugMode: true)
             .then((value) {
           Workmanager().registerPeriodicTask(
-            "2",
+            "1",
             periodicTask,
-            inputData: <String, dynamic>{
-              'string': new DateFormat('yyyy-MM-dd hh:mm').format(
-                DateTime.now(),
-              ),
-            },
-            // When no frequency is provided the default 15 minutes is set.
-            // Minimum frequency is 15 min. Android will automatically change your frequency to 15 min if you have configured a lower frequency.
             frequency: Duration(minutes: 15),
-            initialDelay: Duration(seconds: 30),
+            // initialDelay: Duration(seconds: 30),
           );
-
-          // Workmanager().registerOneOffTask(
-          //   "1",
-          //   "simpleTask",
-          // ); //Android only (see below)
-
-          // Workmanager().cancelAll();
-
-          // Workmanager()
-          //     .registerOneOffTask(
-          //   "1",
-          //   test1,
-          //   inputData: <String, dynamic>{
-          //     'int': 1,
-          //     'bool': true,
-          //     'double': 1.0,
-          //     'string': 'string',
-          //     'array': [1, 2, 3],
-          //   },
-          //   initialDelay: Duration(seconds: 20),
-          // )
-          //     .then((value) {
-          //   print("STARTED TASK " + test1);
-          // }).catchError((error, stackTrace) {
-          //   print("START TASK ERROR FOR TASK " + test1);
-          //   print(error);
-          // });
         });
       },
       child: MaterialApp(

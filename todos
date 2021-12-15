@@ -26,3 +26,4 @@ completo
 - - Cancelar proceso en función de X
 - - ¿Se puede lanzar un Workmanager de ejecución única desde el callback de
 otro?
+- - ¿Al cancelar por tag se cancela solo un proceso o todos con el mismo tag?
