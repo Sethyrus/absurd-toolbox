@@ -12,3 +12,17 @@ tilos generales
 - -o Consistirá en un Scaffold que recibirá poco más que el child, evitando
 bastante boilerplating
 -o Text?
+
+Funcionamiento en segundo plano/offline:
+- Plugin: workmanager
+- Probado funcionamiento en segundo plano de distintas formas (solo Android):
+- - Se puede establecer un proceso a ser ejecutado una única vez tras un tiempo
+determinado
+- - Se puede establecer un proceso a ser ejecutado con una frecuencia determi-
+nada (también se puede configurar el tiempo que tardará en ejecutarse por pri-
+mera vez). Comprobado que este se ejecuta aunque la app se haya cerrado por
+completo
+- Pendiente probar:
+- - Cancelar proceso en función de X
+- - ¿Se puede lanzar un Workmanager de ejecución única desde el callback de
+otro?
