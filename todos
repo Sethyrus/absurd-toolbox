@@ -15,15 +15,17 @@ bastante boilerplating
 
 Funcionamiento en segundo plano/offline:
 - Plugin: workmanager
-- Probado funcionamiento en segundo plano de distintas formas (solo Android):
+- Probado funcionamiento de las siguientes características (solo Android):
 - - Se puede establecer un proceso a ser ejecutado una única vez tras un tiempo
 determinado
 - - Se puede establecer un proceso a ser ejecutado con una frecuencia determi-
 nada (también se puede configurar el tiempo que tardará en ejecutarse por pri-
 mera vez). Comprobado que este se ejecuta aunque la app se haya cerrado por
 completo
+- - Cancelar proceso en función de X. Llamando a una función se puede cancelar
+un proceso específico o los que se quieran en función de alguna condición (por
+ejemplo si se termina la tarea para la que se inició el proceso).
 - Pendiente probar:
-- - Cancelar proceso en función de X
 - - ¿Se puede lanzar un Workmanager de ejecución única desde el callback de
 otro?
 - - ¿Al cancelar por tag se cancela solo un proceso o todos con el mismo tag?
