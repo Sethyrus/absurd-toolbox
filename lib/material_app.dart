@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
 import 'package:absurd_toolbox/widgets/stateful_wrapper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/providers/notes.dart';
@@ -26,8 +28,14 @@ Future<void> _showNotificationWithNoSound(int totalExecutions) async {
     playSound: false,
     styleInformation: DefaultStyleInformation(true, true),
   );
+  const IOSNotificationDetails iOSPlatformChannelSpecifics =
+      IOSNotificationDetails(
+    threadIdentifier: 'thread_id',
+  );
+
   const NotificationDetails platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
+    iOS: iOSPlatformChannelSpecifics,
   );
   await flutterLocalNotificationsPlugin.show(
     0,
@@ -91,14 +99,44 @@ class MyMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<Notes>(context, listen: false).reloadNotesFromStorage();
 
+    void onDidReceiveLocalNotification(
+      int id,
+      String? title,
+      String? body,
+      String? payload,
+    ) async {
+      // display a dialog with the notification details, tap ok to go to another page
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: Text(title ?? ''),
+          content: Text(body ?? ''),
+          actions: [
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
+      );
+    }
+
     return StatefulWrapper(
       onInit: () async {
         const AndroidInitializationSettings initializationSettingsAndroid =
             AndroidInitializationSettings('ic_notification');
+        final IOSInitializationSettings initializationSettingsIOS =
+            IOSInitializationSettings(
+                onDidReceiveLocalNotification: onDidReceiveLocalNotification);
         final InitializationSettings initializationSettings =
             InitializationSettings(
           android: initializationSettingsAndroid,
+          iOS: initializationSettingsIOS,
         );
+
         await flutterLocalNotificationsPlugin.initialize(initializationSettings,
             onSelectNotification: (String? payload) async {
           if (payload != null) {
@@ -106,16 +144,26 @@ class MyMaterialApp extends StatelessWidget {
           }
         });
 
-        Workmanager()
-            .initialize(backgroundDispatcher, isInDebugMode: true)
-            .then((value) {
-          Workmanager().registerPeriodicTask(
-            "1",
-            periodicTask,
-            frequency: Duration(minutes: 15),
-            // initialDelay: Duration(seconds: 30),
-          );
-        });
+        await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                IOSFlutterLocalNotificationsPlugin>()
+            ?.requestPermissions(
+              alert: true,
+              badge: true,
+              sound: true,
+            );
+
+        if (Platform.isAndroid) {
+          Workmanager()
+              .initialize(backgroundDispatcher, isInDebugMode: true)
+              .then((value) {
+            Workmanager().registerPeriodicTask(
+              "1",
+              periodicTask,
+              frequency: Duration(minutes: 15),
+            );
+          });
+        } else if (Platform.isIOS) {}
       },
       child: MaterialApp(
         initialRoute: '/',

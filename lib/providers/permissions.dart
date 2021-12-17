@@ -9,6 +9,7 @@ class Permissions with ChangeNotifier {
     return AppPermissions(
       storage: _permissions.storage,
       microphone: _permissions.microphone,
+      notifications: _permissions.notifications,
     );
   }
 
@@ -25,6 +26,11 @@ class Permissions with ChangeNotifier {
       case PermissionName.microphone:
         {
           _permissions.microphone = status;
+          break;
+        }
+      case PermissionName.notifications:
+        {
+          _permissions.notifications = status;
           break;
         }
     }
