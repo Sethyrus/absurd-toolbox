@@ -68,7 +68,7 @@ class Layout extends StatelessWidget {
         value: SystemUiOverlayStyle(
           statusBarColor: statusBarColor,
         ),
-        child: content,
+        child: SafeArea(child: content),
       ),
       floatingActionButton: fab,
     );

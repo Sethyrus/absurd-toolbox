@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/providers/auth.dart';
 import 'package:absurd_toolbox/providers/permissions.dart';
 import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
@@ -50,8 +51,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<Notes>(create: (_) => Notes()),
         ChangeNotifierProvider<Permissions>(create: (_) => Permissions()),
+        ChangeNotifierProvider<Auth>(create: (_) => Auth()),
       ],
-      // create: (ctx) => Notes(),
       child: GestureDetector(
         // Elimina el foco de cualquier input al pulsar sobre un espacio libre
         onTap: () => FocusScope.of(context).requestFocus(_focusNode),

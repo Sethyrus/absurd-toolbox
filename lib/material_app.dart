@@ -1,3 +1,5 @@
+import 'package:absurd_toolbox/providers/auth.dart';
+import 'package:absurd_toolbox/screens/auth_screen.dart';
 import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,19 +15,22 @@ class MyMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<Notes>(context, listen: false).reloadNotesFromStorage();
 
-    return MaterialApp(
-      initialRoute: '/',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Consumer<Auth>(
+      builder: (ctx, auth, _) => MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: AuthScreen.routeName,
+        routes: {
+          AuthScreen.routeName: (context) => AuthScreen(),
+          '/': (context) => HomeScreen(),
+          NotesScreen.routeName: (context) => NotesScreen(),
+          NoteScreen.routeName: (context) => NoteScreen(),
+          RafflesScreen.routeName: (context) => RafflesScreen(),
+          BarcodeScannerScreen.routeName: (context) => BarcodeScannerScreen(),
+          SoundRecorderScreen.routeName: (context) => SoundRecorderScreen(),
+        },
       ),
-      routes: {
-        '/': (context) => HomeScreen(),
-        NotesScreen.routeName: (context) => NotesScreen(),
-        NoteScreen.routeName: (context) => NoteScreen(),
-        RafflesScreen.routeName: (context) => RafflesScreen(),
-        BarcodeScannerScreen.routeName: (context) => BarcodeScannerScreen(),
-        SoundRecorderScreen.routeName: (context) => SoundRecorderScreen(),
-      },
     );
   }
 }
