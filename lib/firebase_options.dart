@@ -61,7 +61,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '587098651014',
     projectId: 'absurdtoolbox',
     storageBucket: 'absurdtoolbox.appspot.com',
-    iosClientId: '587098651014-cq4oajjglu6961klm1nqb6act2lahus7.apps.googleusercontent.com',
-    iosBundleId: 'com.sethbase.absurd-toolbox',
+    iosClientId:
+        '587098651014-cq4oajjglu6961klm1nqb6act2lahus7.apps.googleusercontent.com',
+    iosBundleId: 'com.sethbase.absurd_toolbox',
   );
 }

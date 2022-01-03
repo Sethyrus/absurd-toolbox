@@ -1,4 +1,4 @@
-package com.sethbase.absurd_toolbox
+package com.sethbase.absurdtoolbox
 
 import io.flutter.embedding.android.FlutterActivity
 

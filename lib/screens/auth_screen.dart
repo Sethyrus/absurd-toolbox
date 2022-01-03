@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:absurd_toolbox/helpers.dart';
-import 'package:absurd_toolbox/providers/auth.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/widgets/auth/auth_input.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import 'package:provider/provider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 enum AuthMode {
   Login,
@@ -36,7 +34,36 @@ class _AuthScreenState extends State<AuthScreen> {
     } else {}
     // _form.currentState!.save();
 
-    Provider.of<Auth>(context, listen: false).setAuth();
+    // Provider.of<Auth>(context, listen: false).setAuth();
+  }
+
+  Future<UserCredential?> signInWithGoogle() async {
+    print("Step 1");
+    // Trigger the authentication flow
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      print("Step 2");
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+      print("Step 3");
+      print(googleAuth?.accessToken);
+      print(googleAuth?.idToken);
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      print("Step 4");
+
+      // Once signed in, return the UserCredential
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print('ERROR!!');
+      print(e);
+    }
   }
 
   @override
@@ -180,7 +207,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     children: [
                       SignInButton(
                         Buttons.Google,
-                        onPressed: () {},
+                        onPressed: signInWithGoogle,
                       ),
                       // SignInButton(
                       //   Buttons.Facebook,

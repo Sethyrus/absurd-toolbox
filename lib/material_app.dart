@@ -10,11 +10,29 @@ import 'package:absurd_toolbox/screens/note_screen.dart';
 import 'package:absurd_toolbox/screens/home_screen.dart';
 import 'package:absurd_toolbox/screens/notes_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
 
 class MyMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<Notes>(context, listen: false).reloadNotesFromStorage();
+
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      Provider.of<Auth>(context, listen: false).setAuth(user);
+
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print(
+            'User is signed in! user data (email, displayName, phoneNumber, photoUrl):');
+        print(user.email);
+        print(user.displayName);
+        print(user.phoneNumber);
+        print(user.photoURL);
+      }
+    });
 
     return Consumer<Auth>(
       builder: (ctx, auth, _) => MaterialApp(

@@ -1,6 +1,6 @@
+import 'package:absurd_toolbox/routes.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:absurd_toolbox/main.dart';
 import 'package:absurd_toolbox/widgets/home/home_button.dart';
 import 'package:absurd_toolbox/widgets/home/home_logo.dart';
 
@@ -20,8 +20,8 @@ class HomeScreen extends StatelessWidget {
                 padding: EdgeInsets.all(4),
                 crossAxisCount: 4,
                 children: List.generate(
-                  mainNavigation.length,
-                  (index) => HomeButton(route: mainNavigation[index]),
+                  appRoutes.length,
+                  (index) => HomeButton(route: appRoutes[index]),
                 ),
               ),
             ),

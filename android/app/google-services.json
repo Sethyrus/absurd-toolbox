@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "587098651014",
+    "project_id": "absurdtoolbox",
+    "storage_bucket": "absurdtoolbox.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587098651014:android:c3329d84b1cb6543589407",
+        "android_client_info": {
+          "package_name": "com.sethbase.absurdtoolbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587098651014-hlig365ou5r847ggq6cg3t5k01t3jbbf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sethbase.absurdtoolbox",
+            "certificate_hash": "af6461df8b8cef1a71d4be16f3073d064b6d4985"
+          }
+        },
+        {
+          "client_id": "587098651014-96qip9rkg4lj6pt6j312ih49hc8bkdl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOSTdly-SMpt97m4s-fMVa0Z1he8bptx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587098651014-96qip9rkg4lj6pt6j312ih49hc8bkdl6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "587098651014-cq4oajjglu6961klm1nqb6act2lahus7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sethbase.absurd-toolbox"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
