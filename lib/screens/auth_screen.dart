@@ -12,6 +12,10 @@ enum AuthMode {
   Register,
 }
 
+enum SocialLoginMode {
+  Google,
+}
+
 class AuthScreen extends StatefulWidget {
   static const String routeName = '/auth';
 
@@ -37,32 +41,32 @@ class _AuthScreenState extends State<AuthScreen> {
     // Provider.of<Auth>(context, listen: false).setAuth();
   }
 
-  Future<UserCredential?> signInWithGoogle() async {
-    print("Step 1");
-    // Trigger the authentication flow
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      print("Step 2");
+  void socialSignIn(SocialLoginMode loginMode) async {
+    switch (loginMode) {
+      case SocialLoginMode.Google:
+        {
+          GoogleSignIn().signIn().then((googleUser) {
+            googleUser?.authentication.then((googleAuth) {
+              final credential = GoogleAuthProvider.credential(
+                accessToken: googleAuth.accessToken,
+                idToken: googleAuth.idToken,
+              );
 
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
-      print("Step 3");
-      print(googleAuth?.accessToken);
-      print(googleAuth?.idToken);
-
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
-      print("Step 4");
-
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } catch (e) {
-      print('ERROR!!');
-      print(e);
+              FirebaseAuth.instance.signInWithCredential(credential).catchError(
+                (err) {
+                  print("signInWithCredential error");
+                  print(err);
+                },
+              );
+            }).catchError((err) {
+              print("googleUser?.authentication error");
+              print(err);
+            });
+          }).catchError((err) {
+            print("GoogleSignIn().signIn() error");
+            print(err);
+          });
+        }
     }
   }
 
@@ -207,24 +211,8 @@ class _AuthScreenState extends State<AuthScreen> {
                     children: [
                       SignInButton(
                         Buttons.Google,
-                        onPressed: signInWithGoogle,
+                        onPressed: () => socialSignIn(SocialLoginMode.Google),
                       ),
-                      // SignInButton(
-                      //   Buttons.Facebook,
-                      //   onPressed: () {},
-                      // ),
-                      // SignInButton(
-                      //   Buttons.GitHub,
-                      //   onPressed: () {},
-                      // ),
-                      // SignInButton(
-                      //   Buttons.Reddit,
-                      //   onPressed: () {},
-                      // ),
-                      // SignInButton(
-                      //   Buttons.Twitter,
-                      //   onPressed: () {},
-                      // ),
                     ],
                   ),
                 ),
