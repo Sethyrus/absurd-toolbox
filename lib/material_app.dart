@@ -22,17 +22,6 @@ class MyMaterialApp extends StatelessWidget {
 
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       Provider.of<Auth>(context, listen: false).setAuth(user);
-
-      if (user == null) {
-        print('User is currently signed out!');
-      } else {
-        print(
-            'User is signed in! user data (email, displayName, phoneNumber, photoUrl):');
-        print(user.email);
-        print(user.displayName);
-        print(user.phoneNumber);
-        print(user.photoURL);
-      }
     });
 
     return Consumer<Auth>(
