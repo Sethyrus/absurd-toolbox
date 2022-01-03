@@ -3,6 +3,7 @@ import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/widgets/auth/auth_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -31,14 +32,66 @@ class _AuthScreenState extends State<AuthScreen> {
   };
   final _passwordController = TextEditingController();
   final _form = GlobalKey<FormState>();
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
   void onSubmit() {
-    print("Submit");
-    if (_authMode == AuthMode.Login) {
-    } else {}
-    // _form.currentState!.save();
+    setState(() {
+      autovalidateMode = AutovalidateMode.always;
+    });
 
-    // Provider.of<Auth>(context, listen: false).setAuth();
+    final isFormValid = _form.currentState!.validate();
+
+    if (isFormValid) {
+      _form.currentState!.save();
+
+      if (_authMode == AuthMode.Login) {
+        emailSignIn();
+      } else {
+        register();
+      }
+    }
+  }
+
+  // TODO mostrar toast en caso de errores
+  void register() async {
+    EasyLoading.show();
+
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _authData['email'] ?? '',
+        password: _authData['password'] ?? '',
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    EasyLoading.dismiss();
+  }
+
+  // TODO mostrar toast en caso de errores
+  void emailSignIn() async {
+    EasyLoading.show();
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _authData['email'] ?? '',
+        password: _authData['password'] ?? '',
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+
+    EasyLoading.dismiss();
   }
 
   void socialSignIn(SocialLoginMode loginMode) async {
@@ -68,6 +121,12 @@ class _AuthScreenState extends State<AuthScreen> {
           });
         }
     }
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -122,10 +181,14 @@ class _AuthScreenState extends State<AuthScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 AuthInput(
+                                  autovalidateMode: autovalidateMode,
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (value) {
+                                    print("VALIDATE EMAIL");
+                                    print(value);
                                     if (value == null ||
-                                        value.isEmpty && !isEmailValid(value)) {
+                                        value.isEmpty ||
+                                        !isEmailValid(value)) {
                                       return "El e-mail no tiene un formato válido";
                                     }
                                   },
@@ -136,6 +199,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   labelText: "E-mail",
                                 ),
                                 AuthInput(
+                                  autovalidateMode: autovalidateMode,
                                   obscureText: true,
                                   validator: (value) {
                                     if (value == null || value.length < 6) {
@@ -144,13 +208,14 @@ class _AuthScreenState extends State<AuthScreen> {
                                   },
                                   controller: _passwordController,
                                   onSaved: (value) {
-                                    _authData['email'] = value ?? '';
+                                    _authData['password'] = value ?? '';
                                   },
                                   prefixIcon: Icons.lock,
                                   labelText: "Contraseña",
                                 ),
                                 if (_authMode == AuthMode.Register)
                                   AuthInput(
+                                    autovalidateMode: autovalidateMode,
                                     obscureText: true,
                                     validator: _authMode == AuthMode.Register
                                         ? (value) {
@@ -160,9 +225,6 @@ class _AuthScreenState extends State<AuthScreen> {
                                             }
                                           }
                                         : null,
-                                    onSaved: (value) {
-                                      _authData['email'] = value ?? '';
-                                    },
                                     prefixIcon: Icons.lock,
                                     labelText: "Confirmar contraseña",
                                   ),

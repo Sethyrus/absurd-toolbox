@@ -8,6 +8,7 @@ class AuthInput extends StatelessWidget {
   final TextEditingController? controller;
   final IconData? prefixIcon;
   final String? labelText;
+  final AutovalidateMode? autovalidateMode;
 
   AuthInput({
     this.keyboardType,
@@ -17,11 +18,13 @@ class AuthInput extends StatelessWidget {
     this.controller,
     this.prefixIcon,
     this.labelText,
+    this.autovalidateMode,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autovalidateMode: autovalidateMode,
       decoration: InputDecoration(
         prefixIcon: prefixIcon != null
             ? Icon(

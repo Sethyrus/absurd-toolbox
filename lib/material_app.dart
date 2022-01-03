@@ -3,6 +3,7 @@ import 'package:absurd_toolbox/screens/auth_screen.dart';
 import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/providers/notes.dart';
 import 'package:absurd_toolbox/screens/raffles_screen.dart';
@@ -36,6 +37,7 @@ class MyMaterialApp extends StatelessWidget {
 
     return Consumer<Auth>(
       builder: (ctx, auth, _) => MaterialApp(
+        builder: EasyLoading.init(),
         theme: ThemeData(
           primarySwatch: Colors.blue,
           fontFamily: GoogleFonts.openSans.toString(),

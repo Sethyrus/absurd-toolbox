@@ -1,16 +1,3 @@
-[ ] Optimizar
--o Mejorar estructura de los layouts, regularizando y creando componentes y es-
-tilos generales
-
 [ ] El toast usado debe cambiarse por un mensaje flotante
 
-[ ] Crear widgets con estilos específicos a reutilizar en la app
--x Layout
--o Button
-- -o Definir modos Outline, Flat, Raised, y Text configurables por props
-- -o Recibirá un título y colores específicos para StatusBar, AppBar, etc
-- -o Consistirá en un Scaffold que recibirá poco más que el child, evitando
-bastante boilerplating
--o Text?
-
-examples: https://careerfoundry.com/en/blog/ui-design/best-login-screen-examples/
+[ ] Buscar una mejor alternativa para el loader
