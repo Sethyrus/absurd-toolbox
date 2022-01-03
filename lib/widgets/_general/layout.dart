@@ -1,4 +1,4 @@
-import 'package:absurd_toolbox/widgets/empty_app_bar.dart';
+import 'package:absurd_toolbox/widgets/_general/empty_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -15,6 +15,7 @@ class Layout extends StatelessWidget {
   final Function(String)? onStatusBarActionSelected;
   final List<Widget>? tabBarItems;
   final Color? tabBarIndicatorColor;
+  final bool? avoidSafeArea;
 
   Layout({
     required this.statusBarColor,
@@ -27,6 +28,7 @@ class Layout extends StatelessWidget {
     this.onStatusBarActionSelected,
     this.tabBarItems,
     this.tabBarIndicatorColor,
+    this.avoidSafeArea,
   });
 
   @override
@@ -68,7 +70,7 @@ class Layout extends StatelessWidget {
         value: SystemUiOverlayStyle(
           statusBarColor: statusBarColor,
         ),
-        child: SafeArea(child: content),
+        child: avoidSafeArea == true ? content : SafeArea(child: content),
       ),
       floatingActionButton: fab,
     );
