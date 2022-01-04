@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
+enum ThemeStyle {
+  Light,
+  Dark,
+}
+
 class Layout extends StatelessWidget {
   final Color statusBarColor;
   final Widget content;
@@ -10,6 +15,7 @@ class Layout extends StatelessWidget {
   final bool? showAppBar;
   final String? title;
   final Color? themeColor;
+  final ThemeStyle? themeStyle;
   final Widget? fab;
   final List<PopupMenuEntry<String>>? statusBarActions;
   final Function(String)? onStatusBarActionSelected;
@@ -22,6 +28,7 @@ class Layout extends StatelessWidget {
     required this.content,
     this.title,
     this.themeColor,
+    this.themeStyle,
     this.fab,
     this.showAppBar,
     this.statusBarActions,
@@ -38,13 +45,21 @@ class Layout extends StatelessWidget {
           ? AppBar(
               title: Text(
                 title ?? '',
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                  color: themeStyle == ThemeStyle.Light
+                      ? Colors.white
+                      : Colors.black,
+                ),
               ),
               systemOverlayStyle: SystemUiOverlayStyle(
                 statusBarColor: statusBarColor,
               ),
               backgroundColor: themeColor,
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: IconThemeData(
+                color: themeStyle == ThemeStyle.Light
+                    ? Colors.white
+                    : Colors.black,
+              ),
               actions: statusBarActions != null
                   ? [
                       PopupMenuButton<String>(
