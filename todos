@@ -1,3 +1,6 @@
-[ ] El toast usado debe cambiarse por un mensaje flotante
+# TODO
+- [ ] El toast usado debe cambiarse por un mensaje flotante
+- [ ] Buscar una mejor alternativa para el loader
 
-[ ] Buscar una mejor alternativa para el loader
+# Resources:
+- https://docs.flutter.dev/cookbook/effects/nested-nav

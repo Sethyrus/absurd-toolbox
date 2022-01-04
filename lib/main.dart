@@ -22,7 +22,6 @@ void loaderConfig() {
     ..maskColor = Colors.black
     ..maskType = EasyLoadingMaskType.black
     ..userInteractions = true;
-  // ..customAnimation = CustomAnimation();
 }
 
 void main() async {
