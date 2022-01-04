@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:absurd_toolbox/models/route.dart' as own;
 
 class HomeButton extends StatelessWidget {
-  final own.Route route;
+  final String label;
+  final Color color;
+  final String route;
+  final IconData icon;
 
-  HomeButton({required this.route});
+  HomeButton({
+    required this.label,
+    required this.color,
+    required this.route,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +19,7 @@ class HomeButton extends StatelessWidget {
       padding: EdgeInsets.all(4),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed(route.route);
+          Navigator.of(context).pushNamed(route);
         },
         borderRadius: BorderRadius.all(Radius.circular(16)),
         splashColor: Colors.grey,
@@ -20,7 +27,7 @@ class HomeButton extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(16)),
-            color: route.color,
+            color: color,
             border: Border.all(
               color: Colors.black12,
               width: 1,
@@ -30,11 +37,11 @@ class HomeButton extends StatelessWidget {
           child: Column(
             children: [
               Icon(
-                route.icon,
+                icon,
                 size: 40,
               ),
               Text(
-                route.label,
+                label,
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,

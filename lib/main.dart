@@ -34,7 +34,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // Dummy focusNode
+  // Dummy focusNode al que hacer foco para quitarlo de otros
   final FocusNode _focusNode = new FocusNode();
 
   @override
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
       child: GestureDetector(
         // Elimina el foco de cualquier input al pulsar sobre un espacio libre
         onTap: () => FocusScope.of(context).requestFocus(_focusNode),
-        child: MyMaterialApp(),
+        child: App(),
       ),
     );
   }

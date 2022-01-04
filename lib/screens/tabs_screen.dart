@@ -1,11 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:absurd_toolbox/providers/notes.dart';
+import 'package:absurd_toolbox/navigator.dart';
 import 'package:flutter/material.dart';
-import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
-import 'package:absurd_toolbox/screens/home_screen.dart';
-import 'package:absurd_toolbox/screens/note_screen.dart';
-import 'package:absurd_toolbox/screens/notes_screen.dart';
-import 'package:absurd_toolbox/screens/raffles_screen.dart';
-import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
+import 'package:provider/provider.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);
@@ -17,33 +13,11 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _currentIndex = 0;
 
-  final _homeNavigatorKey = GlobalKey<NavigatorState>();
-  final _profileNavigatorKey = GlobalKey<NavigatorState>();
-  final _settingsNavigatorKey = GlobalKey<NavigatorState>();
-
-  Route _onGenerateHomeRoute(RouteSettings settings) {
-    late Widget page;
-
-    switch (settings.name) {
-      case '/':
-        page = HomeScreen();
-        break;
-      case NotesScreen.routeName:
-        page = NotesScreen();
-        break;
-      case NoteScreen.routeName:
-        page = NoteScreen();
-        break;
-      case RafflesScreen.routeName:
-        page = RafflesScreen();
-        break;
-      case BarcodeScannerScreen.routeName:
-        page = BarcodeScannerScreen();
-        break;
-      case SoundRecorderScreen.routeName:
-        page = SoundRecorderScreen();
-        break;
-    }
+  Route _onGenerateRoute(RouteSettings settings, index) {
+    final Widget page = appNavigator[index]
+        .routes
+        .firstWhere((route) => route.route == settings.name)
+        .screen;
 
     return MaterialPageRoute<dynamic>(
       builder: (context) {
@@ -53,89 +27,41 @@ class _TabsScreenState extends State<TabsScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => Future<bool>.value(
-        // TODO el maybePop debe lanzarse solo sobre el navigator activo
-        !await _homeNavigatorKey.currentState!.maybePop(),
-      ),
-      child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: <Widget>[
-            Navigator(
-              key: _homeNavigatorKey,
-              onGenerateRoute: _onGenerateHomeRoute,
-            ),
-            Navigator(
-              key: _profileNavigatorKey,
-              onGenerateRoute: (route) => MaterialPageRoute(
-                settings: route,
-                builder: (context) => Scaffold(
-                  body: Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        FirebaseAuth.instance.signOut();
-                      },
-                      child: Text("Cerrar sesión"),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Navigator(
-              key: _settingsNavigatorKey,
-              onGenerateRoute: (route) => MaterialPageRoute(
-                settings: route,
-                builder: (context) => const Scaffold(
-                  body: Center(
-                    child: Text("Ajustes"),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex,
-          onTap: (val) => _onTap(val, context),
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Toolbox',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Perfil',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Ajustes',
-            ),
-          ],
-        ),
-      ),
-    );
+  /// Al retroceder (usando la vía nativa del dispositivo, como swipe lateral o
+  /// botón de retroceso) se lanza esta función. En esta primero se comprueba si
+  /// en el tab activo ya se estaba en la página inicial: si no es así se retro-
+  /// cede de forma normal, pero si ya se estaba se lanza una nueva comprobación
+  /// de si el tab activo era distinto de 0 (primer tab, "home"), caso en que se
+  /// navega a este tab 0. Si el tab activo era 0 se retrocede de forma normal,
+  /// que por defecto debería cerrar la aplicación al no quedar elementos en el
+  /// stack de navegación
+  Future<bool> _onWillPop() async {
+    late GlobalKey<NavigatorState> navigatorKey =
+        appNavigator[_currentIndex].navigator;
+
+    final hasPopped = await navigatorKey.currentState!.maybePop();
+
+    if (!hasPopped && _currentIndex != 0) {
+      setState(() {
+        _currentIndex = 0;
+      });
+      return Future<bool>.value(false);
+    } else {
+      return Future<bool>.value(!hasPopped);
+    }
   }
 
-  void _onTap(int val, BuildContext context) {
+  /// Al pulsar sobre un tab, primero se comprueba si es el tab activo. Si lo
+  /// es, se retrocede en el Navigator correspondiente hasta su página inicial;
+  /// si no, se establece el tab seleccionado como tab activo
+  void _onTabNavigation(int val, BuildContext context) {
+    print('_onTabNavigation!!!');
+    print(val);
+
     if (_currentIndex == val) {
-      switch (val) {
-        case 0:
-          _homeNavigatorKey.currentState!.popUntil((route) => route.isFirst);
-          break;
-        case 1:
-          _profileNavigatorKey.currentState!.popUntil((route) => route.isFirst);
-          break;
-        case 2:
-          _settingsNavigatorKey.currentState!
-              .popUntil((route) => route.isFirst);
-          break;
-        default:
-      }
+      appNavigator[_currentIndex].navigator.currentState!.popUntil(
+            (route) => route.isFirst,
+          );
     } else {
       if (mounted) {
         setState(() {
@@ -143,5 +69,42 @@ class _TabsScreenState extends State<TabsScreen> {
         });
       }
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Provider.of<Notes>(context, listen: false).reloadNotesFromStorage();
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: IndexedStack(
+          index: _currentIndex,
+          children: List<Widget>.generate(
+            appNavigator.length,
+            (index) => Navigator(
+              key: appNavigator[index].navigator,
+              onGenerateRoute: (RouteSettings settings) => _onGenerateRoute(
+                settings,
+                index,
+              ),
+            ),
+          ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _currentIndex,
+          onTap: (val) => _onTabNavigation(val, context),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          items: List<BottomNavigationBarItem>.generate(
+            appNavigator.length,
+            (index) => BottomNavigationBarItem(
+              icon: appNavigator[index].icon,
+              label: appNavigator[index].label,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
