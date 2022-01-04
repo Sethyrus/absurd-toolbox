@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -7,8 +8,12 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return Layout(
+      statusBarColor: Colors.indigo.shade700,
+      themeColor: Colors.indigo.shade400,
+      title: "Editar perfil",
+      showAppBar: true,
+      content: Center(
         child: Text("Editar perfil"),
       ),
     );

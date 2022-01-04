@@ -185,7 +185,7 @@ class _NoteScreenState extends State<NoteScreen> {
         content: Form(
           key: _form,
           child: Container(
-            color: Colors.yellow[100],
+            color: Colors.yellow.shade100,
             height: double.infinity,
             child: Column(
               children: [

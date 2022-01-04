@@ -7,7 +7,7 @@ class HomeLogo extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 32),
       decoration: BoxDecoration(
-        color: Colors.indigo[400],
+        color: Colors.indigo.shade400,
         border: Border(
           bottom: BorderSide(
             color: Colors.black,
@@ -21,14 +21,14 @@ class HomeLogo extends StatelessWidget {
           Icon(
             Icons.construction,
             size: 64,
-            color: Colors.yellow[600],
+            color: Colors.yellow.shade600,
           ),
           Text(
             'Absurd Toolbox',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.yellow[600],
+              color: Colors.yellow.shade600,
             ),
           ),
         ],
