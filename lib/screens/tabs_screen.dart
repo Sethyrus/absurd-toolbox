@@ -55,9 +55,6 @@ class _TabsScreenState extends State<TabsScreen> {
   /// es, se retrocede en el Navigator correspondiente hasta su página inicial;
   /// si no, se establece el tab seleccionado como tab activo
   void _onTabNavigation(int val, BuildContext context) {
-    print('_onTabNavigation!!!');
-    print(val);
-
     if (_currentIndex == val) {
       appNavigator[_currentIndex].navigator.currentState!.popUntil(
             (route) => route.isFirst,
