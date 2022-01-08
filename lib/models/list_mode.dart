@@ -1,4 +1,4 @@
 enum ListMode {
-  normal,
-  selection,
+  Normal,
+  Selection,
 }

@@ -70,7 +70,8 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<Notes>(context, listen: false).reloadNotesFromStorage();
+    final notesProvider = Provider.of<Notes>(context, listen: false);
+    notesProvider.reloadNotes();
 
     return WillPopScope(
       onWillPop: _onWillPop,

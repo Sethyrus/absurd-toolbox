@@ -31,7 +31,7 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
           permissionsProvider.permissions.microphone ==
               PermissionStatus.denied) {
         permissionsProvider.setPermission(
-          PermissionName.microphone,
+          PermissionName.Microphone,
           await Permission.microphone.request(),
         );
       }

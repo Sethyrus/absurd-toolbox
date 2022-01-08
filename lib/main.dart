@@ -43,7 +43,13 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<Auth>(create: (_) => Auth()),
         ChangeNotifierProvider<Permissions>(create: (_) => Permissions()),
-        ChangeNotifierProvider<Notes>(create: (_) => Notes()),
+        ChangeNotifierProxyProvider<Auth, Notes>(
+          create: (BuildContext context) => Notes(Provider.of<Auth>(
+            context,
+            listen: false,
+          )),
+          update: (context, auth, notes) => Notes(auth),
+        ),
       ],
       child: GestureDetector(
         // Elimina el foco de cualquier input al pulsar sobre un espacio libre

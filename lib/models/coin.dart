@@ -1,6 +1,6 @@
 enum CoinValue {
-  heads,
-  tails,
+  Heads,
+  Tails,
 }
 
 class Coin {
@@ -10,7 +10,7 @@ class Coin {
     if (value != null) {
       coinValue = value;
     } else {
-      List<CoinValue> coinValues = [CoinValue.heads, CoinValue.tails];
+      List<CoinValue> coinValues = [CoinValue.Heads, CoinValue.Tails];
       coinValues.shuffle();
       coinValue = coinValues[0];
     }

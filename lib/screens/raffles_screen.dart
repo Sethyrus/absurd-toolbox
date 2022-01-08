@@ -12,22 +12,22 @@ class RafflesScreen extends StatefulWidget {
 }
 
 class _RafflesScreenState extends State<RafflesScreen> {
-  RaffleMode raffleMode = RaffleMode.headsOrTails;
+  RaffleMode raffleMode = RaffleMode.HeadsOrTails;
 
   String raffleTitle() {
     switch (raffleMode) {
-      case RaffleMode.headsOrTails:
+      case RaffleMode.HeadsOrTails:
         return "Cara o cruz";
-      case RaffleMode.raffle:
+      case RaffleMode.Raffle:
         return "Sorteo";
     }
   }
 
   Widget raffleWidget() {
     switch (raffleMode) {
-      case RaffleMode.headsOrTails:
+      case RaffleMode.HeadsOrTails:
         return HeadsOrTails();
-      case RaffleMode.raffle:
+      case RaffleMode.Raffle:
         return Raffle();
     }
   }
@@ -47,11 +47,11 @@ class _RafflesScreenState extends State<RafflesScreen> {
               items: [
                 DropdownMenuItem(
                   child: Text("Cara o cruz"),
-                  value: RaffleMode.headsOrTails,
+                  value: RaffleMode.HeadsOrTails,
                 ),
                 DropdownMenuItem(
                   child: Text("Sorteo"),
-                  value: RaffleMode.raffle,
+                  value: RaffleMode.Raffle,
                 ),
               ],
               onChanged: (RaffleMode? value) {

@@ -1,13 +1,17 @@
-import 'dart:convert';
-import 'dart:io';
+import 'package:absurd_toolbox/providers/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/models/note.dart';
-import 'package:path_provider/path_provider.dart';
 
 class Notes with ChangeNotifier {
+  final Auth _authProvider;
   List<Note> _items = [];
   bool _loading = false;
   bool _loaded = false;
+  CollectionReference _notesCollection =
+      FirebaseFirestore.instance.collection('notes');
+
+  Notes(this._authProvider);
 
   List<Note> get items {
     return [..._items];
@@ -16,101 +20,92 @@ class Notes with ChangeNotifier {
   void addNote(Note note) async {
     _items.add(note);
 
-    final storedNotes = File(
-      '${(await getApplicationDocumentsDirectory()).path}/notes.json',
-    );
-
-    if (storedNotes.existsSync())
-      storedNotes.writeAsString(
-        json.encode(
-          _items.map((e) => e.toJson()).toList(),
-        ),
-      );
-
-    notifyListeners();
+    if (_authProvider.userData != null) {
+      _notesCollection.doc(_authProvider.userData).collection("items").add({
+        'title': note.title,
+        'content': note.content,
+        'tags': note.tags,
+        'pinned': note.pinned,
+        'archived': note.archived,
+        'createdAt': note.createdAt.toIso8601String(),
+        'updatedAt': note.createdAt.toIso8601String(),
+      }).then((value) {
+        reloadNotes(force: true);
+      }).catchError((error) {
+        print("Failed to add note: $error");
+      });
+    }
   }
 
   void updateNote(Note note) async {
-    _items.asMap().forEach(
-      (i, n) {
-        if (note.id == n.id) {
-          _items[i] = note;
-        }
-      },
-    );
-
-    final storedNotes = File(
-      '${(await getApplicationDocumentsDirectory()).path}/notes.json',
-    );
-
-    if (storedNotes.existsSync())
-      storedNotes.writeAsString(
-        json.encode(
-          _items.map((e) => e.toJson()).toList(),
-        ),
-      );
-
-    notifyListeners();
+    _notesCollection
+        .doc(_authProvider.userData)
+        .collection("items")
+        .doc(note.id)
+        .update(note.toJson()..remove("id"))
+        .then((value) {
+      reloadNotes(force: true);
+    }).catchError((error) {
+      print("Failed to update note: $error");
+    });
   }
 
   void deleteNote(Note note) async {
-    _items.removeWhere((originalNote) => originalNote.id == note.id);
-
-    final storedNotes = File(
-      '${(await getApplicationDocumentsDirectory()).path}/notes.json',
-    );
-
-    if (storedNotes.existsSync())
-      storedNotes.writeAsString(
-        json.encode(
-          _items.map((e) => e.toJson()).toList(),
-        ),
-      );
-
-    notifyListeners();
+    _notesCollection
+        .doc(_authProvider.userData)
+        .collection("items")
+        .doc(note.id)
+        .delete()
+        .then((value) {
+      reloadNotes(force: true);
+    }).catchError((error) {
+      print("Failed to delete note: $error");
+    });
   }
 
   void deleteNotes(List<String> noteIds) async {
+    List<String> deletedNotes = [];
+
     noteIds.forEach((id) {
-      _items.removeWhere((originalNote) => originalNote.id == id);
+      _notesCollection
+          .doc(_authProvider.userData)
+          .collection("items")
+          .doc(id)
+          .delete()
+          .then((value) {
+        deletedNotes.add(id);
+        if (noteIds.length == deletedNotes.length) {
+          reloadNotes(force: true);
+        }
+      }).catchError((error) {
+        print("Failed to delete note: $error");
+      });
     });
-
-    final storedNotes = File(
-      '${(await getApplicationDocumentsDirectory()).path}/notes.json',
-    );
-
-    if (storedNotes.existsSync())
-      storedNotes.writeAsString(
-        json.encode(
-          _items.map((e) => e.toJson()).toList(),
-        ),
-      );
-
-    notifyListeners();
   }
 
-  void reloadNotesFromStorage() async {
-    if (!_loaded && !_loading) {
+  void reloadNotes({force = false}) {
+    if ((!_loaded && !_loading) || force) {
       _loading = true;
 
       List<Note> notes = [];
 
-      final storedNotes = File(
-        '${(await getApplicationDocumentsDirectory()).path}/notes.json',
+      _notesCollection
+          .doc(_authProvider.userData)
+          .collection('items')
+          .get()
+          .then(
+        (value) {
+          notes = value.docs
+              .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
+              .toList();
+
+          _items = notes;
+          _loaded = true;
+          _loading = false;
+
+          notifyListeners();
+        },
       );
-
-      if (storedNotes.existsSync()) {
-        json.decode(storedNotes.readAsStringSync()).forEach((storedNote) {
-          notes.add(Note.fromJson(storedNote));
-        });
-      } else {
-        storedNotes.writeAsString(json.encode([]));
-      }
-
-      _items = notes;
-      _loaded = true;
-
-      notifyListeners();
     }
   }
 

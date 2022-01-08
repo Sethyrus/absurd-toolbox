@@ -1,7 +1,0 @@
-# TODO
-- [ ] El toast usado debe cambiarse por un mensaje flotante
-- [ ] Buscar una mejor alternativa para el loader
-- [ ] Añadir comentarios
-
-# Resources:
-- https://docs.flutter.dev/cookbook/effects/nested-nav

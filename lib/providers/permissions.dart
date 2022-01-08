@@ -17,12 +17,12 @@ class Permissions with ChangeNotifier {
     PermissionStatus status,
   ) {
     switch (name) {
-      case PermissionName.storage:
+      case PermissionName.Storage:
         {
           _permissions.storage = status;
           break;
         }
-      case PermissionName.microphone:
+      case PermissionName.Microphone:
         {
           _permissions.microphone = status;
           break;

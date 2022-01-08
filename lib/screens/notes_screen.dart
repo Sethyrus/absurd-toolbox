@@ -15,13 +15,13 @@ class NotesScreen extends StatefulWidget {
 
 class _NotesScreenState extends State<NotesScreen> {
   // Controla si se está en modo de visualización normal o selección
-  ListMode listMode = ListMode.normal;
+  ListMode listMode = ListMode.Normal;
   // Notas seleccionadas (en modo selección)
   List<String> selectedNotes = [];
 
   // Acción al pulsar sobre una nota
   void onNoteTap(String id) {
-    if (listMode == ListMode.normal) {
+    if (listMode == ListMode.Normal) {
       Navigator.of(context).pushNamed(
         NoteScreen.routeName,
         arguments: id,
@@ -33,9 +33,9 @@ class _NotesScreenState extends State<NotesScreen> {
 
   // Inicia el modo selección
   void startSelection(String id) {
-    if (listMode == ListMode.normal) {
+    if (listMode == ListMode.Normal) {
       setState(() {
-        listMode = ListMode.selection;
+        listMode = ListMode.Selection;
         selectedNotes = [id];
       });
     }
@@ -47,7 +47,7 @@ class _NotesScreenState extends State<NotesScreen> {
       if (selectedNotes.contains(id)) {
         selectedNotes.remove(id);
 
-        if (selectedNotes.length == 0) listMode = ListMode.normal;
+        if (selectedNotes.length == 0) listMode = ListMode.Normal;
         return;
       }
 
@@ -87,7 +87,7 @@ class _NotesScreenState extends State<NotesScreen> {
     Provider.of<Notes>(context, listen: false).deleteNotes(selectedNotes);
 
     setState(() {
-      listMode = ListMode.normal;
+      listMode = ListMode.Normal;
       selectedNotes = [];
     });
   }
@@ -107,18 +107,18 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       fab: FloatingActionButton(
         onPressed: () {
-          if (listMode == ListMode.normal) {
+          if (listMode == ListMode.Normal) {
             Navigator.of(context).pushNamed(NoteScreen.routeName);
           } else {
             tryDeleteSelectedNotes();
           }
         },
         child: Icon(
-          listMode == ListMode.normal ? Icons.add : Icons.delete,
+          listMode == ListMode.Normal ? Icons.add : Icons.delete,
           color: Colors.black,
         ),
         backgroundColor:
-            listMode == ListMode.normal ? Colors.yellow : Colors.red,
+            listMode == ListMode.Normal ? Colors.yellow : Colors.red,
       ),
     );
   }
