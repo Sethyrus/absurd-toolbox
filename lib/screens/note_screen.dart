@@ -125,6 +125,39 @@ class _NoteScreenState extends State<NoteScreen> {
     return true;
   }
 
+  void onStatusBarActionSelected(String actionValue) {
+    if (actionValue == 'DELETE') {
+      showDialog(
+        context: context,
+        builder: (alertCtx) => AlertDialog(
+          title: Text('Confirmar'),
+          content: Text('¿Seguro que quieres eliminar la nota?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(alertCtx, 'Cancel');
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Provider.of<Notes>(
+                  context,
+                  listen: false,
+                ).deleteNote(_editedNote);
+
+                // Se lanza 2 veces, la primera cierra el alert y la segunda vuelve al listado de notas
+                Navigator.pop(alertCtx);
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -150,38 +183,7 @@ class _NoteScreenState extends State<NoteScreen> {
                 ),
               ]
             : null,
-        onStatusBarActionSelected: (actionValue) {
-          if (actionValue == 'DELETE') {
-            showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                title: Text('Confirmar'),
-                content: Text('¿Seguro que quieres eliminar la nota?'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context, 'Cancel');
-                    },
-                    child: Text('Cancelar'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Provider.of<Notes>(
-                        context,
-                        listen: false,
-                      ).deleteNote(_editedNote);
-
-                      // Se lanza 2 veces, la primera cierra el alert y la segunda vuelve al listado de notas
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: Text('OK'),
-                  ),
-                ],
-              ),
-            );
-          }
-        },
+        onStatusBarActionSelected: onStatusBarActionSelected,
         content: Form(
           key: _form,
           child: Container(

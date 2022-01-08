@@ -59,20 +59,19 @@ class _NotesScreenState extends State<NotesScreen> {
   void tryDeleteSelectedNotes() {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (alertCtx) => AlertDialog(
         title: Text('Confirmar'),
         content: Text('¿Seguro que quieres eliminar las notas seleccionadas?'),
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              Navigator.pop(context, 'Cancel');
+              Navigator.pop(alertCtx, 'Cancel');
             },
             child: Text('Cancelar'),
           ),
           TextButton(
             onPressed: () {
-              // Cierra el alert
-              Navigator.pop(context);
+              Navigator.pop(alertCtx);
               deleteSelectedNotes();
             },
             child: Text('OK'),
