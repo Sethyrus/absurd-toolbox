@@ -12,9 +12,7 @@ class SettingsScreen extends StatelessWidget {
       title: "Ajustes",
       themeColor: Colors.indigo.shade400,
       showAppBar: true,
-      content: Center(
-        child: Text("Ajustes"),
-      ),
+      content: Center(),
     );
   }
 }
