@@ -21,15 +21,11 @@ class Notes with ChangeNotifier {
     _items.add(note);
 
     if (_authProvider.userData != null) {
-      _notesCollection.doc(_authProvider.userData).collection("items").add({
-        'title': note.title,
-        'content': note.content,
-        'tags': note.tags,
-        'pinned': note.pinned,
-        'archived': note.archived,
-        'createdAt': note.createdAt.toIso8601String(),
-        'updatedAt': note.createdAt.toIso8601String(),
-      }).catchError((error) {
+      _notesCollection
+          .doc(_authProvider.userData)
+          .collection("items")
+          .add(note.toJson())
+          .catchError((error) {
         print("Failed to add note: $error");
       });
     }
@@ -74,18 +70,24 @@ class Notes with ChangeNotifier {
     if (!_loaded && !_loading) {
       _loading = true;
 
-      List<Note> notes = [];
-
       _notesCollection
           .doc(_authProvider.userData)
           .collection('items')
           .snapshots()
-          .listen((value) {
-        notes = value.docs
+          .listen((valueChanges) {
+        _items = valueChanges.docs
             .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
-            .toList();
+            .toList()
+          ..sort((Note a, Note b) {
+            if (a.order == b.order) return 0;
 
-        _items = notes;
+            if (a.order > b.order) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+
         _loaded = true;
         _loading = false;
 

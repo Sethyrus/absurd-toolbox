@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/screens/chats_screen.dart';
 import 'package:absurd_toolbox/screens/edit_profile_screen.dart';
 import 'package:absurd_toolbox/screens/home_screen.dart';
 import 'package:absurd_toolbox/screens/note_screen.dart';
@@ -38,6 +39,10 @@ final List<AppNavigator> appNavigator = [
       AppRoute(
         route: SoundRecorderScreen.routeName,
         screen: SoundRecorderScreen(),
+      ),
+      AppRoute(
+        route: ChatsScreen.routeName,
+        screen: ChatsScreen(),
       ),
     ],
     icon: Icon(Icons.construction),

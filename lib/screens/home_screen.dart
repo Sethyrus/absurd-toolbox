@@ -1,4 +1,5 @@
 import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
+import 'package:absurd_toolbox/screens/chats_screen.dart';
 import 'package:absurd_toolbox/screens/notes_screen.dart';
 import 'package:absurd_toolbox/screens/raffles_screen.dart';
 import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
@@ -32,6 +33,12 @@ class HomeScreen extends StatelessWidget {
       color: Colors.red.shade400,
       route: SoundRecorderScreen.routeName,
       icon: Icons.voicemail,
+    ),
+    HomeButton(
+      label: 'Chats',
+      color: Colors.blue.shade400,
+      route: ChatsScreen.routeName,
+      icon: Icons.chat,
     ),
   ];
 

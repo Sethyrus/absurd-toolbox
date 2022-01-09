@@ -22,6 +22,7 @@ class _NoteScreenState extends State<NoteScreen> {
     tags: [],
     pinned: false,
     archived: false,
+    order: 0,
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
   );
@@ -32,6 +33,7 @@ class _NoteScreenState extends State<NoteScreen> {
     tags: [],
     pinned: false,
     archived: false,
+    order: 0,
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
   );
@@ -84,6 +86,7 @@ class _NoteScreenState extends State<NoteScreen> {
             tags: _editedNote.tags,
             pinned: _editedNote.pinned,
             archived: _editedNote.archived,
+            order: notes.items[notes.items.length - 1].order + 1,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           ),
@@ -101,6 +104,7 @@ class _NoteScreenState extends State<NoteScreen> {
               tags: _editedNote.tags,
               pinned: _editedNote.pinned,
               archived: _editedNote.archived,
+              order: 0,
               createdAt: _editedNote.createdAt,
               updatedAt: DateTime.now(),
             ),
@@ -202,6 +206,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         tags: _editedNote.tags,
                         pinned: _editedNote.pinned,
                         archived: _editedNote.archived,
+                        order: 0,
                         createdAt: _editedNote.createdAt,
                         updatedAt: _editedNote.updatedAt,
                       );
@@ -240,6 +245,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           tags: _editedNote.tags,
                           pinned: _editedNote.pinned,
                           archived: _editedNote.archived,
+                          order: 0,
                           createdAt: _editedNote.createdAt,
                           updatedAt: _editedNote.updatedAt,
                         );
