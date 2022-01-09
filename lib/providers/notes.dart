@@ -29,8 +29,6 @@ class Notes with ChangeNotifier {
         'archived': note.archived,
         'createdAt': note.createdAt.toIso8601String(),
         'updatedAt': note.createdAt.toIso8601String(),
-      }).then((value) {
-        reloadNotes(force: true);
       }).catchError((error) {
         print("Failed to add note: $error");
       });
@@ -43,9 +41,7 @@ class Notes with ChangeNotifier {
         .collection("items")
         .doc(note.id)
         .update(note.toJson()..remove("id"))
-        .then((value) {
-      reloadNotes(force: true);
-    }).catchError((error) {
+        .catchError((error) {
       print("Failed to update note: $error");
     });
   }
@@ -56,35 +52,26 @@ class Notes with ChangeNotifier {
         .collection("items")
         .doc(note.id)
         .delete()
-        .then((value) {
-      reloadNotes(force: true);
-    }).catchError((error) {
+        .catchError((error) {
       print("Failed to delete note: $error");
     });
   }
 
   void deleteNotes(List<String> noteIds) async {
-    List<String> deletedNotes = [];
-
     noteIds.forEach((id) {
       _notesCollection
           .doc(_authProvider.userData)
           .collection("items")
           .doc(id)
           .delete()
-          .then((value) {
-        deletedNotes.add(id);
-        if (noteIds.length == deletedNotes.length) {
-          reloadNotes(force: true);
-        }
-      }).catchError((error) {
+          .catchError((error) {
         print("Failed to delete note: $error");
       });
     });
   }
 
-  void reloadNotes({force = false}) {
-    if ((!_loaded && !_loading) || force) {
+  void reloadNotes() {
+    if (!_loaded && !_loading) {
       _loading = true;
 
       List<Note> notes = [];
@@ -92,20 +79,18 @@ class Notes with ChangeNotifier {
       _notesCollection
           .doc(_authProvider.userData)
           .collection('items')
-          .get()
-          .then(
-        (value) {
-          notes = value.docs
-              .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
-              .toList();
+          .snapshots()
+          .listen((value) {
+        notes = value.docs
+            .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
+            .toList();
 
-          _items = notes;
-          _loaded = true;
-          _loading = false;
+        _items = notes;
+        _loaded = true;
+        _loading = false;
 
-          notifyListeners();
-        },
-      );
+        notifyListeners();
+      });
     }
   }
 
