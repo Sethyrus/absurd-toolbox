@@ -1,5 +1,6 @@
 import 'package:absurd_toolbox/providers/auth.dart';
 import 'package:absurd_toolbox/providers/permissions.dart';
+import 'package:absurd_toolbox/providers/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +50,13 @@ class MyApp extends StatelessWidget {
             listen: false,
           )),
           update: (context, auth, notes) => Notes(auth),
+        ),
+        ChangeNotifierProxyProvider<Auth, Profile>(
+          create: (BuildContext context) => Profile(Provider.of<Auth>(
+            context,
+            listen: false,
+          )),
+          update: (context, auth, notes) => Profile(auth),
         ),
       ],
       child: GestureDetector(

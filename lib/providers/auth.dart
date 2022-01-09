@@ -8,8 +8,12 @@ class Auth with ChangeNotifier {
     return _user != null;
   }
 
-  String? get userData {
+  String? get userID {
     return _user?.uid;
+  }
+
+  User? get userData {
+    return _user;
   }
 
   void setAuth(User? user) async {

@@ -1,5 +1,6 @@
 import 'package:absurd_toolbox/screens/edit_profile_screen.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
+import 'package:absurd_toolbox/widgets/profile/profile_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,29 +17,33 @@ class ProfileScreen extends StatelessWidget {
       showAppBar: true,
       content: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(EditProfileScreen.routeName);
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  Colors.indigo.shade400,
+            ProfileDetails(),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Navigator.of(context).pushNamed(EditProfileScreen.routeName);
+            //   },
+            //   style: ButtonStyle(
+            //     backgroundColor: MaterialStateProperty.all(
+            //       Colors.indigo.shade400,
+            //     ),
+            //   ),
+            //   child: Text("Editar perfil"),
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    Colors.indigo.shade400,
+                  ),
                 ),
+                child: Text("Cerrar sesión"),
               ),
-              child: Text("Editar perfil"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  Colors.indigo.shade400,
-                ),
-              ),
-              child: Text("Cerrar sesión"),
             ),
           ],
         ),

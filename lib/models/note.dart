@@ -47,6 +47,6 @@ class Note {
         'archived': archived,
         'order': order,
         'createdAt': createdAt.toIso8601String(),
-        'updatedAt': updatedAt.toIso8601String()
+        'updatedAt': updatedAt.toIso8601String(),
       };
 }

@@ -20,9 +20,9 @@ class Notes with ChangeNotifier {
   void addNote(Note note) async {
     _items.add(note);
 
-    if (_authProvider.userData != null) {
+    if (_authProvider.userID != null) {
       _notesCollection
-          .doc(_authProvider.userData)
+          .doc(_authProvider.userID)
           .collection("items")
           .add(note.toJson())
           .catchError((error) {
@@ -33,7 +33,7 @@ class Notes with ChangeNotifier {
 
   void updateNote(Note note) async {
     _notesCollection
-        .doc(_authProvider.userData)
+        .doc(_authProvider.userID)
         .collection("items")
         .doc(note.id)
         .update(note.toJson()..remove("id"))
@@ -44,7 +44,7 @@ class Notes with ChangeNotifier {
 
   void deleteNote(Note note) async {
     _notesCollection
-        .doc(_authProvider.userData)
+        .doc(_authProvider.userID)
         .collection("items")
         .doc(note.id)
         .delete()
@@ -56,7 +56,7 @@ class Notes with ChangeNotifier {
   void deleteNotes(List<String> noteIds) async {
     noteIds.forEach((id) {
       _notesCollection
-          .doc(_authProvider.userData)
+          .doc(_authProvider.userID)
           .collection("items")
           .doc(id)
           .delete()
@@ -71,7 +71,7 @@ class Notes with ChangeNotifier {
       _loading = true;
 
       _notesCollection
-          .doc(_authProvider.userData)
+          .doc(_authProvider.userID)
           .collection('items')
           .snapshots()
           .listen((valueChanges) {
