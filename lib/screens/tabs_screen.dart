@@ -1,6 +1,6 @@
 import 'package:absurd_toolbox/providers/notes.dart';
 import 'package:absurd_toolbox/navigator.dart';
-import 'package:absurd_toolbox/providers/profile.dart';
+import 'package:absurd_toolbox/providers/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -72,7 +72,7 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     final notesProvider = Provider.of<Notes>(context, listen: false);
-    final profileProvider = Provider.of<Profile>(context, listen: false);
+    final profileProvider = Provider.of<UserProfile>(context, listen: false);
     notesProvider.reloadNotes();
     profileProvider.reloadProfileData();
 

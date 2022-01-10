@@ -1,4 +1,3 @@
-import 'package:absurd_toolbox/screens/edit_profile_screen.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/widgets/profile/profile_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
