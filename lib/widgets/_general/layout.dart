@@ -2,6 +2,7 @@ import 'package:absurd_toolbox/widgets/_general/empty_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 enum ThemeStyle {
   Light,
@@ -76,7 +77,7 @@ class Layout extends StatelessWidget {
                     )
                   : null,
             )
-          : Platform.isIOS
+          : !kIsWeb && Platform.isIOS
               ? EmptyAppBar(
                   statusBarColor: statusBarColor,
                 )

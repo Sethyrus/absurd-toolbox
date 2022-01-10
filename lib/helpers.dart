@@ -1,4 +1,4 @@
-void log({required String key, Object? value, bool? debug}) {
+void log({required String key, Object? value, bool? debug = true}) {
   print((debug == true ? '[DEBUG] ' : '') + key + (value != null ? ': ' : ''));
 
   if (value != null) print(value);

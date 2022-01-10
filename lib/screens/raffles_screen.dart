@@ -1,8 +1,12 @@
-import 'package:absurd_toolbox/models/raffle_mode.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/widgets/raffles/raffle.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/widgets/raffles/heads_or_tails.dart';
+
+enum RaffleMode {
+  HeadsOrTails,
+  Raffle,
+}
 
 class RafflesScreen extends StatefulWidget {
   static const String routeName = '/raffles';

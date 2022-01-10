@@ -1,5 +1,7 @@
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
+import 'package:absurd_toolbox/widgets/_general/custom_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/helpers.dart';
 import 'package:absurd_toolbox/models/note.dart';
@@ -39,6 +41,14 @@ class _NoteScreenState extends State<NoteScreen> {
   );
   final _form = GlobalKey<FormState>();
   final _contentFocusNode = FocusNode();
+  FToast? _fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    _fToast = FToast();
+    _fToast?.init(context);
+  }
 
   @override
   void didChangeDependencies() {
@@ -86,7 +96,9 @@ class _NoteScreenState extends State<NoteScreen> {
             tags: _editedNote.tags,
             pinned: _editedNote.pinned,
             archived: _editedNote.archived,
-            order: notes.items[notes.items.length - 1].order + 1,
+            order: notes.items.length > 0
+                ? notes.items[notes.items.length - 1].order + 1
+                : 0,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           ),
@@ -104,7 +116,7 @@ class _NoteScreenState extends State<NoteScreen> {
               tags: _editedNote.tags,
               pinned: _editedNote.pinned,
               archived: _editedNote.archived,
-              order: 0,
+              order: _editedNote.order,
               createdAt: _editedNote.createdAt,
               updatedAt: DateTime.now(),
             ),
@@ -115,11 +127,11 @@ class _NoteScreenState extends State<NoteScreen> {
       if (popScreen) Navigator.pop(context);
     } else {
       if (_editedNote.id != '') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('No se pueden guardar notas vacías'),
-            duration: Duration(seconds: 3),
-          ),
+        _fToast?.removeQueuedCustomToasts();
+        _fToast?.showToast(
+          child: CustomToast(text: "No se pueden guardar notas vacías"),
+          toastDuration: Duration(seconds: 3),
+          gravity: ToastGravity.BOTTOM,
         );
 
         return false;

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:absurd_toolbox/models/profile_data.dart';
 import 'package:absurd_toolbox/providers/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +17,7 @@ class UserProfile with ChangeNotifier {
   bool _loaded = false;
   CollectionReference _profilesCollection =
       FirebaseFirestore.instance.collection('users');
+  StreamSubscription<DocumentSnapshot<Object?>>? _sub;
 
   UserProfile(this._authProvider);
 
@@ -47,7 +50,7 @@ class UserProfile with ChangeNotifier {
     if (!_loaded && !_loading) {
       _loading = true;
 
-      _profilesCollection
+      _sub = _profilesCollection
           .doc(_authProvider.userID)
           .snapshots()
           .listen((valueChanges) {
@@ -65,5 +68,9 @@ class UserProfile with ChangeNotifier {
         notifyListeners();
       });
     }
+  }
+
+  void cancelSubscriptions() {
+    _sub?.cancel();
   }
 }

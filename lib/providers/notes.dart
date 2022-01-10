@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:absurd_toolbox/helpers.dart';
 import 'package:absurd_toolbox/providers/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +13,7 @@ class Notes with ChangeNotifier {
   bool _loaded = false;
   CollectionReference _notesCollection =
       FirebaseFirestore.instance.collection('notes');
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _sub;
 
   Notes(this._authProvider);
 
@@ -24,9 +28,9 @@ class Notes with ChangeNotifier {
       _notesCollection
           .doc(_authProvider.userID)
           .collection("items")
-          .add(note.toJson())
+          .add(note.toJson()..remove("id"))
           .catchError((error) {
-        print("Failed to add note: $error");
+        log(key: "Failed to add note", value: error);
       });
     }
   }
@@ -38,7 +42,7 @@ class Notes with ChangeNotifier {
         .doc(note.id)
         .update(note.toJson()..remove("id"))
         .catchError((error) {
-      print("Failed to update note: $error");
+      log(key: "Failed to update note", value: error);
     });
   }
 
@@ -49,7 +53,7 @@ class Notes with ChangeNotifier {
         .doc(note.id)
         .delete()
         .catchError((error) {
-      print("Failed to delete note: $error");
+      log(key: "Failed to delete note", value: error);
     });
   }
 
@@ -61,7 +65,7 @@ class Notes with ChangeNotifier {
           .doc(id)
           .delete()
           .catchError((error) {
-        print("Failed to delete note: $error");
+        log(key: "Failed to delete note", value: error);
       });
     });
   }
@@ -70,7 +74,7 @@ class Notes with ChangeNotifier {
     if (!_loaded && !_loading) {
       _loading = true;
 
-      _notesCollection
+      _sub = _notesCollection
           .doc(_authProvider.userID)
           .collection('items')
           .snapshots()
@@ -94,6 +98,10 @@ class Notes with ChangeNotifier {
         notifyListeners();
       });
     }
+  }
+
+  void cancelSubscriptions() {
+    _sub?.cancel();
   }
 
   Note findById(String id) => _items.firstWhere((element) => element.id == id);

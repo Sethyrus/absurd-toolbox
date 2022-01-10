@@ -1,10 +1,14 @@
-import 'package:absurd_toolbox/models/list_mode.dart';
 import 'package:absurd_toolbox/providers/notes.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/screens/note_screen.dart';
 import 'package:absurd_toolbox/widgets/notes/notes_list.dart';
 import 'package:provider/provider.dart';
+
+enum ListMode {
+  Normal,
+  Selection,
+}
 
 class NotesScreen extends StatefulWidget {
   static const String routeName = '/notes';

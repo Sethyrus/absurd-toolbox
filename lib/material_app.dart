@@ -1,4 +1,6 @@
 import 'package:absurd_toolbox/providers/auth.dart';
+import 'package:absurd_toolbox/providers/notes.dart';
+import 'package:absurd_toolbox/providers/user_profile.dart';
 import 'package:absurd_toolbox/screens/auth_screen.dart';
 import 'package:absurd_toolbox/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,19 @@ class App extends StatelessWidget {
     FirebaseAuth.instance.authStateChanges().listen(
       (User? user) {
         Provider.of<Auth>(context, listen: false).setAuth(user);
+
+        // Si no hay sesión se cancelan los listeners
+        if (user == null) {
+          Provider.of<Notes>(
+            context,
+            listen: false,
+          ).cancelSubscriptions();
+
+          Provider.of<UserProfile>(
+            context,
+            listen: false,
+          ).cancelSubscriptions();
+        }
       },
     );
 
