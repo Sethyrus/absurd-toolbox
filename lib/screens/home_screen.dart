@@ -1,5 +1,6 @@
 import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/screens/chats_screen.dart';
+import 'package:absurd_toolbox/screens/maps_screen.dart';
 import 'package:absurd_toolbox/screens/notes_screen.dart';
 import 'package:absurd_toolbox/screens/raffles_screen.dart';
 import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
@@ -39,6 +40,12 @@ class HomeScreen extends StatelessWidget {
       color: Colors.blue.shade400,
       route: ChatsScreen.routeName,
       icon: Icons.chat,
+    ),
+    HomeButton(
+      label: "Maps",
+      color: Colors.lightGreen,
+      route: MapsScreen.routeName,
+      icon: Icons.map_outlined,
     ),
   ];
 

@@ -22,8 +22,6 @@ class Notes with ChangeNotifier {
   }
 
   void addNote(Note note) async {
-    _items.add(note);
-
     if (_authProvider.userID != null) {
       _notesCollection
           .doc(_authProvider.userID)
@@ -98,6 +96,42 @@ class Notes with ChangeNotifier {
         notifyListeners();
       });
     }
+  }
+
+  void reorderNote({
+    required Note note,
+    required int newPosition,
+  }) {
+    _items.removeAt(
+      _items.indexWhere((item) => item.id == note.id),
+    );
+
+    _items.insert(
+      newPosition,
+      note,
+    );
+
+    resetNotesOrder();
+  }
+
+  void resetNotesOrder() {
+    items.asMap().forEach((index, note) {
+      if (note.order != index) {
+        updateNote(
+          Note(
+            id: note.id,
+            title: note.title,
+            content: note.content,
+            tags: note.tags,
+            pinned: note.pinned,
+            archived: note.archived,
+            order: index,
+            createdAt: note.createdAt,
+            updatedAt: note.updatedAt,
+          ),
+        );
+      }
+    });
   }
 
   void cancelSubscriptions() {

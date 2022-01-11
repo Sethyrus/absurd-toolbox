@@ -10,6 +10,7 @@
 - - [ ] Se mostrarán en la página de perfil
 - - [ ] Se podrá editar en la página de editar perfil
 - [ ] Funcionalidad para todos los campos de las notas (pinned, archived y demás)
+- [ ] Revisar en qué casos tiene más sentido usar transacciones (Firestore) e implementar
 - [x] La recarga de notas debe funcionar como un listener y no ser llamado más que en el arranque
 
 # Bugs

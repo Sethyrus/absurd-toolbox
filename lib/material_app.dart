@@ -3,8 +3,10 @@ import 'package:absurd_toolbox/providers/notes.dart';
 import 'package:absurd_toolbox/providers/user_profile.dart';
 import 'package:absurd_toolbox/screens/auth_screen.dart';
 import 'package:absurd_toolbox/screens/tabs_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,6 +37,10 @@ class App extends StatelessWidget {
         }
       },
     );
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
+    }
 
     return Consumer<Auth>(
       builder: (ctx, auth, _) => MaterialApp(

@@ -83,12 +83,12 @@ class _NoteScreenState extends State<NoteScreen> {
     _form.currentState!.save();
 
     if (_editedNote.title != '' || _editedNote.content != '') {
-      Notes notes = Provider.of<Notes>(context, listen: false);
+      Notes notesProvider = Provider.of<Notes>(context, listen: false);
 
       if (_editedNote.id == "") {
-        log(key: 'Save new note', debug: true, value: _editedNote.toJson());
+        log(key: 'Save new note', value: _editedNote.toJson());
 
-        notes.addNote(
+        notesProvider.addNote(
           Note(
             id: Uuid().v4(),
             title: _editedNote.title,
@@ -96,19 +96,20 @@ class _NoteScreenState extends State<NoteScreen> {
             tags: _editedNote.tags,
             pinned: _editedNote.pinned,
             archived: _editedNote.archived,
-            order: notes.items.length > 0
-                ? notes.items[notes.items.length - 1].order + 1
+            order: notesProvider.items.length > 0
+                ? notesProvider.items[notesProvider.items.length - 1].order + 1
                 : 0,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
           ),
         );
       } else {
+        // Se comprueba si se han hecho cambios para actualizar solo en ese caso
         if (!(_originalNote.title == _editedNote.title &&
             _originalNote.content == _editedNote.content)) {
-          log(key: 'Edit note', debug: true, value: _editedNote.toJson());
+          log(key: 'Edit note', value: _editedNote.toJson());
 
-          notes.updateNote(
+          notesProvider.updateNote(
             Note(
               id: _editedNote.id,
               title: _editedNote.title,
@@ -218,7 +219,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         tags: _editedNote.tags,
                         pinned: _editedNote.pinned,
                         archived: _editedNote.archived,
-                        order: 0,
+                        order: _editedNote.order,
                         createdAt: _editedNote.createdAt,
                         updatedAt: _editedNote.updatedAt,
                       );
@@ -257,7 +258,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           tags: _editedNote.tags,
                           pinned: _editedNote.pinned,
                           archived: _editedNote.archived,
-                          order: 0,
+                          order: _editedNote.order,
                           createdAt: _editedNote.createdAt,
                           updatedAt: _editedNote.updatedAt,
                         );
