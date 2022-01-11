@@ -2,6 +2,7 @@ import 'package:absurd_toolbox/screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/screens/chats_screen.dart';
 import 'package:absurd_toolbox/screens/maps_screen.dart';
 import 'package:absurd_toolbox/screens/notes_screen.dart';
+import 'package:absurd_toolbox/screens/osm_screen.dart';
 import 'package:absurd_toolbox/screens/raffles_screen.dart';
 import 'package:absurd_toolbox/screens/sound_recorder_screen.dart';
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
@@ -42,10 +43,16 @@ class HomeScreen extends StatelessWidget {
       icon: Icons.chat,
     ),
     HomeButton(
-      label: "Maps",
+      label: "G. Maps",
       color: Colors.lightGreen,
-      route: MapsScreen.routeName,
+      route: GoogleMapsScreen.routeName,
       icon: Icons.map_outlined,
+    ),
+    HomeButton(
+      label: "OSMaps",
+      color: Colors.orange,
+      route: OSMScreen.routeName,
+      icon: Icons.map_sharp,
     ),
   ];
 

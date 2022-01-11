@@ -3,6 +3,7 @@ import 'package:absurd_toolbox/screens/edit_profile_screen.dart';
 import 'package:absurd_toolbox/screens/home_screen.dart';
 import 'package:absurd_toolbox/screens/maps_screen.dart';
 import 'package:absurd_toolbox/screens/note_screen.dart';
+import 'package:absurd_toolbox/screens/osm_screen.dart';
 import 'package:absurd_toolbox/screens/profile_screen.dart';
 import 'package:absurd_toolbox/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +47,12 @@ final List<AppNavigator> appNavigator = [
         screen: ChatsScreen(),
       ),
       AppRoute(
-        route: MapsScreen.routeName,
-        screen: MapsScreen(),
+        route: GoogleMapsScreen.routeName,
+        screen: GoogleMapsScreen(),
+      ),
+      AppRoute(
+        route: OSMScreen.routeName,
+        screen: OSMScreen(),
       ),
     ],
     icon: Icon(Icons.construction),

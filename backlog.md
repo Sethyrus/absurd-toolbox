@@ -1,4 +1,5 @@
 # TODO
+- [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] El toast usado debe cambiarse por un mensaje flotante
 - [ ] Buscar una mejor alternativa para el loader
 - [ ] Añadir comentarios
