@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:absurd_toolbox/models/profile_data.dart';
 import 'package:absurd_toolbox/providers/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

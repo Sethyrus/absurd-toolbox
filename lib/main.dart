@@ -1,6 +1,9 @@
+import 'package:absurd_toolbox/helpers.dart';
 import 'package:absurd_toolbox/providers/auth.dart';
+import 'package:absurd_toolbox/providers/network_status.dart';
 import 'package:absurd_toolbox/providers/permissions.dart';
 import 'package:absurd_toolbox/providers/user_profile.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +45,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<NetworkStatus>(create: (_) => NetworkStatus()),
         ChangeNotifierProvider<Auth>(create: (_) => Auth()),
         ChangeNotifierProvider<Permissions>(create: (_) => Permissions()),
         ChangeNotifierProxyProvider<Auth, Notes>(
@@ -62,7 +66,7 @@ class MyApp extends StatelessWidget {
       child: GestureDetector(
         // Elimina el foco de cualquier input al pulsar sobre un espacio libre
         onTap: () => FocusScope.of(context).requestFocus(_focusNode),
-        child: App(),
+        child: MyMaterialApp(),
       ),
     );
   }

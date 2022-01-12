@@ -1,7 +1,5 @@
 import 'package:absurd_toolbox/widgets/_general/layout.dart';
-import 'package:absurd_toolbox/widgets/_general/custom_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/helpers.dart';
 import 'package:absurd_toolbox/models/note.dart';
@@ -41,14 +39,6 @@ class _NoteScreenState extends State<NoteScreen> {
   );
   final _form = GlobalKey<FormState>();
   final _contentFocusNode = FocusNode();
-  FToast? _fToast;
-
-  @override
-  void initState() {
-    super.initState();
-    _fToast = FToast();
-    _fToast?.init(context);
-  }
 
   @override
   void didChangeDependencies() {
@@ -128,11 +118,12 @@ class _NoteScreenState extends State<NoteScreen> {
       if (popScreen) Navigator.pop(context);
     } else {
       if (_editedNote.id != '') {
-        _fToast?.removeQueuedCustomToasts();
-        _fToast?.showToast(
-          child: CustomToast(text: "No se pueden guardar notas vacías"),
-          toastDuration: Duration(seconds: 3),
-          gravity: ToastGravity.BOTTOM,
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text("No se pueden guardar notas vacías"),
+            duration: Duration(seconds: 3),
+          ),
         );
 
         return false;
