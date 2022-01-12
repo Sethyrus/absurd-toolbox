@@ -1,5 +1,6 @@
 # TODO
 - [ ] Mover claves de API a un archivo .env, fuera de git
+- [ ] Buscar cómo pasar el estado de autenticación a los demás providers (incluso a los que ya reciben uno)
 - [ ] Investigar sobre el patrón BLoC
 - [ ] Documentar/Añadir comentarios al código
 - [ ] Poder modificar color de las notas
