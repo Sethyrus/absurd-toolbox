@@ -2,6 +2,7 @@
 - [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] Buscar cómo pasar el estado de autenticación a los demás providers (incluso a los que ya reciben uno)
 - [ ] Investigar sobre el patrón BLoC
+- [ ] Bloquear la rotación, solo debe funcionar en vertical
 - [ ] Documentar/Añadir comentarios al código
 - [ ] Poder modificar color de las notas
 - [ ] Funcionalidad para todos los campos de las notas (pinned, archived y demás)
