@@ -355,14 +355,14 @@ packages:
       name: flutter_osm_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.14"
+    version: "0.1.14+1"
   flutter_osm_plugin:
     dependency: "direct main"
     description:
       name: flutter_osm_plugin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.28.0+1"
+    version: "0.28.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
