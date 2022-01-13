@@ -17,7 +17,10 @@
 - [x] Bloquear la rotación, solo debe funcionar en vertical
 
 # Bugs
+- [ ] Al iniciar la app (con sesión previa) aparece un error de Notes y UserProfile en la consola de depuración (used after being disposed)
 - [x] El alert al eliminar varias notas retrocede a home en lugar de cerrarse
 
 # Resources:
 - https://docs.flutter.dev/cookbook/effects/nested-nav
+- https://medium.com/codechai/architecting-your-flutter-project-bd04e144a8f1
+- https://www.didierboelens.com/2018/12/reactive-programming-streams-bloc-practical-use-cases/

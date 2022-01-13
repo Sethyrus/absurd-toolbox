@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'package:absurd_toolbox/helpers.dart';
 import 'package:absurd_toolbox/models/profile_data.dart';
-import 'package:absurd_toolbox/providers/auth.dart';
+import 'package:absurd_toolbox/providers/general_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class UserProfile with ChangeNotifier {
-  final Auth _authProvider;
+  final GeneralState _authProvider;
   UserProfileData _profileData = UserProfileData(
     email: '',
     username: '',
@@ -30,6 +31,7 @@ class UserProfile with ChangeNotifier {
   }
 
   void createProfile() {
+    log(key: "Create new profile");
     _profilesCollection.doc(_authProvider.userID).set(
           UserProfileData(
             email: _authProvider.userData?.email ?? "",
@@ -46,6 +48,7 @@ class UserProfile with ChangeNotifier {
   }
 
   void reloadProfileData() {
+    log(key: "Start listening for user profile changes");
     if (!_loaded && !_loading) {
       _loading = true;
 
@@ -53,6 +56,7 @@ class UserProfile with ChangeNotifier {
           .doc(_authProvider.userID)
           .snapshots()
           .listen((valueChanges) {
+        log(key: "User profile changed", value: valueChanges.data());
         final data = valueChanges.data() as Map<String, dynamic>?;
 
         if (data == null) {
@@ -70,6 +74,7 @@ class UserProfile with ChangeNotifier {
   }
 
   void cancelSubscriptions() {
+    log(key: "Cancel user profile subscriptions");
     _sub?.cancel();
   }
 }

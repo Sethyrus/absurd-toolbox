@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:absurd_toolbox/helpers.dart';
-import 'package:absurd_toolbox/providers/auth.dart';
+import 'package:absurd_toolbox/providers/general_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/models/note.dart';
 
 class Notes with ChangeNotifier {
-  final Auth _authProvider;
+  final GeneralState _authProvider;
   List<Note> _items = [];
   bool _loading = false;
   bool _loaded = false;
@@ -22,6 +22,7 @@ class Notes with ChangeNotifier {
   }
 
   void addNote(Note note) async {
+    log(key: "Add note", value: note.title);
     if (_authProvider.userID != null) {
       _notesCollection
           .doc(_authProvider.userID)
@@ -34,6 +35,7 @@ class Notes with ChangeNotifier {
   }
 
   void updateNote(Note note) async {
+    log(key: "Update note", value: note.id);
     _notesCollection
         .doc(_authProvider.userID)
         .collection("items")
@@ -45,6 +47,7 @@ class Notes with ChangeNotifier {
   }
 
   void deleteNote(Note note) async {
+    log(key: "Delete note", value: note.id);
     _notesCollection
         .doc(_authProvider.userID)
         .collection("items")
@@ -56,6 +59,7 @@ class Notes with ChangeNotifier {
   }
 
   void deleteNotes(List<String> noteIds) async {
+    log(key: "Delete notes", value: noteIds);
     noteIds.forEach((id) {
       _notesCollection
           .doc(_authProvider.userID)
@@ -69,6 +73,7 @@ class Notes with ChangeNotifier {
   }
 
   void reloadNotes() {
+    log(key: "Start listening for notes changes");
     if (!_loaded && !_loading) {
       _loading = true;
 
@@ -77,6 +82,7 @@ class Notes with ChangeNotifier {
           .collection('items')
           .snapshots()
           .listen((valueChanges) {
+        log(key: "Notes changed", value: valueChanges.docs);
         _items = valueChanges.docs
             .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
             .toList()
@@ -102,6 +108,7 @@ class Notes with ChangeNotifier {
     required Note note,
     required int newPosition,
   }) {
+    log(key: "Reorder note: ${note.id} to position: $newPosition");
     _items.removeAt(
       _items.indexWhere((item) => item.id == note.id),
     );
@@ -115,6 +122,7 @@ class Notes with ChangeNotifier {
   }
 
   void resetNotesOrder() {
+    log(key: "Reset notes order");
     items.asMap().forEach((index, note) {
       if (note.order != index) {
         updateNote(
@@ -135,6 +143,7 @@ class Notes with ChangeNotifier {
   }
 
   void cancelSubscriptions() {
+    log(key: "Cancel notes subscriptions");
     _sub?.cancel();
   }
 

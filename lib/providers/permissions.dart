@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/helpers.dart';
 import 'package:absurd_toolbox/models/app_permissions.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -16,6 +17,7 @@ class Permissions with ChangeNotifier {
     PermissionName name,
     PermissionStatus status,
   ) {
+    log(key: "Set permission: $name", value: status);
     switch (name) {
       case PermissionName.Storage:
         {

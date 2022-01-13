@@ -1,5 +1,5 @@
 import 'package:absurd_toolbox/app_wrapper.dart';
-import 'package:absurd_toolbox/providers/auth.dart';
+import 'package:absurd_toolbox/providers/general_state.dart';
 import 'package:absurd_toolbox/providers/notes.dart';
 import 'package:absurd_toolbox/providers/user_profile.dart';
 import 'package:flutter/foundation.dart';
@@ -20,7 +20,7 @@ class MyMaterialApp extends StatelessWidget {
     /// correctamente, o null cuando no existe o se ha cerrado la sesión
     FirebaseAuth.instance.authStateChanges().listen(
       (User? user) {
-        Provider.of<Auth>(context, listen: false).setAuth(user);
+        Provider.of<GeneralState>(context, listen: false).setAuth(user);
 
         // Si no hay sesión se cancelan los listeners
         if (user == null) {

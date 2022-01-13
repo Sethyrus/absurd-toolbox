@@ -1,9 +1,6 @@
-import 'package:absurd_toolbox/helpers.dart';
-import 'package:absurd_toolbox/providers/auth.dart';
-import 'package:absurd_toolbox/providers/network_status.dart';
+import 'package:absurd_toolbox/providers/general_state.dart';
 import 'package:absurd_toolbox/providers/permissions.dart';
 import 'package:absurd_toolbox/providers/user_profile.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
@@ -45,22 +42,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<NetworkStatus>(create: (_) => NetworkStatus()),
-        ChangeNotifierProvider<Auth>(create: (_) => Auth()),
         ChangeNotifierProvider<Permissions>(create: (_) => Permissions()),
-        ChangeNotifierProxyProvider<Auth, Notes>(
-          create: (BuildContext context) => Notes(Provider.of<Auth>(
+        ChangeNotifierProvider<GeneralState>(create: (_) => GeneralState()),
+        ChangeNotifierProxyProvider<GeneralState, Notes>(
+          create: (BuildContext context) => Notes(Provider.of<GeneralState>(
             context,
             listen: false,
           )),
-          update: (context, auth, notes) => Notes(auth),
+          update: (context, generalState, notes) => Notes(generalState),
         ),
-        ChangeNotifierProxyProvider<Auth, UserProfile>(
-          create: (BuildContext context) => UserProfile(Provider.of<Auth>(
+        ChangeNotifierProxyProvider<GeneralState, UserProfile>(
+          create: (BuildContext context) =>
+              UserProfile(Provider.of<GeneralState>(
             context,
             listen: false,
           )),
-          update: (context, auth, notes) => UserProfile(auth),
+          update: (context, generalState, notes) => UserProfile(generalState),
         ),
       ],
       child: GestureDetector(
