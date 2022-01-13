@@ -1,11 +1,10 @@
 # TODO
 - [ ] Mover claves de API a un archivo .env, fuera de git
-- [ ] Buscar cómo pasar el estado de autenticación a los demás providers (incluso a los que ya reciben uno)
+- [ ] Buscar cómo pasar el estado de la red a los demás providers (incluso a los que ya reciben uno)
 - [ ] Investigar sobre el patrón BLoC
-- [ ] Bloquear la rotación, solo debe funcionar en vertical
 - [ ] Documentar/Añadir comentarios al código
-- [ ] Poder modificar color de las notas
 - [ ] Funcionalidad para todos los campos de las notas (pinned, archived y demás)
+- - [ ] Poder modificar color de las notas
 - [ ] Revisar en qué casos tiene más sentido usar transacciones (Firestore) e implementar
 - [x] Añadir una colección "users" a firebase donde almacenar los detalles del perfil de los usuarios
 - - [x] Este dato debe cargarse y mantenerse actualizado dentro de la app
@@ -15,6 +14,7 @@
 - - [x] Añadir un campo "order" a las notas para usarse como sistema de ordenado
 - [x] El toast usado debe cambiarse por un mensaje flotante
 - [x] La recarga de notas debe funcionar como un listener y no ser llamado más que en el arranque
+- [x] Bloquear la rotación, solo debe funcionar en vertical
 
 # Bugs
 - [x] El alert al eliminar varias notas retrocede a home en lugar de cerrarse
