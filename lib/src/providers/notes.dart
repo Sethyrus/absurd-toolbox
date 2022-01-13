@@ -1,13 +1,11 @@
 import 'dart:async';
-
+import 'package:absurd_toolbox/src/blocs/auth_bloc.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
-import 'package:absurd_toolbox/src/providers/general_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
 
 class Notes with ChangeNotifier {
-  final GeneralState _authProvider;
   List<Note> _items = [];
   bool _loading = false;
   bool _loaded = false;
@@ -15,29 +13,31 @@ class Notes with ChangeNotifier {
       FirebaseFirestore.instance.collection('notes');
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _sub;
 
-  Notes(this._authProvider);
-
   List<Note> get items {
     return [..._items];
   }
 
   void addNote(Note note) async {
     log(key: "Add note", value: note.title);
-    if (_authProvider.userID != null) {
-      _notesCollection
-          .doc(_authProvider.userID)
-          .collection("items")
-          .add(note.toJson()..remove("id"))
-          .catchError((error) {
-        log(key: "Failed to add note", value: error);
-      });
-    }
+
+    final String? userId = authBloc.userIdSync;
+
+    _notesCollection
+        .doc(userId)
+        .collection("items")
+        .add(note.toJson()..remove("id"))
+        .catchError((error) {
+      log(key: "Failed to add note", value: error);
+    });
   }
 
   void updateNote(Note note) async {
     log(key: "Update note", value: note.id);
+
+    final String? userId = authBloc.userIdSync;
+
     _notesCollection
-        .doc(_authProvider.userID)
+        .doc(userId)
         .collection("items")
         .doc(note.id)
         .update(note.toJson()..remove("id"))
@@ -48,8 +48,11 @@ class Notes with ChangeNotifier {
 
   void deleteNote(Note note) async {
     log(key: "Delete note", value: note.id);
+
+    final String? userId = authBloc.userIdSync;
+
     _notesCollection
-        .doc(_authProvider.userID)
+        .doc(userId)
         .collection("items")
         .doc(note.id)
         .delete()
@@ -60,9 +63,12 @@ class Notes with ChangeNotifier {
 
   void deleteNotes(List<String> noteIds) async {
     log(key: "Delete notes", value: noteIds);
+
+    final String? userId = authBloc.userIdSync;
+
     noteIds.forEach((id) {
       _notesCollection
-          .doc(_authProvider.userID)
+          .doc(userId)
           .collection("items")
           .doc(id)
           .delete()
@@ -74,11 +80,14 @@ class Notes with ChangeNotifier {
 
   void reloadNotes() {
     log(key: "Start listening for notes changes");
+
     if (!_loaded && !_loading) {
       _loading = true;
 
+      final String? userId = authBloc.userIdSync;
+
       _sub = _notesCollection
-          .doc(_authProvider.userID)
+          .doc(userId)
           .collection('items')
           .snapshots()
           .listen((valueChanges) {

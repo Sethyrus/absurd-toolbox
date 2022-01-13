@@ -44,21 +44,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<Permissions>(create: (_) => Permissions()),
         ChangeNotifierProvider<GeneralState>(create: (_) => GeneralState()),
-        ChangeNotifierProxyProvider<GeneralState, Notes>(
-          create: (BuildContext context) => Notes(Provider.of<GeneralState>(
-            context,
-            listen: false,
-          )),
-          update: (context, generalState, notes) => Notes(generalState),
-        ),
-        ChangeNotifierProxyProvider<GeneralState, UserProfile>(
-          create: (BuildContext context) =>
-              UserProfile(Provider.of<GeneralState>(
-            context,
-            listen: false,
-          )),
-          update: (context, generalState, notes) => UserProfile(generalState),
-        ),
+        ChangeNotifierProvider<UserProfile>(create: (_) => UserProfile()),
+        ChangeNotifierProvider<Notes>(create: (_) => Notes()),
       ],
       child: GestureDetector(
         // Elimina el foco de cualquier input al pulsar sobre un espacio libre

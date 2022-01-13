@@ -1,5 +1,6 @@
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/providers/general_state.dart';
+import 'package:absurd_toolbox/src/blocs/auth_bloc.dart';
 import 'package:absurd_toolbox/src/screens/auth_screen.dart';
 import 'package:absurd_toolbox/src/screens/tabs_screen.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -24,31 +25,32 @@ class AppWrapper extends StatelessWidget {
           .setConnectivityStatus(result);
     });
 
-    return Consumer<GeneralState>(
-      builder: (ctx, generalState, _) => Stack(
+    return StreamBuilder(
+      stream: authBloc.isAuth,
+      builder: (ctx, AsyncSnapshot<bool> snapshot) => Stack(
         children: [
-          generalState.isAuth ? TabsScreen() : AuthScreen(),
-          generalState.hasNetwork
-              ? SizedBox.shrink()
-              : Positioned(
-                  top: MediaQuery.of(context).padding.top + 12,
-                  left: 8,
-                  child: Container(
-                    child: Text(
-                      "Tu dispositivo está desconectado de internet",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
-                    width: MediaQuery.of(context).size.width - 16,
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.red.shade600,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                  ),
-                ),
+          snapshot.data == true ? TabsScreen() : AuthScreen(),
+          // generalState.hasNetwork
+          //     ? SizedBox.shrink()
+          //     : Positioned(
+          //         top: MediaQuery.of(context).padding.top + 12,
+          //         left: 8,
+          //         child: Container(
+          //           child: Text(
+          //             "Tu dispositivo está desconectado de internet",
+          //             style: TextStyle(
+          //               color: Colors.white,
+          //               fontSize: 12,
+          //             ),
+          //           ),
+          //           width: MediaQuery.of(context).size.width - 16,
+          //           padding: EdgeInsets.all(8),
+          //           decoration: BoxDecoration(
+          //             color: Colors.red.shade600,
+          //             borderRadius: BorderRadius.circular(6),
+          //           ),
+          //         ),
+          //       ),
         ],
       ),
     );

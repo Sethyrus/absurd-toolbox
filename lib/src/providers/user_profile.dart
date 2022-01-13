@@ -1,12 +1,12 @@
 import 'dart:async';
+import 'package:absurd_toolbox/src/blocs/auth_bloc.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/profile_data.dart';
-import 'package:absurd_toolbox/src/providers/general_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserProfile with ChangeNotifier {
-  final GeneralState _authProvider;
   UserProfileData _profileData = UserProfileData(
     email: '',
     username: '',
@@ -19,8 +19,6 @@ class UserProfile with ChangeNotifier {
       FirebaseFirestore.instance.collection('users');
   StreamSubscription<DocumentSnapshot<Object?>>? _sub;
 
-  UserProfile(this._authProvider);
-
   UserProfileData get userProfileData {
     return UserProfileData(
       email: _profileData.email,
@@ -30,14 +28,17 @@ class UserProfile with ChangeNotifier {
     );
   }
 
-  void createProfile() {
+  void createProfile() async {
     log(key: "Create new profile");
-    _profilesCollection.doc(_authProvider.userID).set(
+
+    final User? userData = await authBloc.userData.first;
+
+    _profilesCollection.doc(userData!.uid).set(
           UserProfileData(
-            email: _authProvider.userData?.email ?? "",
-            username: _authProvider.userData?.email?.substring(
+            email: userData.email ?? "",
+            username: userData.email?.substring(
                   0,
-                  _authProvider.userData?.email?.indexOf("@"),
+                  userData.email?.indexOf("@"),
                 ) ??
                 "",
             description: "Perfil de Absurd Toolbox",
@@ -49,13 +50,13 @@ class UserProfile with ChangeNotifier {
 
   void reloadProfileData() {
     log(key: "Start listening for user profile changes");
+
+    final String? userId = authBloc.userIdSync;
+
     if (!_loaded && !_loading) {
       _loading = true;
 
-      _sub = _profilesCollection
-          .doc(_authProvider.userID)
-          .snapshots()
-          .listen((valueChanges) {
+      _sub = _profilesCollection.doc(userId).snapshots().listen((valueChanges) {
         log(key: "User profile changed", value: valueChanges.data());
         final data = valueChanges.data() as Map<String, dynamic>?;
 

@@ -2,6 +2,7 @@ import 'package:absurd_toolbox/src/app_wrapper.dart';
 import 'package:absurd_toolbox/src/providers/general_state.dart';
 import 'package:absurd_toolbox/src/providers/notes.dart';
 import 'package:absurd_toolbox/src/providers/user_profile.dart';
+import 'package:absurd_toolbox/src/blocs/auth_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -36,6 +37,8 @@ class MyMaterialApp extends StatelessWidget {
         }
       },
     );
+
+    authBloc.initAuthSubscription();
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       AndroidGoogleMapsFlutter.useAndroidViewSurface = true;

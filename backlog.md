@@ -20,7 +20,11 @@
 - [ ] Al iniciar la app (con sesión previa) aparece un error de Notes y UserProfile en la consola de depuración (used after being disposed)
 - [x] El alert al eliminar varias notas retrocede a home en lugar de cerrarse
 
-# Resources:
+# Useful resources:
 - https://docs.flutter.dev/cookbook/effects/nested-nav
-- https://medium.com/codechai/architecting-your-flutter-project-bd04e144a8f1
-- https://www.didierboelens.com/2018/12/reactive-programming-streams-bloc-practical-use-cases/
+- BLoC
+  - https://medium.com/codechai/architecting-your-flutter-project-bd04e144a8f1
+  - https://www.didierboelens.com/2018/12/reactive-programming-streams-bloc-practical-use-cases/
+  - https://www.mobindustry.net/blog/how-to-implement-the-bloc-architecture-in-flutter-benefits-and-best-practices/
+  - https://medium.com/codechai/effective-bloc-pattern-45c36d76d5fe
+  - https://medium.com/codechai/when-firebase-meets-bloc-pattern-fb5c405597e0
