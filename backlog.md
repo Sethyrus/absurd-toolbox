@@ -1,7 +1,7 @@
 # TODO
-- [ ] Mover claves de API a un archivo .env, fuera de git
-- [ ] Buscar cómo pasar el estado de la red a los demás providers (incluso a los que ya reciben uno)
 - [ ] Investigar sobre el patrón BLoC
+- [ ] Buscar cómo pasar el estado de la red a los demás providers (incluso a los que ya reciben uno)
+- [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] Documentar/Añadir comentarios al código
 - [ ] Funcionalidad para todos los campos de las notas (pinned, archived y demás)
 - - [ ] Poder modificar color de las notas
