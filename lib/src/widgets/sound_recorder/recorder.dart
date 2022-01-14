@@ -1,11 +1,11 @@
 import 'dart:io';
+import 'package:absurd_toolbox/src/blocs/permissions_bloc.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
-import 'package:absurd_toolbox/src/providers/permissions.dart';
+import 'package:absurd_toolbox/src/models/app_permissions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 class Recorder extends StatefulWidget {
   @override
@@ -181,11 +181,11 @@ class _RecorderState extends State<Recorder> {
     });
   }
 
-  List<Widget>? _getErrors(Permissions permissionsProvider) {
+  List<Widget>? _getErrors(AppPermissions permissions) {
     List<String> errors = [];
 
     // TODO comprobar si es necesario, en iOS parece funcionar el micrófono aún habiendo rechazado el permiso
-    if (permissionsProvider.permissions.microphone != PermissionStatus.granted)
+    if (permissions.microphone != PermissionStatus.granted)
       errors.add('Debes conceder acceso al micrófono');
 
     if (!_isCodecSupported)
@@ -218,14 +218,15 @@ class _RecorderState extends State<Recorder> {
   @override
   Widget build(BuildContext context) {
     if (_isInit()) {
-      return Consumer<Permissions>(
-        builder: (context, permissions, child) {
+      return StreamBuilder(
+        stream: permissionsBloc.permissions,
+        builder: (ctx, AsyncSnapshot<AppPermissions> permissions) {
           return Container(
             padding: EdgeInsets.all(8),
             width: double.infinity,
             height: double.infinity,
             child: Column(
-              children: _getErrors(permissions) ??
+              children: _getErrors(permissions.data ?? AppPermissions()) ??
                   [
                     Container(
                         child: Column(children: [

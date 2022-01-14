@@ -1,8 +1,7 @@
-import 'package:absurd_toolbox/src/providers/notes.dart';
+import 'package:absurd_toolbox/src/blocs/notes_bloc.dart';
+import 'package:absurd_toolbox/src/blocs/user_profile_bloc.dart';
 import 'package:absurd_toolbox/src/navigator.dart';
-import 'package:absurd_toolbox/src/providers/user_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);
@@ -14,18 +13,18 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   int _currentIndex = 0;
 
-  Route _onGenerateRoute(RouteSettings settings, index) {
-    final Widget page = appNavigator[index]
-        .routes
-        .firstWhere((route) => route.route == settings.name)
-        .screen;
+  @override
+  void initState() {
+    super.initState();
+    notesBloc.initNotesSubscription();
+    userProfileBloc.initUserProfileSubscription();
+  }
 
-    return MaterialPageRoute<dynamic>(
-      builder: (context) {
-        return page;
-      },
-      settings: settings,
-    );
+  @override
+  void dispose() {
+    notesBloc.cancelSubscriptions();
+    userProfileBloc.cancelSubscriptions();
+    super.dispose();
   }
 
   /// Al retroceder (usando la vía nativa del dispositivo, como swipe lateral o
@@ -52,30 +51,38 @@ class _TabsScreenState extends State<TabsScreen> {
     }
   }
 
+  Route _onGenerateRoute(RouteSettings settings, index) {
+    final Widget page = appNavigator[index]
+        .routes
+        .firstWhere((route) => route.route == settings.name)
+        .screen;
+
+    return MaterialPageRoute<dynamic>(
+      builder: (context) {
+        return page;
+      },
+      settings: settings,
+    );
+  }
+
   /// Al pulsar sobre un tab, primero se comprueba si es el tab activo. Si lo
   /// es, se retrocede en el Navigator correspondiente hasta su página inicial;
   /// si no, se establece el tab seleccionado como tab activo
   void _onTabNavigation(int val, BuildContext context) {
     if (_currentIndex == val) {
-      appNavigator[_currentIndex].navigator.currentState!.popUntil(
-            (route) => route.isFirst,
-          );
+      appNavigator[_currentIndex]
+          .navigator
+          .currentState!
+          .popUntil((route) => route.isFirst);
     } else {
       if (mounted) {
-        setState(() {
-          _currentIndex = val;
-        });
+        setState(() => _currentIndex = val);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final notesProvider = Provider.of<Notes>(context, listen: false);
-    final profileProvider = Provider.of<UserProfile>(context, listen: false);
-    notesProvider.reloadNotes();
-    profileProvider.reloadProfileData();
-
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -85,10 +92,12 @@ class _TabsScreenState extends State<TabsScreen> {
             appNavigator.length,
             (index) => Navigator(
               key: appNavigator[index].navigator,
-              onGenerateRoute: (RouteSettings settings) => _onGenerateRoute(
-                settings,
-                index,
-              ),
+              onGenerateRoute: (RouteSettings settings) {
+                return _onGenerateRoute(
+                  settings,
+                  index,
+                );
+              },
             ),
           ),
         ),

@@ -1,9 +1,8 @@
+import 'package:absurd_toolbox/src/blocs/notes_bloc.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
-import 'package:absurd_toolbox/src/providers/notes.dart';
 import 'package:uuid/uuid.dart';
 
 class NoteScreen extends StatefulWidget {
@@ -48,15 +47,9 @@ class _NoteScreenState extends State<NoteScreen> {
       final noteId = ModalRoute.of(context)!.settings.arguments as String?;
 
       if (noteId != null) {
-        _originalNote = Provider.of<Notes>(
-          context,
-          listen: false,
-        ).findById(noteId);
+        _originalNote = notesBloc.findById(noteId);
 
-        _editedNote = Provider.of<Notes>(
-          context,
-          listen: false,
-        ).findById(noteId);
+        _editedNote = notesBloc.findById(noteId);
       }
     }
 
@@ -73,12 +66,10 @@ class _NoteScreenState extends State<NoteScreen> {
     _form.currentState!.save();
 
     if (_editedNote.title != '' || _editedNote.content != '') {
-      Notes notesProvider = Provider.of<Notes>(context, listen: false);
-
       if (_editedNote.id == "") {
         log(key: 'Save new note', value: _editedNote.toJson());
 
-        notesProvider.addNote(
+        notesBloc.addNote(
           Note(
             id: Uuid().v4(),
             title: _editedNote.title,
@@ -86,8 +77,8 @@ class _NoteScreenState extends State<NoteScreen> {
             tags: _editedNote.tags,
             pinned: _editedNote.pinned,
             archived: _editedNote.archived,
-            order: notesProvider.items.length > 0
-                ? notesProvider.items[notesProvider.items.length - 1].order + 1
+            order: notesBloc.notesSync.length > 0
+                ? notesBloc.notesSync[notesBloc.notesSync.length - 1].order + 1
                 : 0,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
@@ -99,7 +90,7 @@ class _NoteScreenState extends State<NoteScreen> {
             _originalNote.content == _editedNote.content)) {
           log(key: 'Edit note', value: _editedNote.toJson());
 
-          notesProvider.updateNote(
+          notesBloc.updateNote(
             Note(
               id: _editedNote.id,
               title: _editedNote.title,
@@ -149,10 +140,7 @@ class _NoteScreenState extends State<NoteScreen> {
             ),
             TextButton(
               onPressed: () {
-                Provider.of<Notes>(
-                  context,
-                  listen: false,
-                ).deleteNote(_editedNote);
+                notesBloc.deleteNote(_editedNote);
 
                 // Se lanza 2 veces, la primera cierra el alert y la segunda vuelve al listado de notas
                 Navigator.pop(alertCtx);

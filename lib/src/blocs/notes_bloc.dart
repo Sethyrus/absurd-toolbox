@@ -1,21 +1,19 @@
 import 'dart:async';
 import 'package:absurd_toolbox/src/blocs/auth_bloc.dart';
+import 'package:absurd_toolbox/src/blocs/connectivity_bloc.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rxdart/rxdart.dart';
 
-class Notes with ChangeNotifier {
-  List<Note> _items = [];
-  bool _loading = false;
-  bool _loaded = false;
-  CollectionReference _notesCollection =
+class NotesBloc {
+  final _notesFetcher = BehaviorSubject<List<Note>>()..startWith([]);
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _firebaseNotesSub;
+  final CollectionReference _notesCollection =
       FirebaseFirestore.instance.collection('notes');
-  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _sub;
 
-  List<Note> get items {
-    return [..._items];
-  }
+  List<Note> get notesSync => _notesFetcher.value;
+  Stream<List<Note>> get notes => _notesFetcher.stream;
 
   void addNote(Note note) async {
     log(key: "Add note", value: note.title);
@@ -78,60 +76,29 @@ class Notes with ChangeNotifier {
     });
   }
 
-  void reloadNotes() {
-    if (!_loaded && !_loading) {
-      log(key: "Start listening for notes changes");
-      _loading = true;
-
-      final String? userId = authBloc.userIdSync;
-
-      _sub = _notesCollection
-          .doc(userId)
-          .collection('items')
-          .snapshots()
-          .listen((valueChanges) {
-        log(key: "Notes changed", value: valueChanges.docs);
-        _items = valueChanges.docs
-            .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
-            .toList()
-          ..sort((Note a, Note b) {
-            if (a.order == b.order) return 0;
-
-            if (a.order > b.order) {
-              return 1;
-            } else {
-              return -1;
-            }
-          });
-
-        _loaded = true;
-        _loading = false;
-
-        notifyListeners();
-      });
-    }
-  }
-
   void reorderNote({
     required Note note,
     required int newPosition,
   }) {
     log(key: "Reorder note: ${note.id} to position: $newPosition");
-    _items.removeAt(
-      _items.indexWhere((item) => item.id == note.id),
+
+    final List<Note> notes = [...notesSync];
+
+    notes.removeAt(
+      notes.indexWhere((item) => item.id == note.id),
     );
 
-    _items.insert(
+    notes.insert(
       newPosition,
       note,
     );
 
-    resetNotesOrder();
+    resetNotesOrder(notes: notes);
   }
 
-  void resetNotesOrder() {
+  void resetNotesOrder({List<Note>? notes}) {
     log(key: "Reset notes order");
-    items.asMap().forEach((index, note) {
+    (notes ?? notesSync).asMap().forEach((index, note) {
       if (note.order != index) {
         updateNote(
           Note(
@@ -150,10 +117,54 @@ class Notes with ChangeNotifier {
     });
   }
 
-  void cancelSubscriptions() {
-    log(key: "Cancel notes subscriptions");
-    _sub?.cancel();
+  void initNotesSubscription() {
+    log(
+      key: "Trying to init notes subscription",
+      value: "Already started: ${_firebaseNotesSub != null}",
+    );
+
+    connectivityBloc.hasNetwork.listen((hasNetwork) {
+      if (hasNetwork) {
+        if (_firebaseNotesSub == null) {
+          _firebaseNotesSub = _notesCollection
+              .doc(authBloc.userIdSync)
+              .collection('items')
+              .snapshots()
+              .listen((valueChanges) {
+            log(key: "Notes changed", value: valueChanges.docs);
+            List<Note> notes = valueChanges.docs
+                .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
+                .toList()
+              ..sort((Note a, Note b) {
+                if (a.order == b.order) return 0;
+
+                if (a.order > b.order) {
+                  return 1;
+                } else {
+                  return -1;
+                }
+              });
+            _notesFetcher.sink.add(notes);
+          });
+        }
+      } else {
+        cancelSubscriptions();
+      }
+    });
   }
 
-  Note findById(String id) => _items.firstWhere((element) => element.id == id);
+  Note findById(String id) => notesSync.firstWhere((note) => note.id == id);
+
+  void cancelSubscriptions() {
+    _firebaseNotesSub?.cancel();
+    _firebaseNotesSub = null;
+  }
+
+  void dispose() {
+    _firebaseNotesSub?.cancel();
+    _firebaseNotesSub = null;
+    _notesFetcher.close();
+  }
 }
+
+final notesBloc = NotesBloc();

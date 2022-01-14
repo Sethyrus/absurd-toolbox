@@ -3,7 +3,7 @@ import 'package:absurd_toolbox/src/models/app_permissions.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class Permissions with ChangeNotifier {
+class PermissionsProvider with ChangeNotifier {
   AppPermissions _permissions = AppPermissions();
 
   AppPermissions get permissions {

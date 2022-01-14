@@ -32,6 +32,7 @@ class AuthBloc {
 
   void dispose() {
     _firebaseAuthSub?.cancel();
+    _firebaseAuthSub = null;
     _authFetcher.close();
   }
 }

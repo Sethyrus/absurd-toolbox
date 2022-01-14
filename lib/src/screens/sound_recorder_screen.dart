@@ -1,5 +1,5 @@
+import 'package:absurd_toolbox/src/blocs/permissions_bloc.dart';
 import 'package:absurd_toolbox/src/models/app_permissions.dart';
-import 'package:absurd_toolbox/src/providers/permissions.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/src/widgets/sound_recorder/recorder.dart';
 import 'package:absurd_toolbox/src/widgets/sound_recorder/recordings_list.dart';
@@ -7,7 +7,6 @@ import 'package:absurd_toolbox/src/widgets/sound_recorder/sound_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 class SoundRecorderScreen extends StatefulWidget {
   static const String routeName = '/sound-recorder';
@@ -22,15 +21,10 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
     super.initState();
 
     SchedulerBinding.instance!.addPostFrameCallback((_) async {
-      final Permissions permissionsProvider = Provider.of<Permissions>(
-        context,
-        listen: false,
-      );
-
-      if (permissionsProvider.permissions.microphone == null ||
-          permissionsProvider.permissions.microphone ==
+      if (permissionsBloc.permissionsSync.microphone == null ||
+          permissionsBloc.permissionsSync.microphone ==
               PermissionStatus.denied) {
-        permissionsProvider.setPermission(
+        permissionsBloc.setPermission(
           PermissionName.Microphone,
           await Permission.microphone.request(),
         );

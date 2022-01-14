@@ -1,7 +1,6 @@
+import 'package:absurd_toolbox/src/blocs/notes_bloc.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:absurd_toolbox/src/providers/notes.dart';
 import 'package:absurd_toolbox/src/widgets/notes/notes_list_item.dart';
 
 class NotesList extends StatelessWidget {
@@ -19,53 +18,56 @@ class NotesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<Notes>(
-      builder: (context, stateNotes, child) {
-        return Container(
-          width: double.infinity,
-          child: ListView.builder(
-            padding: EdgeInsets.all(8),
-            itemCount: stateNotes.items.length,
-            itemBuilder: (context, index) => DragTarget(
-              onWillAccept: (editedNoteId) {
-                return true;
-              },
-              onAccept: (editedNoteId) {
-                final Note changedNote = stateNotes.items
-                    .firstWhere((note) => note.id == editedNoteId);
+    return StreamBuilder(
+      stream: notesBloc.notes,
+      builder: (ctx, AsyncSnapshot<List<Note>> notes) {
+        return notes.data != null
+            ? Container(
+                width: double.infinity,
+                child: ListView.builder(
+                  padding: EdgeInsets.all(8),
+                  itemCount: notes.data!.length,
+                  itemBuilder: (context, index) => DragTarget(
+                    onWillAccept: (editedNoteId) {
+                      return true;
+                    },
+                    onAccept: (editedNoteId) {
+                      final Note changedNote = notes.data!
+                          .firstWhere((note) => note.id == editedNoteId);
 
-                stateNotes.reorderNote(
-                  note: changedNote,
-                  newPosition: index,
-                );
-              },
-              builder: (context, candidateData, rejectedData) {
-                return Draggable(
-                  data: stateNotes.items[index].id,
-                  child: NotesListItem(
-                    note: stateNotes.items[index],
-                    onTap: onNoteTap,
-                    onLongPress: onNoteLongPress,
-                    selectedNotes: selectedNotes,
+                      notesBloc.reorderNote(
+                        note: changedNote,
+                        newPosition: index,
+                      );
+                    },
+                    builder: (context, candidateData, rejectedData) {
+                      return Draggable(
+                        data: notes.data![index].id,
+                        child: NotesListItem(
+                          note: notes.data![index],
+                          onTap: onNoteTap,
+                          onLongPress: onNoteLongPress,
+                          selectedNotes: selectedNotes,
+                        ),
+                        feedback: NotesListItem(
+                          note: notes.data![index],
+                          onTap: onNoteTap,
+                          onLongPress: onNoteLongPress,
+                          // onLongPress: (_) {},
+                          selectedNotes: selectedNotes,
+                        ),
+                        childWhenDragging: NotesListItem(
+                          note: notes.data![index],
+                          onTap: (_) {},
+                          onLongPress: (_) {},
+                          selectedNotes: [notes.data![index].id],
+                        ),
+                      );
+                    },
                   ),
-                  feedback: NotesListItem(
-                    note: stateNotes.items[index],
-                    onTap: onNoteTap,
-                    onLongPress: onNoteLongPress,
-                    // onLongPress: (_) {},
-                    selectedNotes: selectedNotes,
-                  ),
-                  childWhenDragging: NotesListItem(
-                    note: stateNotes.items[index],
-                    onTap: (_) {},
-                    onLongPress: (_) {},
-                    selectedNotes: [stateNotes.items[index].id],
-                  ),
-                );
-              },
-            ),
-          ),
-        );
+                ),
+              )
+            : SizedBox.shrink();
       },
     );
   }

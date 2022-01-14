@@ -1,17 +1,17 @@
-class UserProfileData {
+class UserProfile {
   final String email;
   final String username;
   final String description;
   final String avatar;
 
-  UserProfileData({
+  UserProfile({
     required this.email,
     required this.username,
     required this.description,
     required this.avatar,
   });
 
-  UserProfileData.fromJson(Map<String, dynamic> json)
+  UserProfile.fromJson(Map<String, dynamic> json)
       : email = json['email'] ?? '',
         username = json['username'] ?? '',
         description = json['description'] ?? '',

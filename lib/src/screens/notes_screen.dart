@@ -1,9 +1,8 @@
-import 'package:absurd_toolbox/src/providers/notes.dart';
+import 'package:absurd_toolbox/src/blocs/notes_bloc.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/screens/note_screen.dart';
 import 'package:absurd_toolbox/src/widgets/notes/notes_list.dart';
-import 'package:provider/provider.dart';
 
 enum ListMode {
   Normal,
@@ -87,7 +86,7 @@ class _NotesScreenState extends State<NotesScreen> {
 
   // Borra las notas seleccionadas y sale del modo selección
   void deleteSelectedNotes() {
-    Provider.of<Notes>(context, listen: false).deleteNotes(selectedNotes);
+    notesBloc.deleteNotes(selectedNotes);
 
     setState(() {
       listMode = ListMode.Normal;
