@@ -49,12 +49,12 @@ class UserProfile with ChangeNotifier {
   }
 
   void reloadProfileData() {
-    log(key: "Start listening for user profile changes");
-
-    final String? userId = authBloc.userIdSync;
-
     if (!_loaded && !_loading) {
       _loading = true;
+
+      log(key: "Start listening for user profile changes");
+
+      final String? userId = authBloc.userIdSync;
 
       _sub = _profilesCollection.doc(userId).snapshots().listen((valueChanges) {
         log(key: "User profile changed", value: valueChanges.data());

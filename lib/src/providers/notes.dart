@@ -79,9 +79,8 @@ class Notes with ChangeNotifier {
   }
 
   void reloadNotes() {
-    log(key: "Start listening for notes changes");
-
     if (!_loaded && !_loading) {
+      log(key: "Start listening for notes changes");
       _loading = true;
 
       final String? userId = authBloc.userIdSync;
