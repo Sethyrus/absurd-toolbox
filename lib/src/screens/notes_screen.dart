@@ -27,7 +27,7 @@ class _NotesScreenState extends State<NotesScreen> {
     if (listMode == ListMode.Normal) {
       Navigator.of(context).pushNamed(
         NoteScreen.routeName,
-        arguments: "id",
+        arguments: id,
       );
     } else {
       toggleNoteSelection(id);

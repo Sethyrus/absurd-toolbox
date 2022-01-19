@@ -1,5 +1,4 @@
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
-import 'package:absurd_toolbox/src/widgets/profile/profile_details.dart';
 import 'package:absurd_toolbox/src/widgets/raffles/raffle.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/widgets/raffles/heads_or_tails.dart';

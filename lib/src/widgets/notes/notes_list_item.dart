@@ -6,16 +6,20 @@ class NotesListItem extends StatelessWidget {
   final Function(String) onTap;
   final Function(String) onLongPress;
   final List<String> selectedNotes;
+  final bool floating;
 
   const NotesListItem({
     required this.note,
     required this.onTap,
     required this.onLongPress,
     required this.selectedNotes,
+    this.floating = false,
   });
 
+  bool get isNoteSelected => selectedNotes.contains(note.id);
+
   BoxDecoration noteStyles({bool hasBorder = true}) {
-    if (!selectedNotes.contains(note.id)) {
+    if (!isNoteSelected) {
       return BoxDecoration(
         color: Colors.yellow,
         border: hasBorder
@@ -45,25 +49,33 @@ class NotesListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: noteStyles(),
       margin: EdgeInsets.only(bottom: 8),
-      width: MediaQuery.of(context).size.width - 16,
-      child: InkWell(
-        onTap: () => onTap(note.id),
-        onLongPress: () {
-          onLongPress(note.id);
-        },
-        child: Ink(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-          child: Text(
-            note.title != '' ? note.title : '(sin título)',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: floating ? noteStyles() : null,
+            width: MediaQuery.of(context).size.width - 16,
+            child: InkWell(
+              onTap: () => onTap(note.id),
+              onLongPress: () {
+                onLongPress(note.id);
+              },
+              child: Ink(
+                decoration: floating ? null : noteStyles(),
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                child: Text(
+                  note.title != '' ? note.title : '(sin título)',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

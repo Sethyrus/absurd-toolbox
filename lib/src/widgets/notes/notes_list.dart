@@ -52,9 +52,9 @@ class NotesList extends StatelessWidget {
                         feedback: NotesListItem(
                           note: notes.data![index],
                           onTap: onNoteTap,
-                          onLongPress: onNoteLongPress,
-                          // onLongPress: (_) {},
-                          selectedNotes: selectedNotes,
+                          onLongPress: (_) {},
+                          selectedNotes: [],
+                          floating: true,
                         ),
                         childWhenDragging: NotesListItem(
                           note: notes.data![index],

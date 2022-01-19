@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:absurd_toolbox/src/services/auth_service.dart';
-import 'package:absurd_toolbox/src/services/connectivity_service.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/user_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
