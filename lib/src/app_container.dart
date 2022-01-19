@@ -20,7 +20,7 @@ class AppContainer extends StatelessWidget {
         StreamBuilder(
           stream: connectivityService.hasNetwork,
           builder: (ctx, AsyncSnapshot<bool> hasNetwork) {
-            return hasNetwork.data == true
+            return !hasNetwork.hasData || hasNetwork.data == true
                 ? SizedBox.shrink()
                 : Positioned(
                     top: MediaQuery.of(context).padding.top + 12,

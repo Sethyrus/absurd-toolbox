@@ -124,39 +124,34 @@ class NotesService {
       "Already started: ${_firebaseNotesSub != null}",
     );
 
-    connectivityService.hasNetwork.listen((hasNetwork) {
-      if (hasNetwork) {
-        if (_firebaseNotesSub == null) {
-          _firebaseNotesSub = _notesCollection
-              .doc(authService.userIdSync)
-              .collection('items')
-              .snapshots()
-              .listen((valueChanges) {
-            log("Notes changed", valueChanges.docs);
-            List<Note> notes = valueChanges.docs
-                .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
-                .toList()
-              ..sort((Note a, Note b) {
-                if (a.order == b.order) return 0;
+    if (_firebaseNotesSub == null) {
+      _firebaseNotesSub = _notesCollection
+          .doc(authService.userIdSync)
+          .collection('items')
+          .snapshots()
+          .listen((valueChanges) {
+        log("Notes changed", valueChanges.docs);
+        List<Note> notes = valueChanges.docs
+            .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
+            .toList()
+          ..sort((Note a, Note b) {
+            if (a.order == b.order) return 0;
 
-                if (a.order > b.order) {
-                  return 1;
-                } else {
-                  return -1;
-                }
-              });
-            _notesFetcher.sink.add(notes);
+            if (a.order > b.order) {
+              return 1;
+            } else {
+              return -1;
+            }
           });
-        }
-      } else {
-        cancelSubscriptions();
-      }
-    });
+        _notesFetcher.sink.add(notes);
+      });
+    }
   }
 
   Note? findById(String id) => notesSync.firstWhereOrNull((n) => n.id == id);
 
   void cancelSubscriptions() {
+    log("Cancel notes subscriptions");
     _firebaseNotesSub?.cancel();
     _firebaseNotesSub = null;
   }
