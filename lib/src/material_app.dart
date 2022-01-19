@@ -13,8 +13,8 @@ FirebaseAuth auth = FirebaseAuth.instance;
 class MyMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    authService.initAuthSubscription();
     connectivityService.initConnectivitySubscription();
+    authService.initAuthSubscription();
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       AndroidGoogleMapsFlutter.useAndroidViewSurface = true;

@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 class ConnectivityService {
   final _connectivityFetcher = BehaviorSubject<ConnectivityResult>()
-    ..startWith(ConnectivityResult.wifi);
+    ..startWith(ConnectivityResult.none);
   StreamSubscription<ConnectivityResult>? _firebaseConnectivitySub;
 
   Stream<bool> get hasNetwork => _connectivityFetcher.stream.map(
@@ -21,10 +21,7 @@ class ConnectivityService {
     if (_firebaseConnectivitySub == null) {
       Connectivity().checkConnectivity().then((result) {
         log("First connectivity check", result);
-
-        if (result != ConnectivityResult.none) {
-          _connectivityFetcher.sink.add(result);
-        }
+        _connectivityFetcher.sink.add(result);
       });
 
       Connectivity().onConnectivityChanged.listen((result) {

@@ -23,21 +23,21 @@ class AppContainer extends StatelessWidget {
             return !hasNetwork.hasData || hasNetwork.data == true
                 ? SizedBox.shrink()
                 : Positioned(
-                    top: MediaQuery.of(context).padding.top + 12,
-                    left: 8,
-                    child: Container(
-                      child: Text(
-                        "Tu dispositivo está desconectado de internet",
-                        style: TextStyle(
+                    top: MediaQuery.of(context).padding.top + 2,
+                    right: 2,
+                    child: IgnorePointer(
+                      ignoring: true,
+                      child: Container(
+                        child: Icon(
+                          Icons.wifi_off,
                           color: Colors.white,
-                          fontSize: 12,
+                          size: 16,
                         ),
-                      ),
-                      width: MediaQuery.of(context).size.width - 16,
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade600,
-                        borderRadius: BorderRadius.circular(6),
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade600,
+                          borderRadius: BorderRadius.circular(256),
+                        ),
                       ),
                     ),
                   );
