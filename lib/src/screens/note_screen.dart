@@ -1,4 +1,4 @@
-import 'package:absurd_toolbox/src/blocs/notes_bloc.dart';
+import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
@@ -47,9 +47,21 @@ class _NoteScreenState extends State<NoteScreen> {
       final noteId = ModalRoute.of(context)!.settings.arguments as String?;
 
       if (noteId != null) {
-        _originalNote = notesBloc.findById(noteId);
+        final foundNote = notesService.findById(noteId);
 
-        _editedNote = notesBloc.findById(noteId);
+        if (foundNote != null) {
+          _originalNote = foundNote.clone();
+          _editedNote = foundNote.clone();
+          return;
+        } else {
+          Future.delayed(const Duration(milliseconds: 10), () {
+            showToast(context, "No se ha podido encontrar la nota");
+          });
+        }
+
+        Navigator.of(context).pop();
+
+        // return;
       }
     }
 
@@ -67,9 +79,9 @@ class _NoteScreenState extends State<NoteScreen> {
 
     if (_editedNote.title != '' || _editedNote.content != '') {
       if (_editedNote.id == "") {
-        log(key: 'Save new note', value: _editedNote.toJson());
+        log('Save new note', _editedNote.toJson());
 
-        notesBloc.addNote(
+        notesService.addNote(
           Note(
             id: Uuid().v4(),
             title: _editedNote.title,
@@ -77,8 +89,10 @@ class _NoteScreenState extends State<NoteScreen> {
             tags: _editedNote.tags,
             pinned: _editedNote.pinned,
             archived: _editedNote.archived,
-            order: notesBloc.notesSync.length > 0
-                ? notesBloc.notesSync[notesBloc.notesSync.length - 1].order + 1
+            order: notesService.notesSync.length > 0
+                ? notesService
+                        .notesSync[notesService.notesSync.length - 1].order +
+                    1
                 : 0,
             createdAt: DateTime.now(),
             updatedAt: DateTime.now(),
@@ -88,9 +102,9 @@ class _NoteScreenState extends State<NoteScreen> {
         // Se comprueba si se han hecho cambios para actualizar solo en ese caso
         if (!(_originalNote.title == _editedNote.title &&
             _originalNote.content == _editedNote.content)) {
-          log(key: 'Edit note', value: _editedNote.toJson());
+          log('Edit note', _editedNote.toJson());
 
-          notesBloc.updateNote(
+          notesService.updateNote(
             Note(
               id: _editedNote.id,
               title: _editedNote.title,
@@ -109,14 +123,7 @@ class _NoteScreenState extends State<NoteScreen> {
       if (popScreen) Navigator.pop(context);
     } else {
       if (_editedNote.id != '') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: Text("No se pueden guardar notas vacías"),
-            duration: Duration(seconds: 3),
-          ),
-        );
-
+        showToast(context, "No se pueden guardar notas vacías");
         return false;
       }
     }
@@ -140,7 +147,7 @@ class _NoteScreenState extends State<NoteScreen> {
             ),
             TextButton(
               onPressed: () {
-                notesBloc.deleteNote(_editedNote);
+                notesService.deleteNote(_editedNote);
 
                 // Se lanza 2 veces, la primera cierra el alert y la segunda vuelve al listado de notas
                 Navigator.pop(alertCtx);

@@ -1,7 +1,5 @@
-import 'package:absurd_toolbox/src/providers/permissions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:provider/provider.dart';
 import 'package:absurd_toolbox/src/material_app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'src/firebase_options.dart';
@@ -37,16 +35,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<PermissionsProvider>(
-            create: (_) => PermissionsProvider()),
-      ],
-      child: GestureDetector(
-        // Elimina el foco de cualquier input al pulsar sobre un espacio libre
-        onTap: () => FocusScope.of(context).requestFocus(_focusNode),
-        child: MyMaterialApp(),
-      ),
+    return GestureDetector(
+      // Elimina el foco de cualquier input al pulsar sobre un espacio libre
+      onTap: () => FocusScope.of(context).requestFocus(_focusNode),
+      child: MyMaterialApp(),
     );
   }
 }

@@ -23,6 +23,20 @@ class Note {
     required this.updatedAt,
   });
 
+  Note clone() {
+    return Note(
+      id: id,
+      title: title,
+      content: content,
+      tags: tags,
+      pinned: pinned,
+      archived: archived,
+      order: order,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+  }
+
   Note.fromJson(Map<String, dynamic> json)
       : id = json['id'] ?? '',
         title = json['title'] ?? '',

@@ -3,7 +3,7 @@ import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ConnectivityBloc {
+class ConnectivityService {
   final _connectivityFetcher = BehaviorSubject<ConnectivityResult>()
     ..startWith(ConnectivityResult.wifi);
   StreamSubscription<ConnectivityResult>? _firebaseConnectivitySub;
@@ -14,13 +14,13 @@ class ConnectivityBloc {
 
   void initConnectivitySubscription() {
     log(
-      key: "Trying to init connectivity subscription",
-      value: "Already started: ${_firebaseConnectivitySub != null}",
+      "Trying to init connectivity subscription",
+      "Already started: ${_firebaseConnectivitySub != null}",
     );
 
     if (_firebaseConnectivitySub == null) {
       Connectivity().checkConnectivity().then((result) {
-        log(key: "First connectivity check", value: result);
+        log("First connectivity check", result);
 
         if (result != ConnectivityResult.none) {
           _connectivityFetcher.sink.add(result);
@@ -28,7 +28,7 @@ class ConnectivityBloc {
       });
 
       Connectivity().onConnectivityChanged.listen((result) {
-        log(key: "Connectivity change", value: result);
+        log("Connectivity change", result);
         _connectivityFetcher.sink.add(result);
       });
     }
@@ -41,4 +41,4 @@ class ConnectivityBloc {
   }
 }
 
-final connectivityBloc = ConnectivityBloc();
+final connectivityService = ConnectivityService();

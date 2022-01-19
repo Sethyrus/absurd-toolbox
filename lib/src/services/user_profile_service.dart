@@ -1,13 +1,13 @@
 import 'dart:async';
-import 'package:absurd_toolbox/src/blocs/auth_bloc.dart';
-import 'package:absurd_toolbox/src/blocs/connectivity_bloc.dart';
+import 'package:absurd_toolbox/src/services/auth_service.dart';
+import 'package:absurd_toolbox/src/services/connectivity_service.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/user_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
-class UserProfileBloc {
+class UserProfileService {
   final _userProfileFetcher = BehaviorSubject<UserProfile>()
     ..startWith(
       UserProfile(
@@ -24,7 +24,7 @@ class UserProfileBloc {
   Stream<UserProfile> get userProfile => _userProfileFetcher.stream;
 
   void createProfile() async {
-    final User? userData = await authBloc.userData.first;
+    final User? userData = await authService.userData.first;
 
     final newUser = UserProfile(
       email: userData?.email ?? "",
@@ -38,25 +38,25 @@ class UserProfileBloc {
           "https://firebasestorage.googleapis.com/v0/b/absurdtoolbox.appspot.com/o/public%2Fuser-2451533-2082543.png?alt=media",
     ).toJson();
 
-    log(key: "Create new user profile", value: newUser);
+    log("Create new user profile", newUser);
 
     _usersCollection.doc(userData!.uid).set(newUser);
   }
 
   void initUserProfileSubscription() {
     log(
-      key: "Trying to init user profile subscription",
-      value: "Already started: ${_firebaseUserProfileSub != null}",
+      "Trying to init user profile subscription",
+      "Already started: ${_firebaseUserProfileSub != null}",
     );
 
-    connectivityBloc.hasNetwork.listen((hasNetwork) {
+    connectivityService.hasNetwork.listen((hasNetwork) {
       if (hasNetwork) {
         if (_firebaseUserProfileSub == null) {
           _firebaseUserProfileSub = _usersCollection
-              .doc(authBloc.userIdSync)
+              .doc(authService.userIdSync)
               .snapshots()
               .listen((valueChanges) {
-            log(key: "User profile changed", value: valueChanges.data());
+            log("User profile changed", valueChanges.data());
             final data = valueChanges.data() as Map<String, dynamic>?;
 
             if (data == null) {
@@ -84,4 +84,4 @@ class UserProfileBloc {
   }
 }
 
-final userProfileBloc = UserProfileBloc();
+final userProfileService = UserProfileService();

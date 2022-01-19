@@ -1,4 +1,4 @@
-import 'package:absurd_toolbox/src/blocs/notes_bloc.dart';
+import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/screens/note_screen.dart';
@@ -27,7 +27,7 @@ class _NotesScreenState extends State<NotesScreen> {
     if (listMode == ListMode.Normal) {
       Navigator.of(context).pushNamed(
         NoteScreen.routeName,
-        arguments: id,
+        arguments: "id",
       );
     } else {
       toggleNoteSelection(id);
@@ -86,7 +86,7 @@ class _NotesScreenState extends State<NotesScreen> {
 
   // Borra las notas seleccionadas y sale del modo selección
   void deleteSelectedNotes() {
-    notesBloc.deleteNotes(selectedNotes);
+    notesService.deleteNotes(selectedNotes);
 
     setState(() {
       listMode = ListMode.Normal;

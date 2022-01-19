@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'package:absurd_toolbox/src/blocs/auth_bloc.dart';
-import 'package:absurd_toolbox/src/blocs/connectivity_bloc.dart';
+import 'package:absurd_toolbox/src/services/auth_service.dart';
+import 'package:absurd_toolbox/src/services/connectivity_service.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:collection/collection.dart';
 
-class NotesBloc {
+class NotesService {
   final _notesFetcher = BehaviorSubject<List<Note>>()..startWith([]);
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _firebaseNotesSub;
   final CollectionReference _notesCollection =
@@ -16,23 +17,23 @@ class NotesBloc {
   Stream<List<Note>> get notes => _notesFetcher.stream;
 
   void addNote(Note note) async {
-    log(key: "Add note", value: note.title);
+    log("Add note", note.title);
 
-    final String? userId = authBloc.userIdSync;
+    final String? userId = authService.userIdSync;
 
     _notesCollection
         .doc(userId)
         .collection("items")
         .add(note.toJson()..remove("id"))
         .catchError((error) {
-      log(key: "Failed to add note", value: error);
+      log("Failed to add note", error);
     });
   }
 
   void updateNote(Note note) async {
-    log(key: "Update note", value: note.id);
+    log("Update note", note.id);
 
-    final String? userId = authBloc.userIdSync;
+    final String? userId = authService.userIdSync;
 
     _notesCollection
         .doc(userId)
@@ -40,14 +41,14 @@ class NotesBloc {
         .doc(note.id)
         .update(note.toJson()..remove("id"))
         .catchError((error) {
-      log(key: "Failed to update note", value: error);
+      log("Failed to update note", error);
     });
   }
 
   void deleteNote(Note note) async {
-    log(key: "Delete note", value: note.id);
+    log("Delete note", note.id);
 
-    final String? userId = authBloc.userIdSync;
+    final String? userId = authService.userIdSync;
 
     _notesCollection
         .doc(userId)
@@ -55,14 +56,14 @@ class NotesBloc {
         .doc(note.id)
         .delete()
         .catchError((error) {
-      log(key: "Failed to delete note", value: error);
+      log("Failed to delete note", error);
     });
   }
 
   void deleteNotes(List<String> noteIds) async {
-    log(key: "Delete notes", value: noteIds);
+    log("Delete notes", noteIds);
 
-    final String? userId = authBloc.userIdSync;
+    final String? userId = authService.userIdSync;
 
     noteIds.forEach((id) {
       _notesCollection
@@ -71,7 +72,7 @@ class NotesBloc {
           .doc(id)
           .delete()
           .catchError((error) {
-        log(key: "Failed to delete note", value: error);
+        log("Failed to delete note", error);
       });
     });
   }
@@ -80,7 +81,7 @@ class NotesBloc {
     required Note note,
     required int newPosition,
   }) {
-    log(key: "Reorder note: ${note.id} to position: $newPosition");
+    log("Reorder note: ${note.id} to position: $newPosition");
 
     final List<Note> notes = [...notesSync];
 
@@ -97,7 +98,7 @@ class NotesBloc {
   }
 
   void resetNotesOrder({List<Note>? notes}) {
-    log(key: "Reset notes order");
+    log("Reset notes order");
     (notes ?? notesSync).asMap().forEach((index, note) {
       if (note.order != index) {
         updateNote(
@@ -119,19 +120,19 @@ class NotesBloc {
 
   void initNotesSubscription() {
     log(
-      key: "Trying to init notes subscription",
-      value: "Already started: ${_firebaseNotesSub != null}",
+      "Trying to init notes subscription",
+      "Already started: ${_firebaseNotesSub != null}",
     );
 
-    connectivityBloc.hasNetwork.listen((hasNetwork) {
+    connectivityService.hasNetwork.listen((hasNetwork) {
       if (hasNetwork) {
         if (_firebaseNotesSub == null) {
           _firebaseNotesSub = _notesCollection
-              .doc(authBloc.userIdSync)
+              .doc(authService.userIdSync)
               .collection('items')
               .snapshots()
               .listen((valueChanges) {
-            log(key: "Notes changed", value: valueChanges.docs);
+            log("Notes changed", valueChanges.docs);
             List<Note> notes = valueChanges.docs
                 .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
                 .toList()
@@ -153,7 +154,7 @@ class NotesBloc {
     });
   }
 
-  Note findById(String id) => notesSync.firstWhere((note) => note.id == id);
+  Note? findById(String id) => notesSync.firstWhereOrNull((n) => n.id == id);
 
   void cancelSubscriptions() {
     _firebaseNotesSub?.cancel();
@@ -167,4 +168,4 @@ class NotesBloc {
   }
 }
 
-final notesBloc = NotesBloc();
+final notesService = NotesService();

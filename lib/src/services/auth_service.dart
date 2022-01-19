@@ -3,7 +3,7 @@ import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
-class AuthBloc {
+class AuthService {
   final _authFetcher = BehaviorSubject<User?>();
   StreamSubscription<User?>? _firebaseAuthSub;
 
@@ -17,14 +17,14 @@ class AuthBloc {
 
   void initAuthSubscription() {
     log(
-      key: "Trying to init auth subscription",
-      value: "Already started: ${_firebaseAuthSub != null}",
+      "Trying to init auth subscription",
+      "Already started: ${_firebaseAuthSub != null}",
     );
 
     if (_firebaseAuthSub == null)
       _firebaseAuthSub = FirebaseAuth.instance.authStateChanges().listen(
         (User? user) {
-          log(key: "Auth changed", value: user);
+          log("Auth changed", user);
           _authFetcher.sink.add(user);
         },
       );
@@ -37,4 +37,4 @@ class AuthBloc {
   }
 }
 
-final authBloc = AuthBloc();
+final authService = AuthService();

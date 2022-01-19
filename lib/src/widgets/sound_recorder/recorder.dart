@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:absurd_toolbox/src/blocs/permissions_bloc.dart';
+import 'package:absurd_toolbox/src/services/permissions_service.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/app_permissions.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +98,7 @@ class _RecorderState extends State<Recorder> {
   }
 
   void _startRecording() {
-    log(key: 'Start recording');
+    log('Start recording');
 
     _recorder!
         .startRecorder(
@@ -115,7 +115,7 @@ class _RecorderState extends State<Recorder> {
   }
 
   void _stopRecording() async {
-    log(key: 'Stop recording');
+    log('Stop recording');
 
     await _recorder!.stopRecorder().then((value) {
       setState(() {
@@ -151,7 +151,7 @@ class _RecorderState extends State<Recorder> {
       File(_getTempRecordingFullPath())
           .renameSync(appDocumentsDirectory.path + '/recordings/' + fileName);
     } on FileSystemException catch (e) {
-      log(key: "Saving record method 2", value: e);
+      log("Saving record method 2", e);
 
       File(_getTempRecordingFullPath())
           .copySync(appDocumentsDirectory.path + '/recordings/' + fileName);
@@ -219,14 +219,18 @@ class _RecorderState extends State<Recorder> {
   Widget build(BuildContext context) {
     if (_isInit()) {
       return StreamBuilder(
-        stream: permissionsBloc.permissions,
+        stream: permissionsService.permissions,
         builder: (ctx, AsyncSnapshot<AppPermissions> permissions) {
           return Container(
             padding: EdgeInsets.all(8),
             width: double.infinity,
             height: double.infinity,
             child: Column(
-              children: _getErrors(permissions.data ?? AppPermissions()) ??
+              children: _getErrors(
+                    permissions.hasData
+                        ? (permissions.data ?? AppPermissions())
+                        : AppPermissions(),
+                  ) ??
                   [
                     Container(
                         child: Column(children: [

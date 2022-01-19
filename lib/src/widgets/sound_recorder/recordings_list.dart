@@ -1,11 +1,9 @@
 import 'dart:io';
 import 'package:absurd_toolbox/src/helpers.dart';
-import 'package:absurd_toolbox/src/providers/permissions.dart';
 import 'package:absurd_toolbox/src/widgets/sound_recorder/recordings_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class RecordingsList extends StatefulWidget {
   @override
@@ -50,7 +48,7 @@ class _RecordingsListState extends State<RecordingsList> {
         .listSync()
         .toList();
 
-    log(key: 'Recordings', value: _recordings);
+    log('Recordings', _recordings);
   }
 
   void _playRecording(FileSystemEntity file) {

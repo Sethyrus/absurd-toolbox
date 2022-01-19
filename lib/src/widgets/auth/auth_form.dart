@@ -43,16 +43,13 @@ class _AuthFormState extends State<AuthForm> {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        log(
-            key: "FirebaseAuthException",
-            value: 'The password provided is too weak.');
+        log("FirebaseAuthException", 'The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        log(
-            key: "FirebaseAuthException",
-            value: 'The account already exists for that email.');
+        log("FirebaseAuthException",
+            'The account already exists for that email.');
       }
     } catch (e) {
-      log(key: "FirebaseAuthException uncontrolled", value: e);
+      log("FirebaseAuthException uncontrolled", e);
     }
 
     EasyLoading.dismiss();
@@ -69,13 +66,9 @@ class _AuthFormState extends State<AuthForm> {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        log(
-            key: "FirebaseAuthException",
-            value: 'No user found for that email.');
+        log("FirebaseAuthException", 'No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        log(
-            key: "FirebaseAuthException",
-            value: 'Wrong password provided for that user.');
+        log("FirebaseAuthException", 'Wrong password provided for that user.');
       }
     }
 

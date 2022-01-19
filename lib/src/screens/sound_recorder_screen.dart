@@ -1,4 +1,4 @@
-import 'package:absurd_toolbox/src/blocs/permissions_bloc.dart';
+import 'package:absurd_toolbox/src/services/permissions_service.dart';
 import 'package:absurd_toolbox/src/models/app_permissions.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/src/widgets/sound_recorder/recorder.dart';
@@ -21,10 +21,10 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
     super.initState();
 
     SchedulerBinding.instance!.addPostFrameCallback((_) async {
-      if (permissionsBloc.permissionsSync.microphone == null ||
-          permissionsBloc.permissionsSync.microphone ==
+      if (permissionsService.permissionsSync.microphone == null ||
+          permissionsService.permissionsSync.microphone ==
               PermissionStatus.denied) {
-        permissionsBloc.setPermission(
+        permissionsService.setPermission(
           PermissionName.Microphone,
           await Permission.microphone.request(),
         );

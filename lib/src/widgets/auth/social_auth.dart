@@ -27,21 +27,21 @@ class SocialAuth extends StatelessWidget {
               FirebaseAuth.instance.signInWithCredential(credential).catchError(
                 (err) {
                   log(
-                    key: "signInWithCredential error",
-                    value: err,
+                    "signInWithCredential error",
+                    err,
                   );
                 },
               ).whenComplete(() => EasyLoading.dismiss());
             }).catchError((err) {
               log(
-                key: "googleUser?.authentication error",
-                value: err,
+                "googleUser?.authentication error",
+                err,
               );
             });
           }).catchError((err) {
             log(
-              key: "GoogleSignIn().signIn() error",
-              value: err,
+              "GoogleSignIn().signIn() error",
+              err,
             );
           });
         }

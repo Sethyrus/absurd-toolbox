@@ -1,5 +1,5 @@
-import 'package:absurd_toolbox/src/blocs/notes_bloc.dart';
-import 'package:absurd_toolbox/src/blocs/user_profile_bloc.dart';
+import 'package:absurd_toolbox/src/services/notes_service.dart';
+import 'package:absurd_toolbox/src/services/user_profile_service.dart';
 import 'package:absurd_toolbox/src/navigator.dart';
 import 'package:flutter/material.dart';
 
@@ -16,14 +16,14 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   void initState() {
     super.initState();
-    notesBloc.initNotesSubscription();
-    userProfileBloc.initUserProfileSubscription();
+    notesService.initNotesSubscription();
+    userProfileService.initUserProfileSubscription();
   }
 
   @override
   void dispose() {
-    notesBloc.cancelSubscriptions();
-    userProfileBloc.cancelSubscriptions();
+    notesService.cancelSubscriptions();
+    userProfileService.cancelSubscriptions();
     super.dispose();
   }
 

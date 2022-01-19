@@ -1,4 +1,4 @@
-import 'package:absurd_toolbox/src/blocs/notes_bloc.dart';
+import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/widgets/notes/notes_list_item.dart';
@@ -19,9 +19,9 @@ class NotesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: notesBloc.notes,
+      stream: notesService.notes,
       builder: (ctx, AsyncSnapshot<List<Note>> notes) {
-        return notes.data != null
+        return notes.hasData && notes.data != null
             ? Container(
                 width: double.infinity,
                 child: ListView.builder(
@@ -35,7 +35,7 @@ class NotesList extends StatelessWidget {
                       final Note changedNote = notes.data!
                           .firstWhere((note) => note.id == editedNoteId);
 
-                      notesBloc.reorderNote(
+                      notesService.reorderNote(
                         note: changedNote,
                         newPosition: index,
                       );

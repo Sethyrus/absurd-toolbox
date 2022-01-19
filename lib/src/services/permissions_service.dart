@@ -3,7 +3,7 @@ import 'package:absurd_toolbox/src/models/app_permissions.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
-class PermissionsBloc {
+class PermissionsService {
   final _permissionsFetcher = BehaviorSubject<AppPermissions>()
     ..startWith(AppPermissions());
 
@@ -15,7 +15,7 @@ class PermissionsBloc {
     PermissionName name,
     PermissionStatus status,
   ) {
-    log(key: "Set permission name: $name, with value: $status");
+    log("Set permission name: $name, with value: $status");
 
     switch (name) {
       case PermissionName.Storage:
@@ -36,4 +36,4 @@ class PermissionsBloc {
   }
 }
 
-final permissionsBloc = PermissionsBloc();
+final permissionsService = PermissionsService();
