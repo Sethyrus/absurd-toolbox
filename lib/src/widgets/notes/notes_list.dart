@@ -8,25 +8,33 @@ class NotesList extends StatelessWidget {
   final Function(String) onNoteLongPress;
   final Function(String) onSelectionToggle;
   final List<String> selectedNotes;
+  final bool showArchivedNotes;
 
   NotesList({
     required this.onNoteTap,
     required this.onNoteLongPress,
     required this.onSelectionToggle,
     required this.selectedNotes,
+    this.showArchivedNotes = false,
   });
+
+  int notesCount(List<Note> notes) => notes
+      .where(
+        (n) => n.archived == showArchivedNotes,
+      )
+      .length;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: notesService.notes,
+      stream: notesService.notes(onlyArchivedNotes: showArchivedNotes),
       builder: (ctx, AsyncSnapshot<List<Note>> notes) {
         return notes.hasData && notes.data != null
             ? Container(
                 width: double.infinity,
                 child: ListView.builder(
                   padding: EdgeInsets.all(8),
-                  itemCount: notes.data!.length,
+                  itemCount: notesCount(notes.data ?? []),
                   itemBuilder: (context, index) => DragTarget(
                     onWillAccept: (editedNoteId) {
                       return true;

@@ -1,10 +1,14 @@
 import 'dart:core';
 
+import 'package:flutter/material.dart';
+
 class Note {
   final String id;
   final String title;
   final String content;
+  // final Color color;
   final List<String> tags;
+  // TODO buscar utilidad o eliminar propiedad
   final bool pinned;
   final bool archived;
   final int order;
@@ -15,6 +19,7 @@ class Note {
     required this.id,
     required this.title,
     required this.content,
+    // required this.color,
     required this.tags,
     required this.pinned,
     required this.archived,
@@ -28,6 +33,7 @@ class Note {
       id: id,
       title: title,
       content: content,
+      // color: color,
       tags: tags,
       pinned: pinned,
       archived: archived,
@@ -37,10 +43,35 @@ class Note {
     );
   }
 
+  bool isSameAs(Note note) {
+    bool valid = true;
+
+    if (note.id != id ||
+        note.title != title ||
+        note.content != content ||
+        // note.color != color ||
+        note.pinned != pinned ||
+        note.archived != archived ||
+        note.order != order ||
+        note.createdAt != createdAt ||
+        note.updatedAt != updatedAt) valid = false;
+
+    if (valid) {
+      note.tags.asMap().forEach((i, n) {
+        if (tags[i] != n) valid = false;
+      });
+    }
+
+    return valid;
+  }
+
   Note.fromJson(Map<String, dynamic> json)
       : id = json['id'] ?? '',
         title = json['title'] ?? '',
         content = json['content'] ?? '',
+        // color = json['color'] != null
+        //     ? Color(int.parse(json['color']))
+        //     : Colors.yellow,
         tags = json['tags'].cast<String>() ?? [],
         pinned = json['pinned'] ?? false,
         archived = json['archived'] ?? false,
@@ -56,6 +87,7 @@ class Note {
         'id': id,
         'title': title,
         'content': content,
+        // 'color': color.value,
         'tags': tags,
         'pinned': pinned,
         'archived': archived,

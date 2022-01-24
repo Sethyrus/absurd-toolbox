@@ -3,6 +3,7 @@ import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:uuid/uuid.dart';
 
 class NoteScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class NoteScreen extends StatefulWidget {
 }
 
 class _NoteScreenState extends State<NoteScreen> {
-  var _initialized = false;
+  bool _initialized = false;
   Note _originalNote = Note(
     id: '',
     title: '',
@@ -40,32 +41,29 @@ class _NoteScreenState extends State<NoteScreen> {
   final _contentFocusNode = FocusNode();
 
   @override
-  void didChangeDependencies() {
-    if (!_initialized) {
-      _initialized = true;
+  void initState() {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      final noteId = ModalRoute.of(context)?.settings.arguments as String?;
 
-      final noteId = ModalRoute.of(context)!.settings.arguments as String?;
+      log("Loading note with id: $noteId");
 
       if (noteId != null) {
         final foundNote = notesService.findById(noteId);
 
-        if (foundNote != null) {
-          _originalNote = foundNote.clone();
-          _editedNote = foundNote.clone();
-          return;
+        if (foundNote == null) {
+          showToast(context, "No se ha podido encontrar la nota");
+          Navigator.of(context).pop();
         } else {
-          Future.delayed(const Duration(milliseconds: 10), () {
-            showToast(context, "No se ha podido encontrar la nota");
+          setState(() {
+            _originalNote = foundNote.clone();
+            _editedNote = foundNote.clone();
+            _initialized = true;
           });
         }
-
-        Navigator.of(context).pop();
-
-        // return;
       }
-    }
+    });
 
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
@@ -99,9 +97,8 @@ class _NoteScreenState extends State<NoteScreen> {
           ),
         );
       } else {
-        // Se comprueba si se han hecho cambios para actualizar solo en ese caso
-        if (!(_originalNote.title == _editedNote.title &&
-            _originalNote.content == _editedNote.content)) {
+        // Se comprueba si se han hecho cambios para actualizar solo en tal caso
+        if (!_editedNote.isSameAs(_originalNote)) {
           log('Edit note', _editedNote.toJson());
 
           notesService.updateNote(
@@ -132,143 +129,189 @@ class _NoteScreenState extends State<NoteScreen> {
   }
 
   void onStatusBarActionSelected(String actionValue) {
-    if (actionValue == 'DELETE') {
-      showDialog(
-        context: context,
-        builder: (alertCtx) => AlertDialog(
-          title: Text('Confirmar'),
-          content: Text('¿Seguro que quieres eliminar la nota?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(alertCtx, 'Cancel');
-              },
-              child: Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () {
-                notesService.deleteNote(_editedNote);
+    switch (actionValue) {
+      case "DELETE":
+        {
+          showDialog(
+            context: context,
+            builder: (alertCtx) => AlertDialog(
+              title: Text('Confirmar'),
+              content: Text('¿Seguro que quieres eliminar la nota?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(alertCtx, 'Cancel');
+                  },
+                  child: Text('Cancelar'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    notesService.deleteNote(_editedNote);
 
-                // Se lanza 2 veces, la primera cierra el alert y la segunda vuelve al listado de notas
-                Navigator.pop(alertCtx);
-                Navigator.pop(context);
-              },
-              child: Text('OK'),
+                    // Se lanza 2 veces, la primera cierra el alert y la segunda vuelve al listado de notas
+                    Navigator.pop(alertCtx);
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
             ),
-          ],
-        ),
-      );
+          );
+          break;
+        }
+      case "TOGGLE_ARCHIVE":
+        {
+          setState(() {
+            _editedNote = Note(
+              id: _editedNote.id,
+              title: _editedNote.title,
+              content: _editedNote.content,
+              tags: _editedNote.tags,
+              pinned: _editedNote.pinned,
+              archived: !_editedNote.archived,
+              order: _editedNote.order,
+              createdAt: _editedNote.createdAt,
+              updatedAt: _editedNote.updatedAt,
+            );
+          });
+          break;
+        }
+      default:
+        {}
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Future(() => _onSubmitForm()),
-      child: Layout(
-        statusBarColor: Colors.yellow.shade600,
-        themeColor: Colors.yellow,
-        showAppBar: true,
-        title: _editedNote.id == '' ? 'Nueva nota' : 'Editar nota',
-        statusBarActions: _editedNote.id != ''
-            ? [
-                PopupMenuItem<String>(
-                  value: 'DELETE',
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Icon(Icons.delete),
-                        margin: EdgeInsets.only(right: 6),
+    return _initialized
+        ? WillPopScope(
+            onWillPop: () => Future(() => _onSubmitForm()),
+            child: Layout(
+              statusBarColor: Colors.yellow.shade600,
+              themeColor: Colors.yellow,
+              showAppBar: true,
+              title: _editedNote.id == '' ? 'Nueva nota' : 'Editar nota',
+              statusBarActions: _editedNote.id != ''
+                  ? [
+                      PopupMenuItem<String>(
+                        value: 'TOGGLE_ARCHIVE',
+                        child: Row(
+                          children: [
+                            Container(
+                              child: Icon(
+                                _editedNote.archived
+                                    ? Icons.unarchive
+                                    : Icons.archive,
+                              ),
+                              margin: EdgeInsets.only(right: 6),
+                            ),
+                            Text(
+                              _editedNote.archived
+                                  ? 'Desarchivar nota'
+                                  : 'Archivar nota',
+                            ),
+                          ],
+                        ),
                       ),
-                      Text('Eliminar nota'),
+                      PopupMenuItem<String>(
+                        value: 'DELETE',
+                        child: Row(
+                          children: [
+                            Container(
+                              child: Icon(Icons.delete),
+                              margin: EdgeInsets.only(right: 6),
+                            ),
+                            Text('Eliminar nota'),
+                          ],
+                        ),
+                      ),
+                    ]
+                  : null,
+              onStatusBarActionSelected: onStatusBarActionSelected,
+              content: Form(
+                key: _form,
+                child: Container(
+                  color: Colors.yellow.shade100,
+                  height: double.infinity,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        onSaved: (value) {
+                          if (value != null)
+                            _editedNote = Note(
+                              id: _editedNote.id,
+                              title: value,
+                              content: _editedNote.content,
+                              tags: _editedNote.tags,
+                              pinned: _editedNote.pinned,
+                              archived: _editedNote.archived,
+                              order: _editedNote.order,
+                              createdAt: _editedNote.createdAt,
+                              updatedAt: _editedNote.updatedAt,
+                            );
+                        },
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context)
+                              .requestFocus(_contentFocusNode);
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Título',
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 0,
+                            horizontal: 8,
+                          ),
+                        ),
+                        initialValue: _editedNote.title,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          expands: true,
+                          focusNode: _contentFocusNode,
+                          onSaved: (value) {
+                            if (value != null)
+                              _editedNote = Note(
+                                id: _editedNote.id,
+                                title: _editedNote.title,
+                                content: value,
+                                tags: _editedNote.tags,
+                                pinned: _editedNote.pinned,
+                                archived: _editedNote.archived,
+                                order: _editedNote.order,
+                                createdAt: _editedNote.createdAt,
+                                updatedAt: _editedNote.updatedAt,
+                              );
+                          },
+                          textAlign: TextAlign.start,
+                          textAlignVertical: TextAlignVertical.top,
+                          decoration: InputDecoration(
+                            hintText: 'Nota',
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 0,
+                              horizontal: 8,
+                            ),
+                          ),
+                          initialValue: _editedNote.content,
+                          maxLines: null,
+                          minLines: null,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ]
-            : null,
-        onStatusBarActionSelected: onStatusBarActionSelected,
-        content: Form(
-          key: _form,
-          child: Container(
-            color: Colors.yellow.shade100,
-            height: double.infinity,
-            child: Column(
-              children: [
-                TextFormField(
-                  textInputAction: TextInputAction.next,
-                  onSaved: (value) {
-                    if (value != null)
-                      _editedNote = Note(
-                        id: _editedNote.id,
-                        title: value,
-                        content: _editedNote.content,
-                        tags: _editedNote.tags,
-                        pinned: _editedNote.pinned,
-                        archived: _editedNote.archived,
-                        order: _editedNote.order,
-                        createdAt: _editedNote.createdAt,
-                        updatedAt: _editedNote.updatedAt,
-                      );
-                  },
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_contentFocusNode);
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Título',
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 0,
-                      horizontal: 8,
-                    ),
-                  ),
-                  initialValue: _editedNote.title,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Expanded(
-                  child: TextFormField(
-                    expands: true,
-                    focusNode: _contentFocusNode,
-                    onSaved: (value) {
-                      if (value != null)
-                        _editedNote = Note(
-                          id: _editedNote.id,
-                          title: _editedNote.title,
-                          content: value,
-                          tags: _editedNote.tags,
-                          pinned: _editedNote.pinned,
-                          archived: _editedNote.archived,
-                          order: _editedNote.order,
-                          createdAt: _editedNote.createdAt,
-                          updatedAt: _editedNote.updatedAt,
-                        );
-                    },
-                    textAlign: TextAlign.start,
-                    textAlignVertical: TextAlignVertical.top,
-                    decoration: InputDecoration(
-                      hintText: 'Nota',
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 8,
-                      ),
-                    ),
-                    initialValue: _editedNote.content,
-                    maxLines: null,
-                    minLines: null,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          )
+        : SizedBox.shrink();
   }
 }

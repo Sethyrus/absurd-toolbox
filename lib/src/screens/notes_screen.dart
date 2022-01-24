@@ -3,10 +3,19 @@ import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/screens/note_screen.dart';
 import 'package:absurd_toolbox/src/widgets/notes/notes_list.dart';
+import 'package:flutter/scheduler.dart';
 
 enum ListMode {
   Normal,
   Selection,
+}
+
+class NotesScreenArgs {
+  final bool showArchivedNotes;
+
+  NotesScreenArgs({
+    required this.showArchivedNotes,
+  });
 }
 
 class NotesScreen extends StatefulWidget {
@@ -18,13 +27,27 @@ class NotesScreen extends StatefulWidget {
 
 class _NotesScreenState extends State<NotesScreen> {
   // Controla si se está en modo de visualización normal o selección
-  ListMode listMode = ListMode.Normal;
+  ListMode _listMode = ListMode.Normal;
   // Notas seleccionadas (en modo selección)
-  List<String> selectedNotes = [];
+  List<String> _selectedNotes = [];
+  bool showArchivedNotes = false;
+
+  @override
+  void initState() {
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      final args = ModalRoute.of(
+        context,
+      )?.settings.arguments as NotesScreenArgs?;
+      if (args != null)
+        setState(() => showArchivedNotes = args.showArchivedNotes);
+    });
+
+    super.initState();
+  }
 
   // Acción al pulsar sobre una nota
   void onNoteTap(String id) {
-    if (listMode == ListMode.Normal) {
+    if (_listMode == ListMode.Normal) {
       Navigator.of(context).pushNamed(
         NoteScreen.routeName,
         arguments: id,
@@ -36,10 +59,10 @@ class _NotesScreenState extends State<NotesScreen> {
 
   // Inicia el modo selección
   void startSelection(String id) {
-    if (listMode == ListMode.Normal) {
+    if (_listMode == ListMode.Normal) {
       setState(() {
-        listMode = ListMode.Selection;
-        selectedNotes = [id];
+        _listMode = ListMode.Selection;
+        _selectedNotes = [id];
       });
     }
   }
@@ -47,14 +70,14 @@ class _NotesScreenState extends State<NotesScreen> {
   // Alterna la selección de una nota
   void toggleNoteSelection(String id) {
     setState(() {
-      if (selectedNotes.contains(id)) {
-        selectedNotes.remove(id);
+      if (_selectedNotes.contains(id)) {
+        _selectedNotes.remove(id);
 
-        if (selectedNotes.length == 0) listMode = ListMode.Normal;
+        if (_selectedNotes.length == 0) _listMode = ListMode.Normal;
         return;
       }
 
-      selectedNotes.add(id);
+      _selectedNotes.add(id);
     });
   }
 
@@ -86,12 +109,23 @@ class _NotesScreenState extends State<NotesScreen> {
 
   // Borra las notas seleccionadas y sale del modo selección
   void deleteSelectedNotes() {
-    notesService.deleteNotes(selectedNotes);
+    notesService.deleteNotes(_selectedNotes);
 
     setState(() {
-      listMode = ListMode.Normal;
-      selectedNotes = [];
+      _listMode = ListMode.Normal;
+      _selectedNotes = [];
     });
+  }
+
+  void onStatusBarActionSelected(String actionValue) {
+    if (actionValue == 'VIEW_ARCHIVED_NOTES') {
+      Navigator.of(context).pushNamed(
+        NotesScreen.routeName,
+        arguments: NotesScreenArgs(
+          showArchivedNotes: true,
+        ),
+      );
+    }
   }
 
   @override
@@ -100,28 +134,49 @@ class _NotesScreenState extends State<NotesScreen> {
       showAppBar: true,
       statusBarColor: Colors.yellow.shade600,
       themeColor: Colors.yellow,
-      title: 'Notas',
+      title: showArchivedNotes ? 'Notas archivadas' : 'Notas',
+      statusBarActions: showArchivedNotes
+          ? null
+          : [
+              PopupMenuItem<String>(
+                value: 'VIEW_ARCHIVED_NOTES',
+                child: Row(
+                  children: [
+                    Container(
+                      child: Icon(Icons.inventory),
+                      margin: EdgeInsets.only(right: 6),
+                    ),
+                    Text('Ver notas archivadas'),
+                  ],
+                ),
+              ),
+            ],
+      onStatusBarActionSelected: onStatusBarActionSelected,
       content: NotesList(
         onNoteTap: onNoteTap,
         onNoteLongPress: startSelection,
         onSelectionToggle: toggleNoteSelection,
-        selectedNotes: selectedNotes,
+        selectedNotes: _selectedNotes,
+        showArchivedNotes: showArchivedNotes,
       ),
-      fab: FloatingActionButton(
-        onPressed: () {
-          if (listMode == ListMode.Normal) {
-            Navigator.of(context).pushNamed(NoteScreen.routeName);
-          } else {
-            tryDeleteSelectedNotes();
-          }
-        },
-        child: Icon(
-          listMode == ListMode.Normal ? Icons.add : Icons.delete,
-          color: Colors.black,
-        ),
-        backgroundColor:
-            listMode == ListMode.Normal ? Colors.yellow : Colors.red,
-      ),
+      fab: (!showArchivedNotes ||
+              (showArchivedNotes && _listMode == ListMode.Selection))
+          ? FloatingActionButton(
+              onPressed: () {
+                if (_listMode == ListMode.Normal) {
+                  Navigator.of(context).pushNamed(NoteScreen.routeName);
+                } else {
+                  tryDeleteSelectedNotes();
+                }
+              },
+              child: Icon(
+                _listMode == ListMode.Normal ? Icons.add : Icons.delete,
+                color: Colors.black,
+              ),
+              backgroundColor:
+                  _listMode == ListMode.Normal ? Colors.yellow : Colors.red,
+            )
+          : null,
     );
   }
 }

@@ -1,9 +1,11 @@
 # TODO
+- [ ] Funcionalidad para todos los campos de las notas
+- - [ ] Archiving
+- - [ ] Color
+- - [ ] Pinning
 - [ ] Investigar sobre el patrón BLoC
-- [ ] Buscar cómo pasar el estado de la red a los demás providers (incluso a los que ya reciben uno)
 - [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] Documentar/Añadir comentarios al código
-- [ ] Funcionalidad para todos los campos de las notas (pinned, archived y demás)
 - - [ ] Poder modificar color de las notas
 - [ ] Revisar en qué casos tiene más sentido usar transacciones (Firestore) e implementar
 - [x] Añadir una colección "users" a firebase donde almacenar los detalles del perfil de los usuarios

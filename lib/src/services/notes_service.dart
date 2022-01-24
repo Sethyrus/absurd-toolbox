@@ -13,7 +13,11 @@ class NotesService {
       FirebaseFirestore.instance.collection('notes');
 
   List<Note> get notesSync => _notesFetcher.value;
-  Stream<List<Note>> get notes => _notesFetcher.stream;
+  Stream<List<Note>> notes({bool? onlyArchivedNotes}) =>
+      onlyArchivedNotes == null
+          ? _notesFetcher.stream
+          : _notesFetcher.stream
+              .map((nl) => nl..where((nl) => nl.archived == onlyArchivedNotes));
 
   void addNote(Note note) async {
     log("Add note", note.title);
@@ -82,7 +86,12 @@ class NotesService {
   }) {
     log("Reorder note: ${note.id} to position: $newPosition");
 
-    final List<Note> notes = [...notesSync];
+    /// El orden es independiente en notas archivadas las no archivadas, por lo
+    /// que primero clonamos un listado con las notas del tipo que la que se va
+    /// a reubicar
+    final List<Note> notes = [
+      ...notesSync.where((n) => n.archived == note.archived),
+    ];
 
     notes.removeAt(
       notes.indexWhere((item) => item.id == note.id),
