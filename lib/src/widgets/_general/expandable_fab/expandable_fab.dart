@@ -138,11 +138,13 @@ class _ExpandableFabState extends State<ExpandableFab>
       child: Stack(
         alignment: Alignment.bottomRight,
         clipBehavior: Clip.none,
-        children: [
-          _buildTapToCloseFab(),
-          ..._buildExpandingActionButtons(),
-          _buildTapToOpenFab(),
-        ],
+        children: widget.children.length > 0
+            ? [
+                _buildTapToCloseFab(),
+                ..._buildExpandingActionButtons(),
+                _buildTapToOpenFab(),
+              ]
+            : [],
       ),
     );
   }

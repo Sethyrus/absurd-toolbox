@@ -32,7 +32,7 @@ class _NotesScreenState extends State<NotesScreen> {
   // Controla si se está en modo de visualización normal o selección
   ListMode _listMode = ListMode.Normal;
   // Notas seleccionadas (en modo selección)
-  List<String> _selectedNotes = [];
+  List<Note> _selectedNotes = [];
   bool showArchivedNotes = false;
 
   @override
@@ -49,38 +49,38 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   // Acción al pulsar sobre una nota
-  void onNoteTap(String id) {
+  void onNoteTap(Note note) {
     if (_listMode == ListMode.Normal) {
       Navigator.of(context).pushNamed(
         NoteScreen.routeName,
-        arguments: id,
+        arguments: note.id,
       );
     } else {
-      toggleNoteSelection(id);
+      toggleNoteSelection(note);
     }
   }
 
   // Inicia el modo selección
-  void startSelection(String id) {
+  void startSelection(Note note) {
     if (_listMode == ListMode.Normal) {
       setState(() {
         _listMode = ListMode.Selection;
-        _selectedNotes = [id];
+        _selectedNotes = [note];
       });
     }
   }
 
   // Alterna la selección de una nota
-  void toggleNoteSelection(String id) {
+  void toggleNoteSelection(Note note) {
     setState(() {
-      if (_selectedNotes.contains(id)) {
-        _selectedNotes.remove(id);
+      if (_selectedNotes.contains(note)) {
+        _selectedNotes.remove(note);
 
         if (_selectedNotes.length == 0) _listMode = ListMode.Normal;
         return;
       }
 
-      _selectedNotes.add(id);
+      _selectedNotes.add(note);
     });
   }
 
@@ -152,11 +152,7 @@ class _NotesScreenState extends State<NotesScreen> {
 
   // Archiva/desarchiva las notas seleccionadas y sale del modo selección
   void toggleSelectedNotesArchive() {
-    List<Note> notes = notesService.notesSync;
-
-    _selectedNotes.forEach((noteId) {
-      final Note note = notes.firstWhere((note) => note.id == noteId);
-
+    _selectedNotes.forEach((note) {
       notesService.updateNote(
         Note(
           id: note.id,
@@ -220,10 +216,18 @@ class _NotesScreenState extends State<NotesScreen> {
         selectedNotes: _selectedNotes,
         showArchivedNotes: showArchivedNotes,
       ),
-      fab: (!showArchivedNotes ||
-              (showArchivedNotes && _listMode == ListMode.Selection))
-          ? _listMode == ListMode.Normal
-              ? FloatingActionButton(
+      fab: _listMode == ListMode.Normal
+          ? showArchivedNotes
+              ? ExpandableFab(
+                  backgroundColor: Colors.grey.shade400,
+                  distance: 96,
+                  openButtonIcon: Icon(
+                    Icons.keyboard_arrow_up,
+                    color: Colors.black,
+                  ),
+                  children: [],
+                )
+              : FloatingActionButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed(NoteScreen.routeName);
                   },
@@ -233,58 +237,28 @@ class _NotesScreenState extends State<NotesScreen> {
                   ),
                   backgroundColor: Colors.yellow,
                 )
-              // ? ExpandableFab(
-              //     backgroundColor: Colors.yellow,
-              //     distance: 96,
-              //     openButtonIcon: Icon(
-              //       Icons.create,
-              //       color: Colors.black,
-              //     ),
-              //     children: [
-              //       ActionButton(
-              //         onPressed: () {},
-              //         backgroundColor: Colors.red.shade400,
-              //         icon: const Icon(Icons.delete),
-              //       ),
-              //       ActionButton(
-              //         onPressed: () {},
-              //         backgroundColor: Colors.lightGreen,
-              //         icon: const Icon(Icons.archive),
-              //       ),
-              //     ],
-              //   )
-              // : FloatingActionButton(
-              //     onPressed: () {
-              //       tryDeleteSelectedNotes();
-              //     },
-              //     child: Icon(
-              //       Icons.delete,
-              //       color: Colors.black,
-              //     ),
-              //     backgroundColor: Colors.red,
-              //   )
-              : ExpandableFab(
-                  backgroundColor: Colors.grey.shade400,
-                  distance: 96,
-                  openButtonIcon: Icon(
-                    Icons.keyboard_arrow_up,
-                    color: Colors.black,
+          : ExpandableFab(
+              backgroundColor: Colors.grey.shade400,
+              distance: 96,
+              openButtonIcon: Icon(
+                Icons.keyboard_arrow_up,
+                color: Colors.black,
+              ),
+              children: [
+                ActionButton(
+                  onPressed: () => tryDeleteSelectedNotes(),
+                  backgroundColor: Colors.red.shade400,
+                  icon: const Icon(Icons.delete),
+                ),
+                ActionButton(
+                  onPressed: () => tryToggleSelectedNotesArchive(),
+                  backgroundColor: Colors.lightGreen,
+                  icon: Icon(
+                    showArchivedNotes ? Icons.unarchive : Icons.archive,
                   ),
-                  children: [
-                    ActionButton(
-                      onPressed: () => tryDeleteSelectedNotes(),
-                      backgroundColor: Colors.red.shade400,
-                      icon: const Icon(Icons.delete),
-                    ),
-                    ActionButton(
-                      onPressed: () => tryToggleSelectedNotesArchive(),
-                      backgroundColor: Colors.lightGreen,
-                      icon: Icon(
-                          showArchivedNotes ? Icons.unarchive : Icons.archive),
-                    ),
-                  ],
-                )
-          : null,
+                ),
+              ],
+            ),
     );
   }
 }

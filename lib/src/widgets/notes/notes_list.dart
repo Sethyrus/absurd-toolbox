@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/widgets/notes/notes_list_item.dart';
 
 class NotesList extends StatelessWidget {
-  final Function(String) onNoteTap;
-  final Function(String) onNoteLongPress;
-  final Function(String) onSelectionToggle;
-  final List<String> selectedNotes;
+  final Function(Note) onNoteTap;
+  final Function(Note) onNoteLongPress;
+  final Function(Note) onSelectionToggle;
+  final List<Note> selectedNotes;
   final bool showArchivedNotes;
 
   NotesList({
@@ -64,7 +64,7 @@ class NotesList extends StatelessWidget {
                     note: filteredNotes[index],
                     onTap: (_) {},
                     onLongPress: (_) {},
-                    selectedNotes: [filteredNotes[index].id],
+                    selectedNotes: [filteredNotes[index]],
                   ),
                 );
               },

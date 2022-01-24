@@ -3,9 +3,9 @@ import 'package:absurd_toolbox/src/models/note.dart';
 
 class NotesListItem extends StatelessWidget {
   final Note note;
-  final Function(String) onTap;
-  final Function(String) onLongPress;
-  final List<String> selectedNotes;
+  final Function(Note) onTap;
+  final Function(Note) onLongPress;
+  final List<Note> selectedNotes;
   final bool floating;
 
   const NotesListItem({
@@ -16,7 +16,7 @@ class NotesListItem extends StatelessWidget {
     this.floating = false,
   });
 
-  bool get isNoteSelected => selectedNotes.contains(note.id);
+  bool get isNoteSelected => selectedNotes.contains(note);
 
   BoxDecoration noteStyles({bool hasBorder = true}) {
     if (!isNoteSelected) {
@@ -57,9 +57,9 @@ class NotesListItem extends StatelessWidget {
             decoration: floating ? noteStyles() : null,
             width: MediaQuery.of(context).size.width - 16,
             child: InkWell(
-              onTap: () => onTap(note.id),
+              onTap: () => onTap(note),
               onLongPress: () {
-                onLongPress(note.id);
+                onLongPress(note);
               },
               child: Ink(
                 decoration: floating ? null : noteStyles(),
