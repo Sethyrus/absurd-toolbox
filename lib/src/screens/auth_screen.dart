@@ -56,7 +56,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             ? '¿No tienes cuenta? '
                             : "¿Ya tienes cuenta? ",
                         style: TextStyle(
-                          color: Colors.black38,
+                          color: Colors.grey.shade500,
                         ),
                       ),
                       GestureDetector(

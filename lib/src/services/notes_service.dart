@@ -13,6 +13,7 @@ class NotesService {
       FirebaseFirestore.instance.collection('notes');
 
   List<Note> get notesSync => _notesFetcher.value;
+
   Stream<List<Note>> notes({bool? onlyArchivedNotes}) =>
       onlyArchivedNotes == null
           ? _notesFetcher.stream

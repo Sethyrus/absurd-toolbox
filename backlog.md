@@ -1,6 +1,7 @@
 # TODO
 - [ ] Funcionalidad para todos los campos de las notas
-- - [ ] Archiving
+- - [x] Archiving
+- - - [ ] Mover funcionalidad al notesService
 - - [ ] Color
 - - [ ] Pinning
 - [ ] Investigar sobre el patrón BLoC

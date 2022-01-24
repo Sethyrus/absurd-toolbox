@@ -29,7 +29,7 @@ class HomeButton extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(16)),
             color: color,
             border: Border.all(
-              color: Colors.black12,
+              color: Colors.grey.shade300,
               width: 1,
               style: BorderStyle.solid,
             ),

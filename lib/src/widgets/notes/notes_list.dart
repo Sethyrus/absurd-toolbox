@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
 import 'package:flutter/material.dart';
@@ -18,64 +19,59 @@ class NotesList extends StatelessWidget {
     this.showArchivedNotes = false,
   });
 
-  int notesCount(List<Note> notes) => notes
-      .where(
-        (n) => n.archived == showArchivedNotes,
-      )
-      .length;
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: notesService.notes(onlyArchivedNotes: showArchivedNotes),
-      builder: (ctx, AsyncSnapshot<List<Note>> notes) {
-        return notes.hasData && notes.data != null
-            ? Container(
-                width: double.infinity,
-                child: ListView.builder(
-                  padding: EdgeInsets.all(8),
-                  itemCount: notesCount(notes.data ?? []),
-                  itemBuilder: (context, index) => DragTarget(
-                    onWillAccept: (editedNoteId) {
-                      return true;
-                    },
-                    onAccept: (editedNoteId) {
-                      final Note changedNote = notes.data!
-                          .firstWhere((note) => note.id == editedNoteId);
+      builder: (ctx, AsyncSnapshot<List<Note>> notesStream) {
+        final List<Note> filteredNotes = notesStream.hasData
+            ? notesStream.data
+                    ?.where(
+                      (n) => n.archived == showArchivedNotes,
+                    )
+                    .toList() ??
+                []
+            : [];
 
-                      notesService.reorderNote(
-                        note: changedNote,
-                        newPosition: index,
-                      );
-                    },
-                    builder: (context, candidateData, rejectedData) {
-                      return Draggable(
-                        data: notes.data![index].id,
-                        child: NotesListItem(
-                          note: notes.data![index],
-                          onTap: onNoteTap,
-                          onLongPress: onNoteLongPress,
-                          selectedNotes: selectedNotes,
-                        ),
-                        feedback: NotesListItem(
-                          note: notes.data![index],
-                          onTap: onNoteTap,
-                          onLongPress: (_) {},
-                          selectedNotes: [],
-                          floating: true,
-                        ),
-                        childWhenDragging: NotesListItem(
-                          note: notes.data![index],
-                          onTap: (_) {},
-                          onLongPress: (_) {},
-                          selectedNotes: [notes.data![index].id],
-                        ),
-                      );
-                    },
+        return Container(
+          width: double.infinity,
+          child: ListView.builder(
+            padding: EdgeInsets.all(8),
+            itemCount: filteredNotes.length,
+            itemBuilder: (context, index) => DragTarget(
+              onWillAccept: (editedNoteId) => true,
+              onAccept: (editedNoteId) => notesService.reorderNote(
+                note:
+                    filteredNotes.firstWhere((note) => note.id == editedNoteId),
+                newPosition: index,
+              ),
+              builder: (context, candidateData, rejectedData) {
+                return Draggable(
+                  data: filteredNotes[index].id,
+                  child: NotesListItem(
+                    note: filteredNotes[index],
+                    onTap: onNoteTap,
+                    onLongPress: onNoteLongPress,
+                    selectedNotes: selectedNotes,
                   ),
-                ),
-              )
-            : SizedBox.shrink();
+                  feedback: NotesListItem(
+                    note: filteredNotes[index],
+                    onTap: onNoteTap,
+                    onLongPress: (_) {},
+                    selectedNotes: [],
+                    floating: true,
+                  ),
+                  childWhenDragging: NotesListItem(
+                    note: filteredNotes[index],
+                    onTap: (_) {},
+                    onLongPress: (_) {},
+                    selectedNotes: [filteredNotes[index].id],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
       },
     );
   }

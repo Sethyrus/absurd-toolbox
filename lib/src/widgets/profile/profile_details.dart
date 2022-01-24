@@ -32,7 +32,7 @@ class ProfileDetails extends StatelessWidget {
                                 height: 100.0,
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: Colors.black38,
+                                    color: Colors.grey,
                                     width: 2,
                                   ),
                                   shape: BoxShape.circle,

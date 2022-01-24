@@ -1,4 +1,7 @@
+import 'package:absurd_toolbox/src/models/note.dart';
 import 'package:absurd_toolbox/src/services/notes_service.dart';
+import 'package:absurd_toolbox/src/widgets/_general/expandable_fab/action_button.dart';
+import 'package:absurd_toolbox/src/widgets/_general/expandable_fab/expandable_fab.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/screens/note_screen.dart';
@@ -107,9 +110,67 @@ class _NotesScreenState extends State<NotesScreen> {
     );
   }
 
+  // Abre el Alert de confirmación de archivado/desarchivado de notas
+  void tryToggleSelectedNotesArchive() {
+    showDialog(
+      context: context,
+      builder: (alertCtx) => AlertDialog(
+        title: Text('Confirmar'),
+        content: Text(
+          showArchivedNotes
+              ? '¿Seguro que quieres desarchivar las notas seleccionadas?'
+              : '¿Seguro que quieres archivar las notas seleccionadas?',
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(alertCtx, 'Cancel');
+            },
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(alertCtx);
+              toggleSelectedNotesArchive();
+            },
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   // Borra las notas seleccionadas y sale del modo selección
   void deleteSelectedNotes() {
     notesService.deleteNotes(_selectedNotes);
+
+    setState(() {
+      _listMode = ListMode.Normal;
+      _selectedNotes = [];
+    });
+  }
+
+  // Archiva/desarchiva las notas seleccionadas y sale del modo selección
+  void toggleSelectedNotesArchive() {
+    List<Note> notes = notesService.notesSync;
+
+    _selectedNotes.forEach((noteId) {
+      final Note note = notes.firstWhere((note) => note.id == noteId);
+
+      notesService.updateNote(
+        Note(
+          id: note.id,
+          title: note.title,
+          content: note.content,
+          tags: note.tags,
+          pinned: note.pinned,
+          archived: !note.archived,
+          order: note.order,
+          createdAt: note.createdAt,
+          updatedAt: note.updatedAt,
+        ),
+      );
+    });
 
     setState(() {
       _listMode = ListMode.Normal;
@@ -161,21 +222,68 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       fab: (!showArchivedNotes ||
               (showArchivedNotes && _listMode == ListMode.Selection))
-          ? FloatingActionButton(
-              onPressed: () {
-                if (_listMode == ListMode.Normal) {
-                  Navigator.of(context).pushNamed(NoteScreen.routeName);
-                } else {
-                  tryDeleteSelectedNotes();
-                }
-              },
-              child: Icon(
-                _listMode == ListMode.Normal ? Icons.add : Icons.delete,
-                color: Colors.black,
-              ),
-              backgroundColor:
-                  _listMode == ListMode.Normal ? Colors.yellow : Colors.red,
-            )
+          ? _listMode == ListMode.Normal
+              ? FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(NoteScreen.routeName);
+                  },
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.black,
+                  ),
+                  backgroundColor: Colors.yellow,
+                )
+              // ? ExpandableFab(
+              //     backgroundColor: Colors.yellow,
+              //     distance: 96,
+              //     openButtonIcon: Icon(
+              //       Icons.create,
+              //       color: Colors.black,
+              //     ),
+              //     children: [
+              //       ActionButton(
+              //         onPressed: () {},
+              //         backgroundColor: Colors.red.shade400,
+              //         icon: const Icon(Icons.delete),
+              //       ),
+              //       ActionButton(
+              //         onPressed: () {},
+              //         backgroundColor: Colors.lightGreen,
+              //         icon: const Icon(Icons.archive),
+              //       ),
+              //     ],
+              //   )
+              // : FloatingActionButton(
+              //     onPressed: () {
+              //       tryDeleteSelectedNotes();
+              //     },
+              //     child: Icon(
+              //       Icons.delete,
+              //       color: Colors.black,
+              //     ),
+              //     backgroundColor: Colors.red,
+              //   )
+              : ExpandableFab(
+                  backgroundColor: Colors.grey.shade400,
+                  distance: 96,
+                  openButtonIcon: Icon(
+                    Icons.keyboard_arrow_up,
+                    color: Colors.black,
+                  ),
+                  children: [
+                    ActionButton(
+                      onPressed: () => tryDeleteSelectedNotes(),
+                      backgroundColor: Colors.red.shade400,
+                      icon: const Icon(Icons.delete),
+                    ),
+                    ActionButton(
+                      onPressed: () => tryToggleSelectedNotesArchive(),
+                      backgroundColor: Colors.lightGreen,
+                      icon: Icon(
+                          showArchivedNotes ? Icons.unarchive : Icons.archive),
+                    ),
+                  ],
+                )
           : null,
     );
   }

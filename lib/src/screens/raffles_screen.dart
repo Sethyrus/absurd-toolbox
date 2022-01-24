@@ -67,7 +67,7 @@ class _RafflesScreenState extends State<RafflesScreen> {
               },
               hint: Text("Modo: " + raffleTitle().toLowerCase()),
             ),
-            Divider(color: Colors.black54, thickness: 2, height: 32),
+            Divider(color: Colors.grey.shade600, thickness: 2, height: 32),
             raffleWidget(),
           ],
         ),

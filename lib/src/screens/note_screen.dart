@@ -60,6 +60,10 @@ class _NoteScreenState extends State<NoteScreen> {
             _initialized = true;
           });
         }
+      } else {
+        setState(() {
+          _initialized = true;
+        });
       }
     });
 
