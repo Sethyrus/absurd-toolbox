@@ -1,5 +1,6 @@
 import 'package:absurd_toolbox/src/screens/chats_screen.dart';
 import 'package:absurd_toolbox/src/screens/edit_profile_screen.dart';
+import 'package:absurd_toolbox/src/screens/flashlight_screen.dart';
 import 'package:absurd_toolbox/src/screens/home_screen.dart';
 import 'package:absurd_toolbox/src/screens/maps_screen.dart';
 import 'package:absurd_toolbox/src/screens/note_screen.dart';
@@ -53,6 +54,10 @@ final List<AppNavigator> appNavigator = [
       AppRoute(
         route: OSMScreen.routeName,
         screen: OSMScreen(),
+      ),
+      AppRoute(
+        route: FlashlightScreen.routeName,
+        screen: FlashlightScreen(),
       ),
     ],
     icon: Icon(Icons.construction),

@@ -1,5 +1,6 @@
 import 'package:absurd_toolbox/src/screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/src/screens/chats_screen.dart';
+import 'package:absurd_toolbox/src/screens/flashlight_screen.dart';
 import 'package:absurd_toolbox/src/screens/maps_screen.dart';
 import 'package:absurd_toolbox/src/screens/notes_screen.dart';
 import 'package:absurd_toolbox/src/screens/osm_screen.dart';
@@ -36,23 +37,29 @@ class HomeScreen extends StatelessWidget {
       route: SoundRecorderScreen.routeName,
       icon: Icons.voicemail,
     ),
+    // HomeButton(
+    //   label: 'Chats',
+    //   color: Colors.blue.shade400,
+    //   route: ChatsScreen.routeName,
+    //   icon: Icons.chat,
+    // ),
+    // HomeButton(
+    //   label: "G. Maps",
+    //   color: Colors.lightGreen,
+    //   route: GoogleMapsScreen.routeName,
+    //   icon: Icons.map_outlined,
+    // ),
+    // HomeButton(
+    //   label: "OSMaps",
+    //   color: Colors.orange,
+    //   route: OSMScreen.routeName,
+    //   icon: Icons.map_sharp,
+    // ),
     HomeButton(
-      label: 'Chats',
-      color: Colors.blue.shade400,
-      route: ChatsScreen.routeName,
-      icon: Icons.chat,
-    ),
-    HomeButton(
-      label: "G. Maps",
-      color: Colors.lightGreen,
-      route: GoogleMapsScreen.routeName,
-      icon: Icons.map_outlined,
-    ),
-    HomeButton(
-      label: "OSMaps",
-      color: Colors.orange,
-      route: OSMScreen.routeName,
-      icon: Icons.map_sharp,
+      label: "Linterna",
+      color: Colors.purple.shade300,
+      route: FlashlightScreen.routeName,
+      icon: Icons.flashlight_on,
     ),
   ];
 

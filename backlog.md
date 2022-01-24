@@ -6,6 +6,7 @@
 - - [ ] Pinning
 - [ ] Investigar sobre el patrón BLoC
 - [ ] Mover claves de API a un archivo .env, fuera de git
+- [ ] Drag'n'drop de los enlaces de la home
 - [ ] Documentar/Añadir comentarios al código
 - - [ ] Poder modificar color de las notas
 - [ ] Revisar en qué casos tiene más sentido usar transacciones (Firestore) e implementar
