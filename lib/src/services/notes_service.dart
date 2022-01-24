@@ -12,13 +12,17 @@ class NotesService {
   final CollectionReference _notesCollection =
       FirebaseFirestore.instance.collection('notes');
 
+  Stream<List<Note>> get notesStream => _notesFetcher.stream;
+
   List<Note> get notesSync => _notesFetcher.value;
 
-  Stream<List<Note>> notes({bool? onlyArchivedNotes}) =>
-      onlyArchivedNotes == null
-          ? _notesFetcher.stream
-          : _notesFetcher.stream
-              .map((nl) => nl..where((nl) => nl.archived == onlyArchivedNotes));
+  void dispose() {
+    _firebaseNotesSub?.cancel();
+    _firebaseNotesSub = null;
+    _notesFetcher.close();
+  }
+
+  Note? findById(String id) => notesSync.firstWhereOrNull((n) => n.id == id);
 
   void addNote(Note note) async {
     log("Add note", note.title);
@@ -64,16 +68,16 @@ class NotesService {
     });
   }
 
-  void deleteNotes(List<String> noteIds) async {
-    log("Delete notes", noteIds);
+  void deleteNotes(List<Note> notes) async {
+    log("Delete notes", notes);
 
     final String? userId = authService.userIdSync;
 
-    noteIds.forEach((id) {
+    notes.forEach((note) {
       _notesCollection
           .doc(userId)
           .collection("items")
-          .doc(id)
+          .doc(note.id)
           .delete()
           .catchError((error) {
         log("Failed to delete note", error);
@@ -157,18 +161,10 @@ class NotesService {
     }
   }
 
-  Note? findById(String id) => notesSync.firstWhereOrNull((n) => n.id == id);
-
   void cancelSubscriptions() {
     log("Cancel notes subscriptions");
     _firebaseNotesSub?.cancel();
     _firebaseNotesSub = null;
-  }
-
-  void dispose() {
-    _firebaseNotesSub?.cancel();
-    _firebaseNotesSub = null;
-    _notesFetcher.close();
   }
 }
 

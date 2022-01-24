@@ -1,4 +1,3 @@
-import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,7 @@ class NotesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: notesService.notes(onlyArchivedNotes: showArchivedNotes),
+      stream: notesService.notesStream,
       builder: (ctx, AsyncSnapshot<List<Note>> notesStream) {
         final List<Note> filteredNotes = notesStream.hasData
             ? notesStream.data
