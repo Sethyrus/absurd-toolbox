@@ -5,6 +5,7 @@
 - - [ ] Color
 - - [ ] Pinning
 - [ ] Investigar sobre el patrón BLoC
+- [ ] En el sorteo de dados, poder añadir más dados
 - [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] Drag'n'drop de los enlaces de la home
 - [ ] Documentar/Añadir comentarios al código
@@ -12,8 +13,8 @@
 - [ ] Revisar en qué casos tiene más sentido usar transacciones (Firestore) e implementar
 - [x] Añadir una colección "users" a firebase donde almacenar los detalles del perfil de los usuarios
 - - [x] Este dato debe cargarse y mantenerse actualizado dentro de la app
-- - [x] Se mostrarán en la página de perfil
-- - [ ] Se podrá editar en la página de editar perfil
+- - [x] Mostrar datos en la página de perfil
+- - [ ] Poder editar en la página de editar perfil
 - [x] Poder ordenar notas
 - - [x] Añadir un campo "order" a las notas para usarse como sistema de ordenado
 - [x] El toast usado debe cambiarse por un mensaje flotante
@@ -21,7 +22,7 @@
 - [x] Bloquear la rotación, solo debe funcionar en vertical
 
 # Bugs
-- [ ] Al iniciar la app (con sesión previa) aparece un error de Notes y UserProfile en la consola de depuración (used after being disposed)
+- [x] Al iniciar la app (con sesión previa) aparece un error de Notes y UserProfile en la consola de depuración (used after being disposed)
 - [x] El alert al eliminar varias notas retrocede a home en lugar de cerrarse
 
 # Useful resources:
