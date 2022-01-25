@@ -16,32 +16,28 @@ class NotesListItem extends StatelessWidget {
     this.floating = false,
   });
 
-  bool get isNoteSelected => selectedNotes.contains(note);
+  bool get _isNoteSelected => selectedNotes.any((n) => n.id == note.id);
 
-  BoxDecoration noteStyles({bool hasBorder = true}) {
-    if (!isNoteSelected) {
+  BoxDecoration _noteStyles() {
+    if (!_isNoteSelected) {
       return BoxDecoration(
         color: Colors.yellow,
-        border: hasBorder
-            ? Border(
-                top: BorderSide(color: Colors.yellow.shade700, width: 2),
-                bottom: BorderSide(color: Colors.yellow.shade700, width: 2),
-                right: BorderSide(color: Colors.yellow.shade700, width: 2),
-                left: BorderSide(color: Colors.yellow.shade700, width: 6),
-              )
-            : null,
+        border: Border(
+          top: BorderSide(color: Colors.yellow.shade700, width: 2),
+          bottom: BorderSide(color: Colors.yellow.shade700, width: 2),
+          right: BorderSide(color: Colors.yellow.shade700, width: 2),
+          left: BorderSide(color: Colors.yellow.shade700, width: 6),
+        ),
       );
     } else {
       return BoxDecoration(
         color: Colors.grey.shade400,
-        border: hasBorder
-            ? Border(
-                top: BorderSide(color: Colors.grey.shade500, width: 2),
-                bottom: BorderSide(color: Colors.grey.shade500, width: 2),
-                right: BorderSide(color: Colors.grey.shade500, width: 2),
-                left: BorderSide(color: Colors.grey.shade500, width: 10),
-              )
-            : null,
+        border: Border(
+          top: BorderSide(color: Colors.grey.shade500, width: 2),
+          bottom: BorderSide(color: Colors.grey.shade500, width: 2),
+          right: BorderSide(color: Colors.grey.shade500, width: 2),
+          left: BorderSide(color: Colors.grey.shade500, width: 10),
+        ),
       );
     }
   }
@@ -54,7 +50,7 @@ class NotesListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            decoration: floating ? noteStyles() : null,
+            decoration: floating ? _noteStyles() : null,
             width: MediaQuery.of(context).size.width - 16,
             child: InkWell(
               onTap: () => onTap(note),
@@ -62,7 +58,7 @@ class NotesListItem extends StatelessWidget {
                 onLongPress(note);
               },
               child: Ink(
-                decoration: floating ? null : noteStyles(),
+                decoration: floating ? null : _noteStyles(),
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
                 child: Text(
                   note.title != '' ? note.title : '(sin título)',

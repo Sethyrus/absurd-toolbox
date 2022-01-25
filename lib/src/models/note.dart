@@ -1,7 +1,5 @@
 import 'dart:core';
 
-import 'package:flutter/material.dart';
-
 class Note {
   final String id;
   final String title;
@@ -46,6 +44,7 @@ class Note {
   bool isSameAs(Note note) {
     bool valid = true;
 
+    // Se comprueba que todas las propiedades sean iguales
     if (note.id != id ||
         note.title != title ||
         note.content != content ||
@@ -56,6 +55,7 @@ class Note {
         note.createdAt != createdAt ||
         note.updatedAt != updatedAt) valid = false;
 
+    // Se comprueba que el listado de tags sea igual
     if (valid) {
       note.tags.asMap().forEach((i, n) {
         if (tags[i] != n) valid = false;

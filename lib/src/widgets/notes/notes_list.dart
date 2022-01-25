@@ -23,14 +23,12 @@ class NotesList extends StatelessWidget {
     return StreamBuilder(
       stream: notesService.notesStream,
       builder: (ctx, AsyncSnapshot<List<Note>> notesStream) {
-        final List<Note> filteredNotes = notesStream.hasData
-            ? notesStream.data
-                    ?.where(
-                      (n) => n.archived == showArchivedNotes,
-                    )
-                    .toList() ??
-                []
-            : [];
+        final List<Note> filteredNotes = [];
+
+        if (notesStream.hasData && notesStream.data != null)
+          notesStream.data!.forEach((note) {
+            if (note.archived == showArchivedNotes) filteredNotes.add(note);
+          });
 
         return Container(
           width: double.infinity,
@@ -38,15 +36,14 @@ class NotesList extends StatelessWidget {
             padding: EdgeInsets.all(8),
             itemCount: filteredNotes.length,
             itemBuilder: (context, index) => DragTarget(
-              onWillAccept: (editedNoteId) => true,
-              onAccept: (editedNoteId) => notesService.reorderNote(
-                note:
-                    filteredNotes.firstWhere((note) => note.id == editedNoteId),
+              onWillAccept: (_) => true,
+              onAccept: (Note draggedNote) => notesService.reorderNote(
+                note: draggedNote,
                 newPosition: index,
               ),
               builder: (context, candidateData, rejectedData) {
                 return Draggable(
-                  data: filteredNotes[index].id,
+                  data: filteredNotes[index],
                   child: NotesListItem(
                     note: filteredNotes[index],
                     onTap: onNoteTap,
@@ -57,7 +54,7 @@ class NotesList extends StatelessWidget {
                     note: filteredNotes[index],
                     onTap: onNoteTap,
                     onLongPress: (_) {},
-                    selectedNotes: [],
+                    selectedNotes: selectedNotes,
                     floating: true,
                   ),
                   childWhenDragging: NotesListItem(

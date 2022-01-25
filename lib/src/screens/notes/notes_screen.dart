@@ -33,6 +33,7 @@ class _NotesScreenState extends State<NotesScreen> {
   ListMode _listMode = ListMode.Normal;
   // Notas seleccionadas (en modo selección)
   List<Note> _selectedNotes = [];
+  // Controla si se muestra el listado de notas normal o archivadas
   bool _showArchivedNotes = false;
 
   String get _title => _showArchivedNotes ? 'Notas archivadas' : 'Notas';
@@ -40,30 +41,29 @@ class _NotesScreenState extends State<NotesScreen> {
   List<PopupMenuEntry<String>>? get _statusBarActions {
     if (_showArchivedNotes) {
       return null;
-    } else {
-      return [
-        PopupMenuItem<String>(
-          value: 'VIEW_ARCHIVED_NOTES',
-          child: Row(
-            children: [
-              Container(
-                child: Icon(Icons.inventory),
-                margin: EdgeInsets.only(right: 6),
-              ),
-              Text('Ver notas archivadas'),
-            ],
-          ),
-        ),
-      ];
     }
+
+    return [
+      PopupMenuItem<String>(
+        value: 'VIEW_ARCHIVED_NOTES',
+        child: Row(
+          children: [
+            Container(
+              child: Icon(Icons.inventory),
+              margin: EdgeInsets.only(right: 6),
+            ),
+            Text('Ver notas archivadas'),
+          ],
+        ),
+      ),
+    ];
   }
 
   Widget? get _fab {
     if (_listMode == ListMode.Normal) {
       if (_showArchivedNotes) {
         return ExpandableFab(
-          backgroundColor: Colors.grey.shade400,
-          distance: 96,
+          distance: 0,
           openButtonIcon: Icon(
             Icons.keyboard_arrow_up,
             color: Colors.black,
@@ -92,12 +92,12 @@ class _NotesScreenState extends State<NotesScreen> {
         ),
         children: [
           ActionButton(
-            onPressed: () => tryDeleteSelectedNotes(),
+            onPressed: () => _tryDeleteSelectedNotes(),
             backgroundColor: Colors.red.shade400,
             icon: const Icon(Icons.delete),
           ),
           ActionButton(
-            onPressed: () => tryToggleSelectedNotesArchive(),
+            onPressed: () => _tryToggleSelectedNotesArchive(),
             backgroundColor: Colors.lightGreen,
             icon: Icon(
               _showArchivedNotes ? Icons.unarchive : Icons.archive,
@@ -146,8 +146,8 @@ class _NotesScreenState extends State<NotesScreen> {
   // Alterna la selección de una nota
   void _toggleNoteSelection(Note note) {
     setState(() {
-      if (_selectedNotes.contains(note)) {
-        _selectedNotes.remove(note);
+      if (_selectedNotes.any((n) => n.id == note.id)) {
+        _selectedNotes.removeWhere((n) => n.id == note.id);
 
         if (_selectedNotes.length == 0) _listMode = ListMode.Normal;
         return;
@@ -158,7 +158,7 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   // Abre el Alert de confirmación de borrado de notas
-  void tryDeleteSelectedNotes() {
+  void _tryDeleteSelectedNotes() {
     showDialog(
       context: context,
       builder: (alertCtx) => AlertDialog(
@@ -174,7 +174,7 @@ class _NotesScreenState extends State<NotesScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(alertCtx);
-              deleteSelectedNotes();
+              _deleteSelectedNotes();
             },
             child: Text('OK'),
           ),
@@ -184,7 +184,7 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   // Abre el Alert de confirmación de archivado/desarchivado de notas
-  void tryToggleSelectedNotesArchive() {
+  void _tryToggleSelectedNotesArchive() {
     showDialog(
       context: context,
       builder: (alertCtx) => AlertDialog(
@@ -204,7 +204,7 @@ class _NotesScreenState extends State<NotesScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(alertCtx);
-              toggleSelectedNotesArchive();
+              _toggleSelectedNotesArchive();
             },
             child: Text('OK'),
           ),
@@ -214,7 +214,7 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   // Borra las notas seleccionadas y sale del modo selección
-  void deleteSelectedNotes() {
+  void _deleteSelectedNotes() {
     notesService.deleteNotes(_selectedNotes);
 
     setState(() {
@@ -224,7 +224,7 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   // Archiva/desarchiva las notas seleccionadas y sale del modo selección
-  void toggleSelectedNotesArchive() {
+  void _toggleSelectedNotesArchive() {
     _selectedNotes.forEach((note) {
       notesService.updateNote(
         Note(

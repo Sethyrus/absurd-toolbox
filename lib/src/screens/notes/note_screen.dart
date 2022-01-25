@@ -40,6 +40,45 @@ class _NoteScreenState extends State<NoteScreen> {
   final _form = GlobalKey<FormState>();
   final _contentFocusNode = FocusNode();
 
+  String get _title => _editedNote.id == '' ? 'Nueva nota' : 'Editar nota';
+
+  List<PopupMenuEntry<String>>? get _statusBarActions {
+    if (_editedNote.id != '') {
+      return [
+        PopupMenuItem<String>(
+          value: 'TOGGLE_ARCHIVE',
+          child: Row(
+            children: [
+              Container(
+                child: Icon(
+                  _editedNote.archived ? Icons.unarchive : Icons.archive,
+                ),
+                margin: EdgeInsets.only(right: 6),
+              ),
+              Text(
+                _editedNote.archived ? 'Desarchivar nota' : 'Archivar nota',
+              ),
+            ],
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: 'DELETE',
+          child: Row(
+            children: [
+              Container(
+                child: Icon(Icons.delete),
+                margin: EdgeInsets.only(right: 6),
+              ),
+              Text('Eliminar nota'),
+            ],
+          ),
+        ),
+      ];
+    }
+
+    return null;
+  }
+
   @override
   void initState() {
     SchedulerBinding.instance!.addPostFrameCallback((_) {
@@ -132,7 +171,7 @@ class _NoteScreenState extends State<NoteScreen> {
     return true;
   }
 
-  void onStatusBarActionSelected(String actionValue) {
+  void _onStatusBarActionSelected(String actionValue) {
     switch (actionValue) {
       case "DELETE":
         {
@@ -193,44 +232,9 @@ class _NoteScreenState extends State<NoteScreen> {
             child: Layout(
               statusBarColor: Colors.yellow.shade600,
               themeColor: Colors.yellow,
-              title: _editedNote.id == '' ? 'Nueva nota' : 'Editar nota',
-              statusBarActions: _editedNote.id != ''
-                  ? [
-                      PopupMenuItem<String>(
-                        value: 'TOGGLE_ARCHIVE',
-                        child: Row(
-                          children: [
-                            Container(
-                              child: Icon(
-                                _editedNote.archived
-                                    ? Icons.unarchive
-                                    : Icons.archive,
-                              ),
-                              margin: EdgeInsets.only(right: 6),
-                            ),
-                            Text(
-                              _editedNote.archived
-                                  ? 'Desarchivar nota'
-                                  : 'Archivar nota',
-                            ),
-                          ],
-                        ),
-                      ),
-                      PopupMenuItem<String>(
-                        value: 'DELETE',
-                        child: Row(
-                          children: [
-                            Container(
-                              child: Icon(Icons.delete),
-                              margin: EdgeInsets.only(right: 6),
-                            ),
-                            Text('Eliminar nota'),
-                          ],
-                        ),
-                      ),
-                    ]
-                  : null,
-              onStatusBarActionSelected: onStatusBarActionSelected,
+              title: _title,
+              statusBarActions: _statusBarActions,
+              onStatusBarActionSelected: _onStatusBarActionSelected,
               content: Form(
                 key: _form,
                 child: Container(
