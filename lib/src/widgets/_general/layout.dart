@@ -13,7 +13,7 @@ class Layout extends StatelessWidget {
   final Color statusBarColor;
   final Widget content;
 
-  final bool? showAppBar;
+  final bool showAppBar;
   final String? title;
   final Color? themeColor;
   final ThemeStyle? themeStyle;
@@ -31,7 +31,7 @@ class Layout extends StatelessWidget {
     this.themeColor,
     this.themeStyle,
     this.fab,
-    this.showAppBar,
+    this.showAppBar = true,
     this.statusBarActions,
     this.onStatusBarActionSelected,
     this.tabBarItems,

@@ -9,7 +9,6 @@ class ChatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      showAppBar: true,
       statusBarColor: Colors.blue.shade600,
       themeColor: Colors.blue.shade400,
       title: 'Chats',

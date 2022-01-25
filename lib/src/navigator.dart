@@ -3,14 +3,14 @@ import 'package:absurd_toolbox/src/screens/edit_profile_screen.dart';
 import 'package:absurd_toolbox/src/screens/flashlight_screen.dart';
 import 'package:absurd_toolbox/src/screens/home_screen.dart';
 import 'package:absurd_toolbox/src/screens/maps_screen.dart';
-import 'package:absurd_toolbox/src/screens/note_screen.dart';
+import 'package:absurd_toolbox/src/screens/notes/note_screen.dart';
 import 'package:absurd_toolbox/src/screens/osm_screen.dart';
 import 'package:absurd_toolbox/src/screens/profile_screen.dart';
 import 'package:absurd_toolbox/src/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/models/route.dart';
 import 'package:absurd_toolbox/src/screens/barcode_scanner_screen.dart';
-import 'package:absurd_toolbox/src/screens/notes_screen.dart';
+import 'package:absurd_toolbox/src/screens/notes/notes_screen.dart';
 import 'package:absurd_toolbox/src/screens/raffles_screen.dart';
 import 'package:absurd_toolbox/src/screens/sound_recorder_screen.dart';
 

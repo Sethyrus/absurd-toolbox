@@ -177,7 +177,6 @@ class _OSMScreenState extends State<OSMScreen> with OSMMixinObserver {
       statusBarColor: Colors.lightGreen.shade600,
       title: "Google Maps",
       themeColor: Colors.lightGreen,
-      showAppBar: true,
       // key: scaffoldKey,
       // resizeToAvoidBottomInset: false,
       // appBar: AppBar(

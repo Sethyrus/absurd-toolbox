@@ -1,9 +1,6 @@
 import 'package:absurd_toolbox/src/screens/barcode_scanner_screen.dart';
-import 'package:absurd_toolbox/src/screens/chats_screen.dart';
 import 'package:absurd_toolbox/src/screens/flashlight_screen.dart';
-import 'package:absurd_toolbox/src/screens/maps_screen.dart';
-import 'package:absurd_toolbox/src/screens/notes_screen.dart';
-import 'package:absurd_toolbox/src/screens/osm_screen.dart';
+import 'package:absurd_toolbox/src/screens/notes/notes_screen.dart';
 import 'package:absurd_toolbox/src/screens/raffles_screen.dart';
 import 'package:absurd_toolbox/src/screens/sound_recorder_screen.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
@@ -37,24 +34,6 @@ class HomeScreen extends StatelessWidget {
       route: SoundRecorderScreen.routeName,
       icon: Icons.voicemail,
     ),
-    // HomeButton(
-    //   label: 'Chats',
-    //   color: Colors.blue.shade400,
-    //   route: ChatsScreen.routeName,
-    //   icon: Icons.chat,
-    // ),
-    // HomeButton(
-    //   label: "G. Maps",
-    //   color: Colors.lightGreen,
-    //   route: GoogleMapsScreen.routeName,
-    //   icon: Icons.map_outlined,
-    // ),
-    // HomeButton(
-    //   label: "OSMaps",
-    //   color: Colors.orange,
-    //   route: OSMScreen.routeName,
-    //   icon: Icons.map_sharp,
-    // ),
     HomeButton(
       label: "Linterna",
       color: Colors.purple.shade300,
@@ -66,6 +45,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Layout(
+      showAppBar: false,
       statusBarColor: Colors.indigo.shade700,
       content: SafeArea(
         child: Column(

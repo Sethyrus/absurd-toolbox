@@ -41,7 +41,6 @@ class _RafflesScreenState extends State<RafflesScreen> {
     return Layout(
       statusBarColor: Colors.green,
       themeColor: Colors.green.shade400,
-      showAppBar: true,
       title: 'Sorteo',
       content: SingleChildScrollView(
         padding: EdgeInsets.all(8),

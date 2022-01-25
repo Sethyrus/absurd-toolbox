@@ -26,11 +26,10 @@ class GoogleMapsScreenState extends State<GoogleMapsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Layout(
+    return Layout(
       statusBarColor: Colors.lightGreen.shade600,
       title: "Google Maps",
       themeColor: Colors.lightGreen,
-      showAppBar: true,
       content: GoogleMap(
         mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,

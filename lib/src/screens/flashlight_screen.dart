@@ -23,7 +23,7 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
 
   @override
   void dispose() {
-    if (_hasFlashlight) TorchLight.disableTorch();
+    if (_hasFlashlight && _isFlashlightOn) TorchLight.disableTorch();
     super.dispose();
   }
 
@@ -84,7 +84,6 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
     return Layout(
       statusBarColor: Colors.purple.shade400,
       themeColor: Colors.purple.shade300,
-      showAppBar: true,
       title: 'Linterna',
       content: Container(
         width: double.infinity,

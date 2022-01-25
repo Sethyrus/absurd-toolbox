@@ -13,7 +13,6 @@ class EditProfileScreen extends StatelessWidget {
       themeColor: Colors.indigo.shade400,
       themeStyle: ThemeStyle.Light,
       title: "Editar perfil",
-      showAppBar: true,
       content: Center(
         child: Text("Editar perfil"),
       ),

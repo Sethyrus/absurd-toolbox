@@ -13,7 +13,6 @@ class ProfileScreen extends StatelessWidget {
       themeColor: Colors.indigo.shade400,
       themeStyle: ThemeStyle.Light,
       title: "Perfil",
-      showAppBar: true,
       content: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

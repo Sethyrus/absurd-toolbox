@@ -38,7 +38,6 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
     return Layout(
       statusBarColor: Colors.teal.shade400,
       themeColor: Colors.teal.shade300,
-      showAppBar: true,
       title: 'QR/barcode scan',
       content: Container(
         width: double.infinity,

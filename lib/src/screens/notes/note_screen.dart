@@ -193,7 +193,6 @@ class _NoteScreenState extends State<NoteScreen> {
             child: Layout(
               statusBarColor: Colors.yellow.shade600,
               themeColor: Colors.yellow,
-              showAppBar: true,
               title: _editedNote.id == '' ? 'Nueva nota' : 'Editar nota',
               statusBarActions: _editedNote.id != ''
                   ? [
