@@ -4,15 +4,12 @@ enum CoinValue {
 }
 
 class Coin {
-  CoinValue? coinValue;
+  final CoinValue value;
 
-  Coin({CoinValue? value}) {
-    if (value != null) {
-      coinValue = value;
-    } else {
-      List<CoinValue> coinValues = [CoinValue.Heads, CoinValue.Tails];
-      coinValues.shuffle();
-      coinValue = coinValues[0];
-    }
-  }
+  Coin(this.value);
+
+  static CoinValue get random => ([
+        CoinValue.Heads,
+        CoinValue.Tails,
+      ]..shuffle())[0];
 }

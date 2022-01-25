@@ -1,12 +1,7 @@
+import 'package:absurd_toolbox/src/models/raffle.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
-import 'package:absurd_toolbox/src/widgets/raffles/raffle.dart';
+import 'package:absurd_toolbox/src/widgets/_general/custom_dropdown_button.dart';
 import 'package:flutter/material.dart';
-import 'package:absurd_toolbox/src/widgets/raffles/heads_or_tails.dart';
-
-enum RaffleMode {
-  HeadsOrTails,
-  Raffle,
-}
 
 class RafflesScreen extends StatefulWidget {
   static const String routeName = '/raffles';
@@ -16,24 +11,20 @@ class RafflesScreen extends StatefulWidget {
 }
 
 class _RafflesScreenState extends State<RafflesScreen> {
-  RaffleMode raffleMode = RaffleMode.HeadsOrTails;
+  Raffle _selectedRaffle = raffles[0];
 
-  String raffleTitle() {
-    switch (raffleMode) {
-      case RaffleMode.HeadsOrTails:
-        return "Cara o cruz";
-      case RaffleMode.Raffle:
-        return "Sorteo";
-    }
-  }
+  List<DropdownMenuItem<Raffle>>? get _dropdownItems => raffles
+      .map((r) => DropdownMenuItem(
+            child: Text(r.name),
+            value: r,
+          ))
+      .toList();
 
-  Widget raffleWidget() {
-    switch (raffleMode) {
-      case RaffleMode.HeadsOrTails:
-        return HeadsOrTails();
-      case RaffleMode.Raffle:
-        return Raffle();
-    }
+  void _onSelectRaffle(Raffle? selectedRaffle) {
+    if (selectedRaffle != null)
+      setState(
+        () => _selectedRaffle = selectedRaffle,
+      );
   }
 
   @override
@@ -41,33 +32,19 @@ class _RafflesScreenState extends State<RafflesScreen> {
     return Layout(
       statusBarColor: Colors.green,
       themeColor: Colors.green.shade400,
-      title: 'Sorteo',
+      title: 'Sorteos',
       content: SingleChildScrollView(
         padding: EdgeInsets.all(8),
         child: Column(
           children: [
-            DropdownButton(
-              items: [
-                DropdownMenuItem(
-                  child: Text("Cara o cruz"),
-                  value: RaffleMode.HeadsOrTails,
-                ),
-                DropdownMenuItem(
-                  child: Text("Sorteo"),
-                  value: RaffleMode.Raffle,
-                ),
-              ],
-              onChanged: (RaffleMode? value) {
-                if (value != null) {
-                  setState(() {
-                    raffleMode = value;
-                  });
-                }
-              },
-              hint: Text("Modo: " + raffleTitle().toLowerCase()),
+            CustomDropdownButton<Raffle>(
+              items: _dropdownItems,
+              onChanged: (r) => _onSelectRaffle(r),
+              hint: _selectedRaffle.name,
+              backgroundColor: Colors.green.shade400,
             ),
             Divider(color: Colors.grey.shade600, thickness: 2, height: 32),
-            raffleWidget(),
+            _selectedRaffle.widget,
           ],
         ),
       ),

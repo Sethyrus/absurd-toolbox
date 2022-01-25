@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Raffle extends StatefulWidget {
+class Lottery extends StatefulWidget {
   @override
-  _RaffleState createState() => _RaffleState();
+  _LotteryState createState() => _LotteryState();
 }
 
-class _RaffleState extends State<Raffle> {
+class _LotteryState extends State<Lottery> {
   List<String> _participants = [];
   List<String> _winners = [];
   String _addParticipantsError = '';
