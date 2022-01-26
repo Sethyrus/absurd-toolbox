@@ -9,8 +9,12 @@
 - [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] Drag'n'drop de los enlaces de la home
 - [ ] Establecer colores del tema como los del fondo del logo
+- [x] Cronómetro
+  - [ ] Mejorar diseño, más a lo reloj de Google
+- - [ ] Botón de pausa
+- - [ ] Botón de reinicio
+- - [ ] Botón de "lap" y mostrar "laps"
 - [ ] Documentar/Añadir comentarios al código
-- - [ ] Poder modificar color de las notas
 - [ ] Revisar en qué casos tiene más sentido usar transacciones (Firestore) e implementar
 - [x] Añadir una colección "users" a firebase donde almacenar los detalles del perfil de los usuarios
 - - [x] Este dato debe cargarse y mantenerse actualizado dentro de la app
