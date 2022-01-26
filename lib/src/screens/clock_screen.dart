@@ -1,22 +1,47 @@
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
+import 'package:absurd_toolbox/src/widgets/clock/chronometer.dart';
+import 'package:absurd_toolbox/src/widgets/clock/clock.dart';
+import 'package:absurd_toolbox/src/widgets/clock/timer.dart';
 import 'package:flutter/material.dart';
 
-class ClockScreen extends StatefulWidget {
+class ClockScreen extends StatelessWidget {
   static const String routeName = '/clock';
 
   @override
-  State<ClockScreen> createState() => _ClockScreenState();
-}
-
-class _ClockScreenState extends State<ClockScreen> {
-  @override
   Widget build(BuildContext context) {
-    return Layout(
-      statusBarColor: Colors.orange,
-      themeColor: Colors.orange.shade400,
-      title: 'Reloj',
-      content: Center(
-        child: Text("Reloj - En desarrollo"),
+    return DefaultTabController(
+      length: 3,
+      child: Layout(
+        statusBarColor: Colors.orange,
+        themeColor: Colors.orange.shade400,
+        title: 'Reloj',
+        tabBarItems: [
+          Tab(
+            child: Text(
+              'Reloj',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          Tab(
+            child: Text(
+              'Cronómetro',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          Tab(
+            child: Text(
+              'Temporizador',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ],
+        content: TabBarView(
+          children: [
+            Clock(),
+            Chronometer(),
+            Timer(),
+          ],
+        ),
       ),
     );
   }

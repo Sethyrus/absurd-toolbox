@@ -35,7 +35,7 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
         builder: (alertCtx) => AlertDialog(
           title: Text('Atención'),
           content: Text(
-            'Esta sección está en desarrollo, no se recomienda su uso más que para pruebas',
+            'Esta sección está en desarrollo y es inestable, no se recomienda su uso',
           ),
           actions: <Widget>[
             TextButton(
