@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:absurd_toolbox/src/material_app.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'src/firebase_options.dart';
 
 void loaderConfig() {
@@ -22,11 +24,17 @@ void loaderConfig() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Se inicializa Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  // Se selecciona español como idioma por defecto de la aplicación
+  Intl.defaultLocale = 'es_ES';
+  // Se inicializan los textos para el formateo de fechas
+  initializeDateFormatting('es_ES');
+  // Se inicializa la configuración del loader
   loaderConfig();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -8,6 +8,7 @@
 - [ ] En el sorteo de dados, poder añadir más dados
 - [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] Drag'n'drop de los enlaces de la home
+- [ ] Establecer colores del tema como los del fondo del logo
 - [ ] Documentar/Añadir comentarios al código
 - - [ ] Poder modificar color de las notas
 - [ ] Revisar en qué casos tiene más sentido usar transacciones (Firestore) e implementar
