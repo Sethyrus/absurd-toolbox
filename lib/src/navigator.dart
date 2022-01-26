@@ -1,11 +1,10 @@
 import 'package:absurd_toolbox/src/screens/chats_screen.dart';
-import 'package:absurd_toolbox/src/screens/edit_profile_screen.dart';
+import 'package:absurd_toolbox/src/screens/clock_screen.dart';
+import 'package:absurd_toolbox/src/screens/profile/edit_profile_screen.dart';
 import 'package:absurd_toolbox/src/screens/flashlight_screen.dart';
 import 'package:absurd_toolbox/src/screens/home_screen.dart';
-import 'package:absurd_toolbox/src/screens/maps_screen.dart';
 import 'package:absurd_toolbox/src/screens/notes/note_screen.dart';
-import 'package:absurd_toolbox/src/screens/osm_screen.dart';
-import 'package:absurd_toolbox/src/screens/profile_screen.dart';
+import 'package:absurd_toolbox/src/screens/profile/profile_screen.dart';
 import 'package:absurd_toolbox/src/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/models/route.dart';
@@ -48,16 +47,12 @@ final List<AppNavigator> appNavigator = [
         screen: ChatsScreen(),
       ),
       AppRoute(
-        route: GoogleMapsScreen.routeName,
-        screen: GoogleMapsScreen(),
-      ),
-      AppRoute(
-        route: OSMScreen.routeName,
-        screen: OSMScreen(),
-      ),
-      AppRoute(
         route: FlashlightScreen.routeName,
         screen: FlashlightScreen(),
+      ),
+      AppRoute(
+        route: ClockScreen.routeName,
+        screen: ClockScreen(),
       ),
     ],
     icon: Icon(Icons.construction),

@@ -13,7 +13,7 @@ class _SoundButtonsState extends State<SoundButtons> {
       height: double.infinity,
       alignment: Alignment.center,
       child: Text(
-        'En desarrollo',
+        'Sound buttons - En desarrollo',
         style: TextStyle(
           fontWeight: FontWeight.bold,
         ),

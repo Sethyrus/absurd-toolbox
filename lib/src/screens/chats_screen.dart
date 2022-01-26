@@ -13,7 +13,7 @@ class ChatsScreen extends StatelessWidget {
       themeColor: Colors.blue.shade400,
       title: 'Chats',
       content: Center(
-        child: Text("Chats"),
+        child: Text("Chats - En desarrollo"),
       ),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:absurd_toolbox/src/screens/barcode_scanner_screen.dart';
+import 'package:absurd_toolbox/src/screens/chats_screen.dart';
+import 'package:absurd_toolbox/src/screens/clock_screen.dart';
 import 'package:absurd_toolbox/src/screens/flashlight_screen.dart';
 import 'package:absurd_toolbox/src/screens/notes/notes_screen.dart';
 import 'package:absurd_toolbox/src/screens/raffles_screen.dart';
@@ -23,6 +25,12 @@ class HomeScreen extends StatelessWidget {
       icon: Icons.casino,
     ),
     HomeButton(
+      label: 'Reloj',
+      color: Colors.orange.shade400,
+      route: ClockScreen.routeName,
+      icon: Icons.access_time,
+    ),
+    HomeButton(
       label: 'QR scan',
       color: Colors.teal.shade300,
       route: BarcodeScannerScreen.routeName,
@@ -33,6 +41,12 @@ class HomeScreen extends StatelessWidget {
       color: Colors.red.shade400,
       route: SoundRecorderScreen.routeName,
       icon: Icons.voicemail,
+    ),
+    HomeButton(
+      label: 'Chats',
+      color: Colors.blue.shade400,
+      route: ChatsScreen.routeName,
+      icon: Icons.chat,
     ),
     HomeButton(
       label: "Linterna",
