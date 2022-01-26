@@ -1,6 +1,6 @@
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
+import 'package:absurd_toolbox/src/widgets/barcode_scanner/barcode_scanner.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,22 +15,27 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   String _scannedValue = '';
   bool _isValidLink = false;
 
-  void startScanning() async {
-    String newValue = await FlutterBarcodeScanner.scanBarcode(
+  void _initScanner() async {
+    FlutterBarcodeScanner.scanBarcode(
       '#ff6666',
       'Cancelar',
       false,
       ScanMode.BARCODE,
-    );
-
-    if (newValue != '' && newValue != '-1' && _scannedValue != newValue) {
-      bool isValidLink = await canLaunch(newValue);
-
-      setState(() {
-        _scannedValue = newValue;
-        _isValidLink = isValidLink;
-      });
-    }
+    ).then((newValue) async {
+      if (newValue != '' && newValue != '-1' && _scannedValue != newValue) {
+        canLaunch(newValue).then((isValidLink) {
+          setState(() {
+            _isValidLink = isValidLink;
+            _scannedValue = newValue;
+          });
+        }).catchError((e) {
+          setState(() {
+            _isValidLink = false;
+            _scannedValue = newValue;
+          });
+        });
+      }
+    });
   }
 
   @override
@@ -46,72 +51,13 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
         ),
         height: double.infinity,
         alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: _scannedValue != ''
-              ? [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 8),
-                    child: Text('Valor escaneado:'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Text(
-                      _scannedValue,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        Colors.teal.shade300,
-                      ),
-                      foregroundColor: MaterialStateProperty.all(
-                        Colors.black,
-                      ),
-                    ),
-                    onPressed: () => Clipboard.setData(
-                      ClipboardData(text: _scannedValue),
-                    ),
-                    child: Text('Copiar al portapapeles'),
-                  ),
-                  ..._isValidLink
-                      ? [
-                          ElevatedButton(
-                            onPressed: () => launch(_scannedValue),
-                            child: Text('Abrir enlace'),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                Colors.teal.shade300,
-                              ),
-                              foregroundColor: MaterialStateProperty.all(
-                                Colors.black,
-                              ),
-                            ),
-                          )
-                        ]
-                      : []
-                ]
-              : [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 8),
-                    child: Text(
-                      'Ningún valor escaneado',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  Text(
-                    'Pulsa el botón para escanear un QR/código de barras',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
+        child: BarcodeScanner(
+          scannedValue: _scannedValue,
+          isValidLink: _isValidLink,
         ),
       ),
       fab: FloatingActionButton(
-        onPressed: startScanning,
+        onPressed: _initScanner,
         child: Icon(
           Icons.photo_camera,
           color: Colors.black,

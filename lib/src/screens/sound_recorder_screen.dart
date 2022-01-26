@@ -29,6 +29,22 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
           await Permission.microphone.request(),
         );
       }
+
+      showDialog(
+        context: context,
+        builder: (alertCtx) => AlertDialog(
+          title: Text('Atención'),
+          content: Text(
+            'Esta sección está en desarrollo, no se recomienda su uso más que para pruebas',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(alertCtx),
+              child: Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
     });
   }
 
