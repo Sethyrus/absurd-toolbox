@@ -20,7 +20,7 @@ final List<AppNavigator> appNavigator = [
     routes: [
       AppRoute(
         route: '/',
-        screen: HomeScreen(),
+        screen: const HomeScreen(),
       ),
       AppRoute(
         route: NotesScreen.routeName,
