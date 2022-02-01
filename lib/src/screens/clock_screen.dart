@@ -1,3 +1,5 @@
+import 'package:absurd_toolbox/src/consts.dart';
+import 'package:absurd_toolbox/src/models/tool.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/src/widgets/clock/chronometer.dart';
 import 'package:absurd_toolbox/src/widgets/clock/timer.dart';
@@ -10,11 +12,14 @@ class ClockScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Tool tool = tools.firstWhere((t) => t.route == ClockScreen.routeName);
+
     return DefaultTabController(
       length: 2,
       child: Layout(
-        statusBarColor: Colors.orange,
-        themeColor: Colors.orange.shade400,
+        statusBarColor: tool.secondaryColor,
+        themeColor: tool.primaryColor,
+        themeStyle: tool.themeStyle,
         title: 'Reloj',
         tabBarItems: const [
           Tab(

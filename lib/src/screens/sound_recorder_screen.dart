@@ -1,3 +1,5 @@
+import 'package:absurd_toolbox/src/consts.dart';
+import 'package:absurd_toolbox/src/models/tool.dart';
 import 'package:absurd_toolbox/src/services/permissions_service.dart';
 import 'package:absurd_toolbox/src/models/app_permissions.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
@@ -52,11 +54,16 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Tool tool = tools.firstWhere(
+      (t) => t.route == SoundRecorderScreen.routeName,
+    );
+
     return DefaultTabController(
       length: 3,
       child: Layout(
-        statusBarColor: Colors.red,
-        themeColor: Colors.red.shade400,
+        statusBarColor: tool.secondaryColor,
+        themeColor: tool.primaryColor,
+        themeStyle: tool.themeStyle,
         title: 'Grabadora de sonidos',
         tabBarIndicatorColor: Colors.white,
         tabBarItems: const [

@@ -26,6 +26,8 @@ class MyMaterialApp extends StatelessWidget {
       builder: EasyLoading.init(),
       theme: ThemeData(
         primarySwatch: Colors.indigo,
+        primaryColor: Colors.indigo,
+        primaryColorDark: Colors.indigo.shade800,
         fontFamily: GoogleFonts.openSans.toString(),
         textTheme: GoogleFonts.openSansTextTheme(
           Theme.of(context).textTheme,

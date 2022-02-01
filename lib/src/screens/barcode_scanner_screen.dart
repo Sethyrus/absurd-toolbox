@@ -1,3 +1,5 @@
+import 'package:absurd_toolbox/src/consts.dart';
+import 'package:absurd_toolbox/src/models/tool.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/src/widgets/barcode_scanner/barcode_scanner.dart';
 import 'package:flutter/material.dart';
@@ -42,9 +44,14 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Tool tool = tools.firstWhere(
+      (t) => t.route == BarcodeScannerScreen.routeName,
+    );
+
     return Layout(
-      statusBarColor: Colors.teal.shade400,
-      themeColor: Colors.teal.shade300,
+      statusBarColor: tool.secondaryColor,
+      themeColor: tool.primaryColor,
+      themeStyle: tool.themeStyle,
       title: 'QR/barcode scan',
       content: Container(
         width: double.infinity,

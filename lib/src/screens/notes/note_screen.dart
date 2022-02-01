@@ -1,3 +1,6 @@
+import 'package:absurd_toolbox/src/consts.dart';
+import 'package:absurd_toolbox/src/models/tool.dart';
+import 'package:absurd_toolbox/src/screens/notes/notes_screen.dart';
 import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
@@ -228,12 +231,15 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Tool tool = tools.firstWhere((t) => t.route == NotesScreen.routeName);
+
     return _initialized
         ? WillPopScope(
             onWillPop: () => Future(() => _onSubmitForm()),
             child: Layout(
-              statusBarColor: Colors.yellow.shade600,
-              themeColor: Colors.yellow,
+              statusBarColor: tool.secondaryColor,
+              themeColor: tool.primaryColor,
+              themeStyle: tool.themeStyle,
               title: _title,
               statusBarActions: _statusBarActions,
               onStatusBarActionSelected: _onStatusBarActionSelected,

@@ -1,4 +1,6 @@
+import 'package:absurd_toolbox/src/consts.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
+import 'package:absurd_toolbox/src/models/tool.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:torch_light/torch_light.dart';
@@ -83,9 +85,12 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Tool tool = tools.firstWhere((t) => t.route == FlashlightScreen.routeName);
+
     return Layout(
-      statusBarColor: Colors.purple.shade400,
-      themeColor: Colors.purple.shade300,
+      statusBarColor: tool.secondaryColor,
+      themeColor: tool.primaryColor,
+      themeStyle: tool.themeStyle,
       title: 'Linterna',
       content: SizedBox(
         width: double.infinity,

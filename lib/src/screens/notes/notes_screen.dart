@@ -1,4 +1,6 @@
+import 'package:absurd_toolbox/src/consts.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
+import 'package:absurd_toolbox/src/models/tool.dart';
 import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/widgets/_general/expandable_fab/action_button.dart';
 import 'package:absurd_toolbox/src/widgets/_general/expandable_fab/expandable_fab.dart';
@@ -264,9 +266,12 @@ class _NotesScreenState extends State<NotesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Tool tool = tools.firstWhere((t) => t.route == NotesScreen.routeName);
+
     return Layout(
-      statusBarColor: Colors.yellow.shade600,
-      themeColor: Colors.yellow,
+      statusBarColor: tool.secondaryColor,
+      themeColor: tool.primaryColor,
+      themeStyle: tool.themeStyle,
       title: _title,
       statusBarActions: _statusBarActions,
       onStatusBarActionSelected: _onStatusBarActionSelected,

@@ -9,8 +9,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      statusBarColor: Colors.indigo.shade800,
-      themeColor: Colors.indigo,
+      statusBarColor: Theme.of(context).primaryColorDark,
+      themeColor: Theme.of(context).primaryColor,
       themeStyle: ThemeStyle.light,
       title: "Perfil",
       content: Center(
@@ -18,28 +18,10 @@ class ProfileScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const ProfileDetails(),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.of(context).pushNamed(EditProfileScreen.routeName);
-            //   },
-            //   style: ButtonStyle(
-            //     backgroundColor: MaterialStateProperty.all(
-            //       Colors.indigo,
-            //     ),
-            //   ),
-            //   child: Text("Editar perfil"),
-            // ),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: ElevatedButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                },
-                style: const ButtonStyle(
-                    // backgroundColor: MaterialStateProperty.all(
-                    //   Colors.indigo,
-                    // ),
-                    ),
+                onPressed: FirebaseAuth.instance.signOut,
                 child: const Text("Cerrar sesión"),
               ),
             ),

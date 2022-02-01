@@ -7,10 +7,10 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      statusBarColor: Colors.indigo.shade800,
+      statusBarColor: Theme.of(context).primaryColorDark,
+      themeColor: Theme.of(context).primaryColor,
       themeStyle: ThemeStyle.light,
       title: "Ajustes",
-      themeColor: Colors.indigo,
       content: const Center(),
     );
   }
