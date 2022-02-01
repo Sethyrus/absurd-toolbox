@@ -27,7 +27,9 @@ class _AuthScreenState extends State<AuthScreen> {
 
     return Layout(
       showAppBar: false,
-      statusBarColor: Colors.white,
+      secondaryColor: Colors.white,
+      primaryColor: Theme.of(context).primaryColor,
+      themeStyle: ThemeStyle.light,
       content: Container(
         width: double.infinity,
         height: double.infinity,

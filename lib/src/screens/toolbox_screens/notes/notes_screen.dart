@@ -271,8 +271,8 @@ class _NotesScreenState extends State<NotesScreen> {
     Tool tool = tools.firstWhere((t) => t.route == NotesScreen.routeName);
 
     return Layout(
-      statusBarColor: tool.secondaryColor,
-      themeColor: tool.primaryColor,
+      secondaryColor: tool.secondaryColor,
+      primaryColor: tool.primaryColor,
       themeStyle: tool.themeStyle,
       title: _title,
       statusBarActions: _statusBarActions,

@@ -1,4 +1,5 @@
 import 'package:absurd_toolbox/src/models/tool.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class ToolButton extends StatelessWidget {
@@ -36,16 +37,19 @@ class ToolButton extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 2, right: 2),
-                    child: Text(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: AutoSizeText(
                       tool.name,
                       maxLines: 2,
+                      wrapWords: false,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
+                      minFontSize: 10,
+                      maxFontSize: 12,
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 11,
+                        // fontSize: 12,
                         height: 1.2,
                       ),
                     ),

@@ -61,8 +61,8 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
     return DefaultTabController(
       length: 3,
       child: Layout(
-        statusBarColor: tool.secondaryColor,
-        themeColor: tool.primaryColor,
+        secondaryColor: tool.secondaryColor,
+        primaryColor: tool.primaryColor,
         themeStyle: tool.themeStyle,
         title: tool.name,
         tabBarIndicatorColor: Colors.white,

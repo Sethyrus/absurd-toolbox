@@ -42,10 +42,6 @@ class _HeadsOrTailsState extends State<HeadsOrTails> {
           ElevatedButton(
             onPressed: () => setState(() => _coin = Coin(Coin.random)),
             child: const Text('Tirar la moneda'),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.green.shade400),
-              foregroundColor: MaterialStateProperty.all(Colors.black),
-            ),
           ),
         ],
       ),

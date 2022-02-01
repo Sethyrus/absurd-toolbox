@@ -37,10 +37,6 @@ class _DiceRollState extends State<DiceRoll> {
           ElevatedButton(
             onPressed: () => setState(() => _dice = Dice(Dice.random)),
             child: const Text('Tirar el dado'),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.green.shade400),
-              foregroundColor: MaterialStateProperty.all(Colors.black),
-            ),
           ),
         ],
       ),

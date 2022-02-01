@@ -37,8 +37,8 @@ class _RafflesScreenState extends State<RafflesScreen> {
     Tool tool = tools.firstWhere((t) => t.route == RafflesScreen.routeName);
 
     return Layout(
-      statusBarColor: tool.secondaryColor,
-      themeColor: tool.primaryColor,
+      secondaryColor: tool.secondaryColor,
+      primaryColor: tool.primaryColor,
       themeStyle: tool.themeStyle,
       title: tool.name,
       content: SingleChildScrollView(

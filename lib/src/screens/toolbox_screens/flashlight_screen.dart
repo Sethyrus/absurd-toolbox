@@ -88,8 +88,8 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
     Tool tool = tools.firstWhere((t) => t.route == FlashlightScreen.routeName);
 
     return Layout(
-      statusBarColor: tool.secondaryColor,
-      themeColor: tool.primaryColor,
+      secondaryColor: tool.secondaryColor,
+      primaryColor: tool.primaryColor,
       themeStyle: tool.themeStyle,
       title: tool.name,
       content: SizedBox(

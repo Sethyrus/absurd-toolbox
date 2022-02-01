@@ -250,8 +250,8 @@ class _NoteScreenState extends State<NoteScreen> {
         ? WillPopScope(
             onWillPop: () => Future(() => _onSubmitForm()),
             child: Layout(
-              statusBarColor: tool.secondaryColor,
-              themeColor: tool.primaryColor,
+              secondaryColor: tool.secondaryColor,
+              primaryColor: tool.primaryColor,
               themeStyle: tool.themeStyle,
               title: _title,
               statusBarActions: _statusBarActions,

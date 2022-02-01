@@ -36,14 +36,6 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                 ),
               ),
               ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Colors.teal.shade300,
-                  ),
-                  foregroundColor: MaterialStateProperty.all(
-                    Colors.black,
-                  ),
-                ),
                 onPressed: () => Clipboard.setData(
                   ClipboardData(text: widget.scannedValue),
                 ),
@@ -54,14 +46,6 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       ElevatedButton(
                         onPressed: () => launch(widget.scannedValue),
                         child: const Text('Abrir enlace'),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                            Colors.teal.shade300,
-                          ),
-                          foregroundColor: MaterialStateProperty.all(
-                            Colors.black,
-                          ),
-                        ),
                       )
                     ]
                   : []

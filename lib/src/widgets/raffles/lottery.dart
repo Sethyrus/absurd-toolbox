@@ -147,14 +147,6 @@ class _LotteryState extends State<Lottery> {
                         child: ElevatedButton(
                           onPressed: _addParticipant,
                           child: const Text('Añadir'),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Colors.green.shade400,
-                            ),
-                            foregroundColor: MaterialStateProperty.all(
-                              Colors.black,
-                            ),
-                          ),
                         ),
                       ),
                     ],
@@ -226,11 +218,6 @@ class _LotteryState extends State<Lottery> {
                   child: ElevatedButton(
                     onPressed: _getWinners,
                     child: const Text('Realizar sorteo'),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.green.shade400),
-                      foregroundColor: MaterialStateProperty.all(Colors.black),
-                    ),
                   ),
                 ),
                 ..._winnersError != ''

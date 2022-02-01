@@ -1,10 +1,16 @@
+import 'package:absurd_toolbox/src/models/raffle.dart';
 import 'package:absurd_toolbox/src/models/tool.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/clock_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/flashlight_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/notes/notes_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/raffles_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/unit_converter_screen.dart';
+import 'package:absurd_toolbox/src/widgets/raffles/dice.dart';
+import 'package:absurd_toolbox/src/widgets/raffles/heads_or_tails.dart';
+import 'package:absurd_toolbox/src/widgets/raffles/lottery.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 final List<Tool> tools = [
   Tool(
@@ -62,5 +68,31 @@ final List<Tool> tools = [
     secondaryColor: Colors.purple.shade400,
     route: FlashlightScreen.routeName,
     widget: const FlashlightScreen(),
+  ),
+  Tool(
+    name: "Conversor de unidades",
+    icon: MdiIcons.scaleBalance,
+    primaryColor: Colors.brown.shade400,
+    secondaryColor: Colors.brown,
+    route: UnitConverterScreen.routeName,
+    widget: const UnitConverterScreen(),
+  ),
+];
+
+final List<Raffle> raffles = [
+  Raffle(
+    mode: RaffleMode.headsOrTails,
+    name: "Cara o cruz",
+    widget: const HeadsOrTails(),
+  ),
+  Raffle(
+    mode: RaffleMode.lottery,
+    name: "Sorteo",
+    widget: const Lottery(),
+  ),
+  Raffle(
+    mode: RaffleMode.diceRoll,
+    name: "Dados",
+    widget: const DiceRoll(),
   ),
 ];

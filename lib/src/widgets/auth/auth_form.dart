@@ -177,9 +177,6 @@ class _AuthFormState extends State<AuthForm> {
                               borderRadius: BorderRadius.circular(128),
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.all(
-                            Theme.of(context).primaryColor,
-                          ),
                         ),
                         child: Text(
                           widget.authMode == AuthMode.login

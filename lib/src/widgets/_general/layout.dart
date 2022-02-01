@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/widgets/_general/empty_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,12 +11,12 @@ enum ThemeStyle {
 }
 
 class Layout extends StatelessWidget {
-  final Color statusBarColor;
+  final Color secondaryColor;
   final Widget content;
   final bool showAppBar;
   final String? title;
-  final Color? themeColor;
-  final ThemeStyle? themeStyle;
+  final Color primaryColor;
+  final ThemeStyle themeStyle;
   final Widget? fab;
   final List<PopupMenuEntry<String>>? statusBarActions;
   final Function(String)? onStatusBarActionSelected;
@@ -25,11 +26,11 @@ class Layout extends StatelessWidget {
 
   const Layout({
     Key? key,
-    required this.statusBarColor,
     required this.content,
+    required this.primaryColor,
+    required this.secondaryColor,
     this.title,
-    this.themeColor,
-    this.themeStyle,
+    this.themeStyle = ThemeStyle.dark,
     this.fab,
     this.showAppBar = true,
     this.statusBarActions,
@@ -41,54 +42,57 @@ class Layout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: showAppBar == true
-          ? AppBar(
-              title: Text(
-                title ?? '',
-                style: TextStyle(
+    return Theme(
+      data: generateAppTheme(context, createMaterialColor(primaryColor)),
+      child: Scaffold(
+        appBar: showAppBar == true
+            ? AppBar(
+                title: Text(
+                  title ?? '',
+                  style: TextStyle(
+                    color: themeStyle == ThemeStyle.light
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                ),
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: secondaryColor,
+                ),
+                backgroundColor: primaryColor,
+                iconTheme: IconThemeData(
                   color: themeStyle == ThemeStyle.light
                       ? Colors.white
                       : Colors.black,
                 ),
-              ),
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: statusBarColor,
-              ),
-              backgroundColor: themeColor,
-              iconTheme: IconThemeData(
-                color: themeStyle == ThemeStyle.light
-                    ? Colors.white
-                    : Colors.black,
-              ),
-              actions: statusBarActions != null
-                  ? [
-                      PopupMenuButton<String>(
-                        onSelected: onStatusBarActionSelected,
-                        itemBuilder: (BuildContext context) =>
-                            statusBarActions ?? [],
+                actions: statusBarActions != null
+                    ? [
+                        PopupMenuButton<String>(
+                          onSelected: onStatusBarActionSelected,
+                          itemBuilder: (BuildContext context) =>
+                              statusBarActions ?? [],
+                        )
+                      ]
+                    : null,
+                bottom: tabBarItems != null
+                    ? TabBar(
+                        tabs: tabBarItems ?? [],
+                        indicatorColor: tabBarIndicatorColor,
                       )
-                    ]
-                  : null,
-              bottom: tabBarItems != null
-                  ? TabBar(
-                      tabs: tabBarItems ?? [],
-                      indicatorColor: tabBarIndicatorColor,
-                    )
-                  : null,
-            )
-          : !kIsWeb && Platform.isIOS
-              ? EmptyAppBar(
-                  statusBarColor: statusBarColor,
-                )
-              : null,
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: statusBarColor,
+                    : null,
+              )
+            : !kIsWeb && Platform.isIOS
+                ? EmptyAppBar(
+                    statusBarColor: secondaryColor,
+                  )
+                : null,
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            statusBarColor: secondaryColor,
+          ),
+          child: avoidSafeArea == true ? content : SafeArea(child: content),
         ),
-        child: avoidSafeArea == true ? content : SafeArea(child: content),
+        floatingActionButton: fab,
       ),
-      floatingActionButton: fab,
     );
   }
 }

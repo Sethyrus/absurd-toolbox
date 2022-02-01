@@ -7,6 +7,7 @@ import 'package:absurd_toolbox/src/screens/app_screens/home_screen.dart';
 import 'package:absurd_toolbox/src/screens/app_screens/settings_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/notes/note_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/notes/notes_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/unit_converter_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/models/route.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/barcode_scanner_screen.dart';
@@ -53,6 +54,10 @@ final List<AppNavigator> appNavigator = [
       AppRoute(
         route: ClockScreen.routeName,
         screen: const ClockScreen(),
+      ),
+      AppRoute(
+        route: UnitConverterScreen.routeName,
+        screen: const UnitConverterScreen(),
       ),
     ],
     icon: const Icon(Icons.construction),

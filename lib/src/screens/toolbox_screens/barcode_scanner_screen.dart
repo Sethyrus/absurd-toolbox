@@ -49,8 +49,8 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
     );
 
     return Layout(
-      statusBarColor: tool.secondaryColor,
-      themeColor: tool.primaryColor,
+      secondaryColor: tool.secondaryColor,
+      primaryColor: tool.primaryColor,
       themeStyle: tool.themeStyle,
       title: tool.name,
       content: Container(
