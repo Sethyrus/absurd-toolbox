@@ -91,7 +91,7 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
       statusBarColor: tool.secondaryColor,
       themeColor: tool.primaryColor,
       themeStyle: tool.themeStyle,
-      title: 'Linterna',
+      title: tool.name,
       content: SizedBox(
         width: double.infinity,
         height: double.infinity,

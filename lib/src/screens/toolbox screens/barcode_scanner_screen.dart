@@ -52,7 +52,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
       statusBarColor: tool.secondaryColor,
       themeColor: tool.primaryColor,
       themeStyle: tool.themeStyle,
-      title: 'QR/barcode scan',
+      title: tool.name,
       content: Container(
         width: double.infinity,
         padding: EdgeInsets.symmetric(

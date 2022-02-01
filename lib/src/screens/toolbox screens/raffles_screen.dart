@@ -40,7 +40,7 @@ class _RafflesScreenState extends State<RafflesScreen> {
       statusBarColor: tool.secondaryColor,
       themeColor: tool.primaryColor,
       themeStyle: tool.themeStyle,
-      title: 'Sorteos',
+      title: tool.name,
       content: SingleChildScrollView(
         padding: const EdgeInsets.all(8),
         child: Column(

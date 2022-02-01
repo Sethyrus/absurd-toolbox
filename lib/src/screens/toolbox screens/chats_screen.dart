@@ -16,7 +16,7 @@ class ChatsScreen extends StatelessWidget {
       statusBarColor: tool.secondaryColor,
       themeColor: tool.primaryColor,
       themeStyle: tool.themeStyle,
-      title: 'Chats',
+      title: tool.name,
       content: const Center(
         child: Text("Chats - En desarrollo"),
       ),

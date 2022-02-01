@@ -64,7 +64,7 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
         statusBarColor: tool.secondaryColor,
         themeColor: tool.primaryColor,
         themeStyle: tool.themeStyle,
-        title: 'Grabadora de sonidos',
+        title: tool.name,
         tabBarIndicatorColor: Colors.white,
         tabBarItems: const [
           Tab(

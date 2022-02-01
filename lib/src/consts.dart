@@ -1,11 +1,9 @@
 import 'package:absurd_toolbox/src/models/tool.dart';
-import 'package:absurd_toolbox/src/screens/barcode_scanner_screen.dart';
-import 'package:absurd_toolbox/src/screens/chats_screen.dart';
-import 'package:absurd_toolbox/src/screens/clock_screen.dart';
-import 'package:absurd_toolbox/src/screens/flashlight_screen.dart';
-import 'package:absurd_toolbox/src/screens/notes/notes_screen.dart';
-import 'package:absurd_toolbox/src/screens/raffles_screen.dart';
-import 'package:absurd_toolbox/src/screens/sound_recorder_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/barcode_scanner_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/clock_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/flashlight_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/notes/notes_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/raffles_screen.dart';
 import 'package:flutter/material.dart';
 
 final List<Tool> tools = [
@@ -41,22 +39,22 @@ final List<Tool> tools = [
     route: BarcodeScannerScreen.routeName,
     widget: const BarcodeScannerScreen(),
   ),
-  Tool(
-    name: "Grabadora de voz",
-    icon: Icons.voicemail,
-    primaryColor: Colors.red.shade400,
-    secondaryColor: Colors.red,
-    route: SoundRecorderScreen.routeName,
-    widget: const SoundRecorderScreen(),
-  ),
-  Tool(
-    name: "Chats",
-    icon: Icons.chat,
-    primaryColor: Colors.blue.shade400,
-    secondaryColor: Colors.blue.shade600,
-    route: ChatsScreen.routeName,
-    widget: const ChatsScreen(),
-  ),
+  // Tool(
+  //   name: "Grabadora de sonido",
+  //   icon: Icons.voicemail,
+  //   primaryColor: Colors.red.shade400,
+  //   secondaryColor: Colors.red,
+  //   route: SoundRecorderScreen.routeName,
+  //   widget: const SoundRecorderScreen(),
+  // ),
+  // Tool(
+  //   name: "Chats",
+  //   icon: Icons.chat,
+  //   primaryColor: Colors.blue.shade400,
+  //   secondaryColor: Colors.blue.shade600,
+  //   route: ChatsScreen.routeName,
+  //   widget: const ChatsScreen(),
+  // ),
   Tool(
     name: "Linterna",
     icon: Icons.flashlight_on,

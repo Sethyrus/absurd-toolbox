@@ -10,6 +10,6 @@ class Timer extends StatefulWidget {
 class _TimerState extends State<Timer> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Center(child: Text("Temporizador - En desarrollo"));
   }
 }

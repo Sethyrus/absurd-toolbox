@@ -1,17 +1,17 @@
-import 'package:absurd_toolbox/src/screens/chats_screen.dart';
-import 'package:absurd_toolbox/src/screens/clock_screen.dart';
-import 'package:absurd_toolbox/src/screens/profile/edit_profile_screen.dart';
-import 'package:absurd_toolbox/src/screens/flashlight_screen.dart';
-import 'package:absurd_toolbox/src/screens/home_screen.dart';
-import 'package:absurd_toolbox/src/screens/notes/note_screen.dart';
-import 'package:absurd_toolbox/src/screens/profile/profile_screen.dart';
-import 'package:absurd_toolbox/src/screens/settings_screen.dart';
+import 'package:absurd_toolbox/src/screens/app%20screens/profile/edit_profile_screen.dart';
+import 'package:absurd_toolbox/src/screens/app%20screens/profile/profile_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/chats_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/clock_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/flashlight_screen.dart';
+import 'package:absurd_toolbox/src/screens/app%20screens/home_screen.dart';
+import 'package:absurd_toolbox/src/screens/app%20screens/settings_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/notes/note_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/notes/notes_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/models/route.dart';
-import 'package:absurd_toolbox/src/screens/barcode_scanner_screen.dart';
-import 'package:absurd_toolbox/src/screens/notes/notes_screen.dart';
-import 'package:absurd_toolbox/src/screens/raffles_screen.dart';
-import 'package:absurd_toolbox/src/screens/sound_recorder_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/barcode_scanner_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/raffles_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/sound_recorder_screen.dart';
 
 final List<AppNavigator> appNavigator = [
   AppNavigator(

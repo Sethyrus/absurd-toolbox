@@ -20,7 +20,7 @@ class ClockScreen extends StatelessWidget {
         statusBarColor: tool.secondaryColor,
         themeColor: tool.primaryColor,
         themeStyle: tool.themeStyle,
-        title: 'Reloj',
+        title: tool.name,
         tabBarItems: const [
           Tab(
             child: Text(

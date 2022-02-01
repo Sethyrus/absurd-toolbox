@@ -1,6 +1,6 @@
 import 'package:absurd_toolbox/src/consts.dart';
 import 'package:absurd_toolbox/src/models/tool.dart';
-import 'package:absurd_toolbox/src/screens/notes/notes_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/notes/notes_screen.dart';
 import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';

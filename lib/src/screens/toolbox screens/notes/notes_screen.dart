@@ -1,12 +1,12 @@
 import 'package:absurd_toolbox/src/consts.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
 import 'package:absurd_toolbox/src/models/tool.dart';
+import 'package:absurd_toolbox/src/screens/toolbox%20screens/notes/note_screen.dart';
 import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/widgets/_general/expandable_fab/action_button.dart';
 import 'package:absurd_toolbox/src/widgets/_general/expandable_fab/expandable_fab.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:absurd_toolbox/src/screens/notes/note_screen.dart';
 import 'package:absurd_toolbox/src/widgets/notes/notes_list.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -40,7 +40,9 @@ class _NotesScreenState extends State<NotesScreen> {
   // Controla si se muestra el listado de notas normal o archivadas
   bool _showArchivedNotes = false;
 
-  String get _title => _showArchivedNotes ? 'Notas archivadas' : 'Notas';
+  String get _title => _showArchivedNotes
+      ? 'Notas archivadas'
+      : tools.firstWhere((t) => t.route == NotesScreen.routeName).name;
 
   List<PopupMenuEntry<String>>? get _statusBarActions {
     if (_showArchivedNotes) {
