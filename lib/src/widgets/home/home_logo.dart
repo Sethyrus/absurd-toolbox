@@ -8,9 +8,9 @@ class HomeLogo extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 24),
-      decoration: const BoxDecoration(
-        color: Colors.indigo,
-        border: Border(
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        border: const Border(
           bottom: BorderSide(
             color: Colors.black,
             width: 2,

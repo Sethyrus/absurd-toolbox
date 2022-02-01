@@ -5,6 +5,8 @@
   - [ ] Color
   - [ ] Pinning
 - [ ] Investigar sobre el patrón BLoC
+- [ ] Probar FittedBoxes en los ToolButtons para mejorar el estilo
+- [ ] Probar Hero en la transición de navegación de las notas
 - [ ] Función de OCR en las notas (Tesseract)
 - [ ] En el sorteo de dados, poder añadir más dados
 - [ ] Mover claves de API a un archivo .env, fuera de git

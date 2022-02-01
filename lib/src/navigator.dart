@@ -1,17 +1,17 @@
-import 'package:absurd_toolbox/src/screens/app%20screens/profile/edit_profile_screen.dart';
-import 'package:absurd_toolbox/src/screens/app%20screens/profile/profile_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/chats_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/clock_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/flashlight_screen.dart';
-import 'package:absurd_toolbox/src/screens/app%20screens/home_screen.dart';
-import 'package:absurd_toolbox/src/screens/app%20screens/settings_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/notes/note_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/notes/notes_screen.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/profile/edit_profile_screen.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/profile/profile_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/chats_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/clock_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/flashlight_screen.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/home_screen.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/settings_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/notes/note_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/notes/notes_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/models/route.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/barcode_scanner_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/raffles_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/sound_recorder_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/barcode_scanner_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/raffles_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/sound_recorder_screen.dart';
 
 final List<AppNavigator> appNavigator = [
   AppNavigator(

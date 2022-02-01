@@ -1,6 +1,6 @@
 import 'package:absurd_toolbox/src/services/auth_service.dart';
-import 'package:absurd_toolbox/src/screens/app%20screens/auth_screen.dart';
-import 'package:absurd_toolbox/src/screens/app%20screens/tabs_screen.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/auth_screen.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/tabs_screen.dart';
 import 'package:absurd_toolbox/src/widgets/_general/network_indicator.dart';
 import 'package:flutter/material.dart';
 

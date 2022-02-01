@@ -1,9 +1,9 @@
 import 'package:absurd_toolbox/src/models/tool.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/barcode_scanner_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/clock_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/flashlight_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/notes/notes_screen.dart';
-import 'package:absurd_toolbox/src/screens/toolbox%20screens/raffles_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/barcode_scanner_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/clock_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/flashlight_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/notes/notes_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/raffles_screen.dart';
 import 'package:flutter/material.dart';
 
 final List<Tool> tools = [

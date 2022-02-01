@@ -1,5 +1,5 @@
 import 'package:absurd_toolbox/src/helpers.dart';
-import 'package:absurd_toolbox/src/screens/app%20screens/auth_screen.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/auth_screen.dart';
 import 'package:absurd_toolbox/src/widgets/_general/space.dart';
 import 'package:absurd_toolbox/src/widgets/auth/auth_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -178,7 +178,7 @@ class _AuthFormState extends State<AuthForm> {
                             ),
                           ),
                           backgroundColor: MaterialStateProperty.all(
-                            Colors.indigo,
+                            Theme.of(context).primaryColor,
                           ),
                         ),
                         child: Text(

@@ -46,6 +46,7 @@ class ToolButton extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 11,
+                        height: 1.2,
                       ),
                     ),
                   ),
