@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class HomeLogo extends StatelessWidget {
+  const HomeLogo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 32),
-      decoration: BoxDecoration(
-        color: Colors.indigo.shade400,
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      decoration: const BoxDecoration(
+        color: Colors.indigo,
         border: Border(
           bottom: BorderSide(
             color: Colors.black,
@@ -20,13 +22,13 @@ class HomeLogo extends StatelessWidget {
         children: [
           Icon(
             Icons.construction,
-            size: 64,
+            size: 48,
             color: Colors.yellow.shade600,
           ),
           Text(
             'Absurd Toolbox',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.yellow.shade600,
             ),

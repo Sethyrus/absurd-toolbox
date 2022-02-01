@@ -11,6 +11,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 FirebaseAuth auth = FirebaseAuth.instance;
 
 class MyMaterialApp extends StatelessWidget {
+  const MyMaterialApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     connectivityService.initConnectivitySubscription();
@@ -23,13 +25,13 @@ class MyMaterialApp extends StatelessWidget {
     return MaterialApp(
       builder: EasyLoading.init(),
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
         fontFamily: GoogleFonts.openSans.toString(),
         textTheme: GoogleFonts.openSansTextTheme(
           Theme.of(context).textTheme,
         ),
       ),
-      home: AppContainer(),
+      home: const AppContainer(),
     );
   }
 }

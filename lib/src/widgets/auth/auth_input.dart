@@ -29,18 +29,18 @@ class AuthInput extends StatelessWidget {
         prefixIcon: prefixIcon != null
             ? Icon(
                 prefixIcon,
-                color: Colors.indigo.shade400,
+                color: Colors.indigo,
               )
             : null,
         labelText: labelText,
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
             width: 2,
-            color: Colors.indigo.shade400,
+            color: Colors.indigo,
           ),
         ),
-        floatingLabelStyle: TextStyle(
-          color: Colors.indigo.shade400,
+        floatingLabelStyle: const TextStyle(
+          color: Colors.indigo,
         ),
       ),
       keyboardType: keyboardType,

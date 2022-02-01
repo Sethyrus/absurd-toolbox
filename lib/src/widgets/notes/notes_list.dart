@@ -10,7 +10,8 @@ class NotesList extends StatelessWidget {
   final List<Note> selectedNotes;
   final bool showArchivedNotes;
 
-  NotesList({
+  const NotesList({
+    Key? key,
     required this.onNoteTap,
     required this.onNoteLongPress,
     required this.onSelectionToggle,
@@ -30,10 +31,10 @@ class NotesList extends StatelessWidget {
             if (note.archived == showArchivedNotes) filteredNotes.add(note);
           });
 
-        return Container(
+        return SizedBox(
           width: double.infinity,
           child: ListView.builder(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             itemCount: filteredNotes.length,
             itemBuilder: (context, index) => DragTarget(
               onWillAccept: (_) => true,

@@ -95,7 +95,7 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +177,7 @@ class _AuthFormState extends State<AuthForm> {
                             ),
                           ),
                           backgroundColor: MaterialStateProperty.all(
-                            Colors.indigo.shade400,
+                            Colors.indigo,
                           ),
                         ),
                         child: Text(

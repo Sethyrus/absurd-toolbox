@@ -12,7 +12,7 @@ class ChatsScreen extends StatelessWidget {
       statusBarColor: Colors.blue.shade600,
       themeColor: Colors.blue.shade400,
       title: 'Chats',
-      content: Center(
+      content: const Center(
         child: Text("Chats - En desarrollo"),
       ),
     );

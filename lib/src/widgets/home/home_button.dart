@@ -6,7 +6,8 @@ class HomeButton extends StatelessWidget {
   final String route;
   final IconData icon;
 
-  HomeButton({
+  const HomeButton({
+    Key? key,
     required this.label,
     required this.color,
     required this.route,
@@ -16,39 +17,44 @@ class HomeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(4),
+      padding: const EdgeInsets.all(4),
       child: InkWell(
         onTap: () {
           Navigator.of(context).pushNamed(route);
         },
-        borderRadius: BorderRadius.all(Radius.circular(16)),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
         splashColor: Colors.grey,
         highlightColor: Colors.transparent,
         child: Ink(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
             color: color,
-            border: Border.all(
-              color: Colors.grey.shade400,
-              width: 1,
-              style: BorderStyle.solid,
-            ),
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                icon,
-                size: 40,
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Icon(
+                  icon,
+                  size: 40,
+                ),
               ),
-              Text(
-                label,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.only(left: 2, right: 2, bottom: 8),
+                child: Text(
+                  label,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                  ),
                 ),
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
           ),
         ),
       ),

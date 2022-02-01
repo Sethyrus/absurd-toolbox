@@ -9,11 +9,11 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Layout(
-      statusBarColor: Colors.indigo.shade700,
-      themeColor: Colors.indigo.shade400,
+      statusBarColor: Colors.indigo.shade800,
+      themeColor: Colors.indigo,
       themeStyle: ThemeStyle.Light,
       title: "Editar perfil",
-      content: Center(
+      content: const Center(
         child: Text("Editar perfil"),
       ),
     );

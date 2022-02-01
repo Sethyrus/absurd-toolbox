@@ -5,9 +5,11 @@
 - - [ ] Color
 - - [ ] Pinning
 - [ ] Investigar sobre el patrón BLoC
+- [ ] Función de OCR en las notas (Tesseract)
 - [ ] En el sorteo de dados, poder añadir más dados
 - [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] Drag'n'drop de los enlaces de la home
+- [ ] Añadir función de conversor de unidades 
 - [ ] Establecer colores del tema como los del fondo del logo
 - [x] Cronómetro
   - [ ] Mejorar diseño, más a lo reloj de Google

@@ -105,7 +105,7 @@ class _TabsScreenState extends State<TabsScreen> {
           type: BottomNavigationBarType.fixed,
           currentIndex: _currentIndex,
           onTap: (val) => _onTabNavigation(val, context),
-          selectedItemColor: Colors.indigo.shade400,
+          selectedItemColor: Colors.indigo,
           items: List<BottomNavigationBarItem>.generate(
             appNavigator.length,
             (index) => BottomNavigationBarItem(

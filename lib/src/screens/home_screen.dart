@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/src/consts.dart';
 import 'package:absurd_toolbox/src/screens/barcode_scanner_screen.dart';
 import 'package:absurd_toolbox/src/screens/chats_screen.dart';
 import 'package:absurd_toolbox/src/screens/clock_screen.dart';
@@ -12,7 +13,7 @@ import 'package:absurd_toolbox/src/widgets/home/home_logo.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<HomeButton> homeButtons = [
-    HomeButton(
+    const HomeButton(
       label: 'Notas',
       color: Colors.yellow,
       route: NotesScreen.routeName,
@@ -56,22 +57,34 @@ class HomeScreen extends StatelessWidget {
     ),
   ];
 
+  HomeScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Layout(
       showAppBar: false,
-      statusBarColor: Colors.indigo.shade700,
+      statusBarColor: Colors.indigo.shade800,
+      themeColor: Colors.indigo,
+      title: "Absurd Toolbox",
       content: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HomeLogo(),
+            const HomeLogo(),
             Flexible(
               child: GridView.count(
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 crossAxisCount: 4,
-                children: homeButtons,
+                children: List.generate(
+                  tools.length,
+                  (i) => HomeButton(
+                    label: tools[i].name,
+                    color: tools[i].primaryColor,
+                    route: tools[i].route,
+                    icon: tools[i].icon,
+                  ),
+                ),
               ),
             ),
           ],

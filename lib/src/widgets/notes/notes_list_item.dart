@@ -9,6 +9,7 @@ class NotesListItem extends StatelessWidget {
   final bool floating;
 
   const NotesListItem({
+    Key? key,
     required this.note,
     required this.onTap,
     required this.onLongPress,
@@ -45,7 +46,7 @@ class NotesListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -59,10 +60,11 @@ class NotesListItem extends StatelessWidget {
               },
               child: Ink(
                 decoration: floating ? null : _noteStyles(),
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
                 child: Text(
                   note.title != '' ? note.title : '(sin título)',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
