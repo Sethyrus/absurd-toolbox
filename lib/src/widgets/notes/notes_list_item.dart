@@ -15,7 +15,7 @@ class NotesListItem extends StatelessWidget {
     required this.onLongPress,
     required this.selectedNotes,
     this.floating = false,
-  });
+  }) : super(key: key);
 
   bool get _isNoteSelected => selectedNotes.any((n) => n.id == note.id);
 

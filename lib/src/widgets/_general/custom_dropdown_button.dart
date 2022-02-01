@@ -8,14 +8,15 @@ class CustomDropdownButton<T> extends StatelessWidget {
   final Color iconColor;
   final Color backgroundColor;
 
-  CustomDropdownButton({
+  const CustomDropdownButton({
+    Key? key,
     required this.items,
     required this.onChanged,
     this.hint = "",
     this.hintColor = Colors.black,
     this.iconColor = Colors.black,
     this.backgroundColor = Colors.blue,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
             items: items,
             onChanged: onChanged,
             hint: Container(
-              padding: EdgeInsets.only(left: 16, right: 8),
+              padding: const EdgeInsets.only(left: 16, right: 8),
               child: Text(
                 hint,
                 style: TextStyle(
@@ -39,9 +40,9 @@ class CustomDropdownButton<T> extends StatelessWidget {
                 ),
               ),
             ),
-            underline: SizedBox.shrink(),
+            underline: const SizedBox.shrink(),
             icon: Container(
-              padding: EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.only(right: 8),
               child: Icon(
                 Icons.keyboard_arrow_down,
                 color: iconColor,

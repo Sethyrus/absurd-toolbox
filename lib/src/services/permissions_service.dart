@@ -18,12 +18,12 @@ class PermissionsService {
     log("Set permission name: $name, with value: $status");
 
     switch (name) {
-      case PermissionName.Storage:
+      case PermissionName.storage:
         {
           _permissionsFetcher.sink.add(permissionsSync..storage = status);
           break;
         }
-      case PermissionName.Microphone:
+      case PermissionName.microphone:
         {
           _permissionsFetcher.sink.add(permissionsSync..microphone = status);
           break;

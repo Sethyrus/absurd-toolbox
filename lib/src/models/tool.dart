@@ -12,7 +12,7 @@ class Tool {
 
   const Tool({
     Key? key,
-    this.themeStyle = ThemeStyle.Dark,
+    this.themeStyle = ThemeStyle.dark,
     required this.name,
     required this.primaryColor,
     required this.secondaryColor,

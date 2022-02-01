@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 class RafflesScreen extends StatefulWidget {
   static const String routeName = '/raffles';
 
+  const RafflesScreen({Key? key}) : super(key: key);
+
   @override
   State<RafflesScreen> createState() => _RafflesScreenState();
 }
@@ -21,10 +23,11 @@ class _RafflesScreenState extends State<RafflesScreen> {
       .toList();
 
   void _onSelectRaffle(Raffle? selectedRaffle) {
-    if (selectedRaffle != null)
+    if (selectedRaffle != null) {
       setState(
         () => _selectedRaffle = selectedRaffle,
       );
+    }
   }
 
   @override
@@ -34,7 +37,7 @@ class _RafflesScreenState extends State<RafflesScreen> {
       themeColor: Colors.green.shade400,
       title: 'Sorteos',
       content: SingleChildScrollView(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: [
             CustomDropdownButton<Raffle>(

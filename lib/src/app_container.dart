@@ -19,11 +19,11 @@ class AppContainer extends StatelessWidget {
             if (isAuth.hasData && isAuth.data == true) {
               return const TabsScreen();
             } else {
-              return AuthScreen();
+              return const AuthScreen();
             }
           },
         ),
-        NetworkIndicator(),
+        const NetworkIndicator(),
       ],
     );
   }

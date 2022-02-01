@@ -1,8 +1,9 @@
-import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/models/coin.dart';
 
 class HeadsOrTails extends StatefulWidget {
+  const HeadsOrTails({Key? key}) : super(key: key);
+
   @override
   _HeadsOrTailsState createState() => _HeadsOrTailsState();
 }
@@ -12,9 +13,9 @@ class _HeadsOrTailsState extends State<HeadsOrTails> {
 
   String get headOrTailImage {
     switch (_coin.value) {
-      case CoinValue.Heads:
+      case CoinValue.heads:
         return 'lib/src/assets/images/coin_head.png';
-      case CoinValue.Tails:
+      case CoinValue.tails:
         return 'lib/src/assets/images/coin_tail.png';
       default:
         return '';
@@ -23,16 +24,16 @@ class _HeadsOrTailsState extends State<HeadsOrTails> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         children: [
-          Text(
+          const Text(
             'Cara o cruz',
             style: TextStyle(fontSize: 24),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12),
             child: Image(
               height: 140,
               image: AssetImage(headOrTailImage),
@@ -40,7 +41,7 @@ class _HeadsOrTailsState extends State<HeadsOrTails> {
           ),
           ElevatedButton(
             onPressed: () => setState(() => _coin = Coin(Coin.random)),
-            child: Text('Tirar la moneda'),
+            child: const Text('Tirar la moneda'),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.green.shade400),
               foregroundColor: MaterialStateProperty.all(Colors.black),

@@ -24,38 +24,38 @@ final List<AppNavigator> appNavigator = [
       ),
       AppRoute(
         route: NotesScreen.routeName,
-        screen: NotesScreen(),
+        screen: const NotesScreen(),
       ),
       AppRoute(
         route: NoteScreen.routeName,
-        screen: NoteScreen(),
+        screen: const NoteScreen(),
       ),
       AppRoute(
         route: RafflesScreen.routeName,
-        screen: RafflesScreen(),
+        screen: const RafflesScreen(),
       ),
       AppRoute(
         route: BarcodeScannerScreen.routeName,
-        screen: BarcodeScannerScreen(),
+        screen: const BarcodeScannerScreen(),
       ),
       AppRoute(
         route: SoundRecorderScreen.routeName,
-        screen: SoundRecorderScreen(),
+        screen: const SoundRecorderScreen(),
       ),
       AppRoute(
         route: ChatsScreen.routeName,
-        screen: ChatsScreen(),
+        screen: const ChatsScreen(),
       ),
       AppRoute(
         route: FlashlightScreen.routeName,
-        screen: FlashlightScreen(),
+        screen: const FlashlightScreen(),
       ),
       AppRoute(
         route: ClockScreen.routeName,
-        screen: ClockScreen(),
+        screen: const ClockScreen(),
       ),
     ],
-    icon: Icon(Icons.construction),
+    icon: const Icon(Icons.construction),
   ),
   AppNavigator(
     label: "Perfil",
@@ -63,14 +63,14 @@ final List<AppNavigator> appNavigator = [
     routes: [
       AppRoute(
         route: '/',
-        screen: ProfileScreen(),
+        screen: const ProfileScreen(),
       ),
       AppRoute(
         route: EditProfileScreen.routeName,
-        screen: EditProfileScreen(),
+        screen: const EditProfileScreen(),
       ),
     ],
-    icon: Icon(Icons.person),
+    icon: const Icon(Icons.person),
   ),
   AppNavigator(
     label: "Ajustes",
@@ -78,9 +78,9 @@ final List<AppNavigator> appNavigator = [
     routes: [
       AppRoute(
         route: '/',
-        screen: SettingsScreen(),
+        screen: const SettingsScreen(),
       ),
     ],
-    icon: Icon(Icons.settings),
+    icon: const Icon(Icons.settings),
   ),
 ];

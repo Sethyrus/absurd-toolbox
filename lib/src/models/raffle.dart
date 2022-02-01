@@ -4,9 +4,9 @@ import 'package:absurd_toolbox/src/widgets/raffles/lottery.dart';
 import 'package:flutter/material.dart';
 
 enum RaffleMode {
-  HeadsOrTails,
-  Lottery,
-  DiceRoll,
+  headsOrTails,
+  lottery,
+  diceRoll,
 }
 
 class Raffle {
@@ -23,18 +23,18 @@ class Raffle {
 
 final List<Raffle> raffles = [
   Raffle(
-    mode: RaffleMode.HeadsOrTails,
+    mode: RaffleMode.headsOrTails,
     name: "Cara o cruz",
-    widget: HeadsOrTails(),
+    widget: const HeadsOrTails(),
   ),
   Raffle(
-    mode: RaffleMode.Lottery,
+    mode: RaffleMode.lottery,
     name: "Sorteo",
-    widget: Lottery(),
+    widget: const Lottery(),
   ),
   Raffle(
-    mode: RaffleMode.DiceRoll,
+    mode: RaffleMode.diceRoll,
     name: "Dados",
-    widget: DiceRoll(),
+    widget: const DiceRoll(),
   ),
 ];

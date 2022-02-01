@@ -8,7 +8,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Layout(
       statusBarColor: Colors.indigo.shade800,
-      themeStyle: ThemeStyle.Light,
+      themeStyle: ThemeStyle.light,
       title: "Ajustes",
       themeColor: Colors.indigo,
       content: const Center(),

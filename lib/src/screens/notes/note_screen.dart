@@ -9,6 +9,8 @@ import 'package:uuid/uuid.dart';
 class NoteScreen extends StatefulWidget {
   static const String routeName = '/note';
 
+  const NoteScreen({Key? key}) : super(key: key);
+
   @override
   _NoteScreenState createState() => _NoteScreenState();
 }
@@ -53,7 +55,7 @@ class _NoteScreenState extends State<NoteScreen> {
                 child: Icon(
                   _editedNote.archived ? Icons.unarchive : Icons.archive,
                 ),
-                margin: EdgeInsets.only(right: 6),
+                margin: const EdgeInsets.only(right: 6),
               ),
               Text(
                 _editedNote.archived ? 'Desarchivar nota' : 'Archivar nota',
@@ -66,10 +68,10 @@ class _NoteScreenState extends State<NoteScreen> {
           child: Row(
             children: [
               Container(
-                child: Icon(Icons.delete),
-                margin: EdgeInsets.only(right: 6),
+                child: const Icon(Icons.delete),
+                margin: const EdgeInsets.only(right: 6),
               ),
-              Text('Eliminar nota'),
+              const Text('Eliminar nota'),
             ],
           ),
         ),
@@ -124,13 +126,13 @@ class _NoteScreenState extends State<NoteScreen> {
 
         notesService.addNote(
           Note(
-            id: Uuid().v4(),
+            id: const Uuid().v4(),
             title: _editedNote.title,
             content: _editedNote.content,
             tags: _editedNote.tags,
             pinned: _editedNote.pinned,
             archived: _editedNote.archived,
-            order: notesService.notesSync.length > 0
+            order: notesService.notesSync.isNotEmpty
                 ? notesService
                         .notesSync[notesService.notesSync.length - 1].order +
                     1
@@ -178,14 +180,14 @@ class _NoteScreenState extends State<NoteScreen> {
           showDialog(
             context: context,
             builder: (alertCtx) => AlertDialog(
-              title: Text('Confirmar'),
-              content: Text('¿Seguro que quieres eliminar la nota?'),
+              title: const Text('Confirmar'),
+              content: const Text('¿Seguro que quieres eliminar la nota?'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.pop(alertCtx, 'Cancel');
                   },
-                  child: Text('Cancelar'),
+                  child: const Text('Cancelar'),
                 ),
                 TextButton(
                   onPressed: () {
@@ -195,7 +197,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     Navigator.pop(alertCtx);
                     Navigator.pop(context);
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             ),
@@ -245,7 +247,7 @@ class _NoteScreenState extends State<NoteScreen> {
                       TextFormField(
                         textInputAction: TextInputAction.next,
                         onSaved: (value) {
-                          if (value != null)
+                          if (value != null) {
                             _editedNote = Note(
                               id: _editedNote.id,
                               title: value,
@@ -257,12 +259,13 @@ class _NoteScreenState extends State<NoteScreen> {
                               createdAt: _editedNote.createdAt,
                               updatedAt: _editedNote.updatedAt,
                             );
+                          }
                         },
                         onFieldSubmitted: (_) {
                           FocusScope.of(context)
                               .requestFocus(_contentFocusNode);
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Título',
                           border: InputBorder.none,
                           hintStyle: TextStyle(
@@ -275,7 +278,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           ),
                         ),
                         initialValue: _editedNote.title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
@@ -285,7 +288,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           expands: true,
                           focusNode: _contentFocusNode,
                           onSaved: (value) {
-                            if (value != null)
+                            if (value != null) {
                               _editedNote = Note(
                                 id: _editedNote.id,
                                 title: _editedNote.title,
@@ -297,10 +300,11 @@ class _NoteScreenState extends State<NoteScreen> {
                                 createdAt: _editedNote.createdAt,
                                 updatedAt: _editedNote.updatedAt,
                               );
+                            }
                           },
                           textAlign: TextAlign.start,
                           textAlignVertical: TextAlignVertical.top,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: 'Nota',
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(
@@ -319,6 +323,6 @@ class _NoteScreenState extends State<NoteScreen> {
               ),
             ),
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
   }
 }

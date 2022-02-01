@@ -6,6 +6,8 @@ import 'package:flutter_sound_lite/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
 
 class RecordingsList extends StatefulWidget {
+  const RecordingsList({Key? key}) : super(key: key);
+
   @override
   _RecordingsListState createState() => _RecordingsListState();
 }
@@ -41,8 +43,9 @@ class _RecordingsListState extends State<RecordingsList> {
   void _loadFiles() async {
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
 
-    if (!Directory(appDocumentsDirectory.path + '/recordings').existsSync())
+    if (!Directory(appDocumentsDirectory.path + '/recordings').existsSync()) {
       Directory(appDocumentsDirectory.path + '/recordings').createSync();
+    }
 
     _recordings = Directory(appDocumentsDirectory.path + '/recordings')
         .listSync()
@@ -83,7 +86,7 @@ class _RecordingsListState extends State<RecordingsList> {
   Widget build(BuildContext context) {
     if (_playerInit) {
       return Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         width: double.infinity,
         height: double.infinity,
         child: Column(

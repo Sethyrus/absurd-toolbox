@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SoundButtons extends StatefulWidget {
+  const SoundButtons({Key? key}) : super(key: key);
+
   @override
   _SoundButtonsState createState() => _SoundButtonsState();
 }
@@ -12,7 +14,7 @@ class _SoundButtonsState extends State<SoundButtons> {
       width: double.infinity,
       height: double.infinity,
       alignment: Alignment.center,
-      child: Text(
+      child: const Text(
         'Sound buttons - En desarrollo',
         style: TextStyle(
           fontWeight: FontWeight.bold,

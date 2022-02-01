@@ -48,21 +48,19 @@ class UserProfileService {
       "Already started: ${_firebaseUserProfileSub != null}",
     );
 
-    if (_firebaseUserProfileSub == null) {
-      _firebaseUserProfileSub = _usersCollection
-          .doc(authService.userIdSync)
-          .snapshots()
-          .listen((valueChanges) {
-        log("User profile changed", valueChanges.data());
-        final data = valueChanges.data() as Map<String, dynamic>?;
+    _firebaseUserProfileSub ??= _usersCollection
+        .doc(authService.userIdSync)
+        .snapshots()
+        .listen((valueChanges) {
+      log("User profile changed", valueChanges.data());
+      final data = valueChanges.data() as Map<String, dynamic>?;
 
-        if (data == null) {
-          createProfile();
-        } else {
-          _userProfileFetcher.sink.add(UserProfile.fromJson(data));
-        }
-      });
-    }
+      if (data == null) {
+        createProfile();
+      } else {
+        _userProfileFetcher.sink.add(UserProfile.fromJson(data));
+      }
+    });
   }
 
   void cancelSubscriptions() {

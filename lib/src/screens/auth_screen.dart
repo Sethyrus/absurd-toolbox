@@ -5,19 +5,21 @@ import 'package:absurd_toolbox/src/widgets/auth/social_auth.dart';
 import 'package:flutter/material.dart';
 
 enum AuthMode {
-  Login,
-  Register,
+  login,
+  register,
 }
 
 class AuthScreen extends StatefulWidget {
   static const String routeName = '/auth';
+
+  const AuthScreen({Key? key}) : super(key: key);
 
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  AuthMode _authMode = AuthMode.Login;
+  AuthMode _authMode = AuthMode.login;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +31,12 @@ class _AuthScreenState extends State<AuthScreen> {
       content: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 32,
             ),
             child: Column(
@@ -43,9 +45,9 @@ class _AuthScreenState extends State<AuthScreen> {
               children: [
                 Space(size: deviceSize.height * 0.075),
                 AuthForm(authMode: _authMode),
-                SocialAuth(),
+                const SocialAuth(),
                 Container(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 24,
                     bottom: 24,
                   ),
@@ -53,7 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        _authMode == AuthMode.Login
+                        _authMode == AuthMode.login
                             ? '¿No tienes cuenta? '
                             : "¿Ya tienes cuenta? ",
                         style: TextStyle(
@@ -64,17 +66,17 @@ class _AuthScreenState extends State<AuthScreen> {
                         onTap: () {
                           setState(
                             () {
-                              _authMode = _authMode == AuthMode.Login
-                                  ? AuthMode.Register
-                                  : AuthMode.Login;
+                              _authMode = _authMode == AuthMode.login
+                                  ? AuthMode.register
+                                  : AuthMode.login;
                             },
                           );
                         },
                         child: Text(
-                          _authMode == AuthMode.Login
+                          _authMode == AuthMode.login
                               ? 'Crea una'
                               : "Iniciar sesión",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),

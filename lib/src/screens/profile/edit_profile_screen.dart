@@ -11,7 +11,7 @@ class EditProfileScreen extends StatelessWidget {
     return Layout(
       statusBarColor: Colors.indigo.shade800,
       themeColor: Colors.indigo,
-      themeStyle: ThemeStyle.Light,
+      themeStyle: ThemeStyle.light,
       title: "Editar perfil",
       content: const Center(
         child: Text("Editar perfil"),

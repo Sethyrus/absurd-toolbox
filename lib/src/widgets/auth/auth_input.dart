@@ -10,7 +10,8 @@ class AuthInput extends StatelessWidget {
   final String? labelText;
   final AutovalidateMode? autovalidateMode;
 
-  AuthInput({
+  const AuthInput({
+    Key? key,
     this.keyboardType,
     this.validator,
     this.onSaved,
@@ -19,7 +20,7 @@ class AuthInput extends StatelessWidget {
     this.prefixIcon,
     this.labelText,
     this.autovalidateMode,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

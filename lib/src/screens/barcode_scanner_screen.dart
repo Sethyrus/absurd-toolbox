@@ -7,6 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 class BarcodeScannerScreen extends StatefulWidget {
   static const String routeName = '/barcode-scanner';
 
+  const BarcodeScannerScreen({Key? key}) : super(key: key);
+
   @override
   State<BarcodeScannerScreen> createState() => _BarcodeScannerScreenState();
 }
@@ -58,7 +60,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
       ),
       fab: FloatingActionButton(
         onPressed: _initScanner,
-        child: Icon(
+        child: const Icon(
           Icons.photo_camera,
           color: Colors.black,
         ),

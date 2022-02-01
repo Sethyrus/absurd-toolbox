@@ -1,6 +1,6 @@
 enum CoinValue {
-  Heads,
-  Tails,
+  heads,
+  tails,
 }
 
 class Coin {
@@ -9,7 +9,7 @@ class Coin {
   Coin(this.value);
 
   static CoinValue get random => ([
-        CoinValue.Heads,
-        CoinValue.Tails,
+        CoinValue.heads,
+        CoinValue.tails,
       ]..shuffle())[0];
 }

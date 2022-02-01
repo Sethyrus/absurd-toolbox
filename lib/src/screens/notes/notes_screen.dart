@@ -9,8 +9,8 @@ import 'package:absurd_toolbox/src/widgets/notes/notes_list.dart';
 import 'package:flutter/scheduler.dart';
 
 enum ListMode {
-  Normal,
-  Selection,
+  normal,
+  selection,
 }
 
 class NotesScreenArgs {
@@ -24,13 +24,15 @@ class NotesScreenArgs {
 class NotesScreen extends StatefulWidget {
   static const String routeName = '/notes';
 
+  const NotesScreen({Key? key}) : super(key: key);
+
   @override
   State<NotesScreen> createState() => _NotesScreenState();
 }
 
 class _NotesScreenState extends State<NotesScreen> {
   // Controla si se está en modo de visualización normal o selección
-  ListMode _listMode = ListMode.Normal;
+  ListMode _listMode = ListMode.normal;
   // Notas seleccionadas (en modo selección)
   List<Note> _selectedNotes = [];
   // Controla si se muestra el listado de notas normal o archivadas
@@ -49,10 +51,10 @@ class _NotesScreenState extends State<NotesScreen> {
         child: Row(
           children: [
             Container(
-              child: Icon(Icons.inventory),
-              margin: EdgeInsets.only(right: 6),
+              child: const Icon(Icons.inventory),
+              margin: const EdgeInsets.only(right: 6),
             ),
-            Text('Ver notas archivadas'),
+            const Text('Ver notas archivadas'),
           ],
         ),
       ),
@@ -60,9 +62,9 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   Widget? get _fab {
-    if (_listMode == ListMode.Normal) {
+    if (_listMode == ListMode.normal) {
       if (_showArchivedNotes) {
-        return ExpandableFab(
+        return const ExpandableFab(
           distance: 0,
           openButtonIcon: Icon(
             Icons.keyboard_arrow_up,
@@ -75,7 +77,7 @@ class _NotesScreenState extends State<NotesScreen> {
           onPressed: () {
             Navigator.of(context).pushNamed(NoteScreen.routeName);
           },
-          child: Icon(
+          child: const Icon(
             Icons.add,
             color: Colors.black,
           ),
@@ -86,7 +88,7 @@ class _NotesScreenState extends State<NotesScreen> {
       return ExpandableFab(
         backgroundColor: Colors.grey.shade400,
         distance: 96,
-        openButtonIcon: Icon(
+        openButtonIcon: const Icon(
           Icons.keyboard_arrow_up,
           color: Colors.black,
         ),
@@ -114,8 +116,9 @@ class _NotesScreenState extends State<NotesScreen> {
       final args = ModalRoute.of(
         context,
       )?.settings.arguments as NotesScreenArgs?;
-      if (args != null)
+      if (args != null) {
         setState(() => _showArchivedNotes = args.showArchivedNotes);
+      }
     });
 
     super.initState();
@@ -123,7 +126,7 @@ class _NotesScreenState extends State<NotesScreen> {
 
   // Acción al pulsar sobre una nota
   void _onNoteTap(Note note) {
-    if (_listMode == ListMode.Normal) {
+    if (_listMode == ListMode.normal) {
       Navigator.of(context).pushNamed(
         NoteScreen.routeName,
         arguments: note.id,
@@ -135,9 +138,9 @@ class _NotesScreenState extends State<NotesScreen> {
 
   // Inicia el modo selección
   void _startSelection(Note note) {
-    if (_listMode == ListMode.Normal) {
+    if (_listMode == ListMode.normal) {
       setState(() {
-        _listMode = ListMode.Selection;
+        _listMode = ListMode.selection;
         _selectedNotes = [note];
       });
     }
@@ -149,7 +152,7 @@ class _NotesScreenState extends State<NotesScreen> {
       if (_selectedNotes.any((n) => n.id == note.id)) {
         _selectedNotes.removeWhere((n) => n.id == note.id);
 
-        if (_selectedNotes.length == 0) _listMode = ListMode.Normal;
+        if (_selectedNotes.isEmpty) _listMode = ListMode.normal;
         return;
       }
 
@@ -162,21 +165,22 @@ class _NotesScreenState extends State<NotesScreen> {
     showDialog(
       context: context,
       builder: (alertCtx) => AlertDialog(
-        title: Text('Confirmar'),
-        content: Text('¿Seguro que quieres eliminar las notas seleccionadas?'),
+        title: const Text('Confirmar'),
+        content:
+            const Text('¿Seguro que quieres eliminar las notas seleccionadas?'),
         actions: <Widget>[
           TextButton(
             onPressed: () {
               Navigator.pop(alertCtx, 'Cancel');
             },
-            child: Text('Cancelar'),
+            child: const Text('Cancelar'),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(alertCtx);
               _deleteSelectedNotes();
             },
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
@@ -188,7 +192,7 @@ class _NotesScreenState extends State<NotesScreen> {
     showDialog(
       context: context,
       builder: (alertCtx) => AlertDialog(
-        title: Text('Confirmar'),
+        title: const Text('Confirmar'),
         content: Text(
           _showArchivedNotes
               ? '¿Seguro que quieres desarchivar las notas seleccionadas?'
@@ -199,14 +203,14 @@ class _NotesScreenState extends State<NotesScreen> {
             onPressed: () {
               Navigator.pop(alertCtx, 'Cancel');
             },
-            child: Text('Cancelar'),
+            child: const Text('Cancelar'),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(alertCtx);
               _toggleSelectedNotesArchive();
             },
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
@@ -218,14 +222,14 @@ class _NotesScreenState extends State<NotesScreen> {
     notesService.deleteNotes(_selectedNotes);
 
     setState(() {
-      _listMode = ListMode.Normal;
+      _listMode = ListMode.normal;
       _selectedNotes = [];
     });
   }
 
   // Archiva/desarchiva las notas seleccionadas y sale del modo selección
   void _toggleSelectedNotesArchive() {
-    _selectedNotes.forEach((note) {
+    for (var note in _selectedNotes) {
       notesService.updateNote(
         Note(
           id: note.id,
@@ -239,10 +243,10 @@ class _NotesScreenState extends State<NotesScreen> {
           updatedAt: note.updatedAt,
         ),
       );
-    });
+    }
 
     setState(() {
-      _listMode = ListMode.Normal;
+      _listMode = ListMode.normal;
       _selectedNotes = [];
     });
   }

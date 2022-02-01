@@ -5,14 +5,13 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 enum ThemeStyle {
-  Light,
-  Dark,
+  light,
+  dark,
 }
 
 class Layout extends StatelessWidget {
   final Color statusBarColor;
   final Widget content;
-
   final bool showAppBar;
   final String? title;
   final Color? themeColor;
@@ -24,7 +23,8 @@ class Layout extends StatelessWidget {
   final Color? tabBarIndicatorColor;
   final bool? avoidSafeArea;
 
-  Layout({
+  const Layout({
+    Key? key,
     required this.statusBarColor,
     required this.content,
     this.title,
@@ -37,7 +37,7 @@ class Layout extends StatelessWidget {
     this.tabBarItems,
     this.tabBarIndicatorColor,
     this.avoidSafeArea,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class Layout extends StatelessWidget {
               title: Text(
                 title ?? '',
                 style: TextStyle(
-                  color: themeStyle == ThemeStyle.Light
+                  color: themeStyle == ThemeStyle.light
                       ? Colors.white
                       : Colors.black,
                 ),
@@ -57,7 +57,7 @@ class Layout extends StatelessWidget {
               ),
               backgroundColor: themeColor,
               iconTheme: IconThemeData(
-                color: themeStyle == ThemeStyle.Light
+                color: themeStyle == ThemeStyle.light
                     ? Colors.white
                     : Colors.black,
               ),

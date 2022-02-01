@@ -17,7 +17,7 @@ class NotesList extends StatelessWidget {
     required this.onSelectionToggle,
     required this.selectedNotes,
     this.showArchivedNotes = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +26,13 @@ class NotesList extends StatelessWidget {
       builder: (ctx, AsyncSnapshot<List<Note>> notesStream) {
         final List<Note> filteredNotes = [];
 
-        if (notesStream.hasData && notesStream.data != null)
-          notesStream.data!.forEach((note) {
-            if (note.archived == showArchivedNotes) filteredNotes.add(note);
-          });
+        if (notesStream.hasData && notesStream.data != null) {
+          for (var note in notesStream.data!) {
+            if (note.archived == showArchivedNotes) {
+              filteredNotes.add(note);
+            }
+          }
+        }
 
         return SizedBox(
           width: double.infinity,

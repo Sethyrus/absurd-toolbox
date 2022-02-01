@@ -9,9 +9,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 class AuthForm extends StatefulWidget {
   final AuthMode authMode;
 
-  AuthForm({
+  const AuthForm({
+    Key? key,
     required this.authMode,
-  });
+  }) : super(key: key);
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -20,7 +21,7 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm> {
   final _form = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
-  Map<String, String> _authData = {
+  final Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
@@ -85,7 +86,7 @@ class _AuthFormState extends State<AuthForm> {
     if (isFormValid) {
       _form.currentState!.save();
 
-      if (widget.authMode == AuthMode.Login) {
+      if (widget.authMode == AuthMode.login) {
         emailSignIn();
       } else {
         register();
@@ -106,15 +107,15 @@ class _AuthFormState extends State<AuthForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.authMode == AuthMode.Login
+                widget.authMode == AuthMode.login
                     ? 'Iniciar sesión'
                     : 'Crear cuenta',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Space(size: 16),
+              const Space(size: 16),
               Form(
                 key: _form,
                 child: Column(
@@ -151,11 +152,11 @@ class _AuthFormState extends State<AuthForm> {
                       prefixIcon: Icons.lock,
                       labelText: "Contraseña",
                     ),
-                    if (widget.authMode == AuthMode.Register)
+                    if (widget.authMode == AuthMode.register)
                       AuthInput(
                         autovalidateMode: _autovalidateMode,
                         obscureText: true,
-                        validator: widget.authMode == AuthMode.Register
+                        validator: widget.authMode == AuthMode.register
                             ? (value) {
                                 if (value != _passwordController.text) {
                                   return "Las contraseñas no coinciden";
@@ -165,7 +166,7 @@ class _AuthFormState extends State<AuthForm> {
                         prefixIcon: Icons.lock,
                         labelText: "Confirmar contraseña",
                       ),
-                    Space(size: 16),
+                    const Space(size: 16),
                     Container(
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
@@ -181,7 +182,7 @@ class _AuthFormState extends State<AuthForm> {
                           ),
                         ),
                         child: Text(
-                          widget.authMode == AuthMode.Login
+                          widget.authMode == AuthMode.login
                               ? 'Iniciar sesión'
                               : 'Crear cuenta',
                         ),

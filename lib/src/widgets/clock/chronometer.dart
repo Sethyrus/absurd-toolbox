@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class Chronometer extends StatefulWidget {
+  const Chronometer({Key? key}) : super(key: key);
+
   @override
   State<Chronometer> createState() => _ChronometerState();
 }
@@ -9,7 +11,7 @@ class Chronometer extends StatefulWidget {
 class _ChronometerState extends State<Chronometer> {
   bool _isInit = false;
   bool _isCounting = false;
-  DateTime _startTime = new DateTime.now();
+  DateTime _startTime = DateTime.now();
   Timer? _chronometerTimer;
 
   String get _parsedElapsedTime {
@@ -48,13 +50,13 @@ class _ChronometerState extends State<Chronometer> {
     }
 
     setState(() {
-      _startTime = new DateTime.now();
+      _startTime = DateTime.now();
       _isCounting = true;
       _isInit = true;
     });
 
     _chronometerTimer = Timer.periodic(
-      Duration(milliseconds: 10),
+      const Duration(milliseconds: 10),
       (timer) => setState(() {}),
     );
   }
@@ -62,7 +64,7 @@ class _ChronometerState extends State<Chronometer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 8,
         right: 8,
         top: 32,
@@ -74,7 +76,7 @@ class _ChronometerState extends State<Chronometer> {
         children: [
           Text(
             _parsedElapsedTime,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 64,
               fontWeight: FontWeight.bold,
             ),

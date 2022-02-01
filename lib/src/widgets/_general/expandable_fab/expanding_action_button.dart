@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 class ExpandingActionButton extends StatelessWidget {
-  ExpandingActionButton({
+  const ExpandingActionButton({
     Key? key,
     required this.directionInDegrees,
     required this.maxDistance,

@@ -12,7 +12,7 @@ class HomeButton extends StatelessWidget {
     required this.color,
     required this.route,
     required this.icon,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

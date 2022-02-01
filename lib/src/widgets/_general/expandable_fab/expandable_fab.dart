@@ -92,8 +92,8 @@ class _ExpandableFabState extends State<ExpandableFab>
             onTap: _toggle,
             child: Ink(
               color: Colors.grey.shade400,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Icon(
                   Icons.close,
                   color: Colors.black,
@@ -138,7 +138,7 @@ class _ExpandableFabState extends State<ExpandableFab>
       child: Stack(
         alignment: Alignment.bottomRight,
         clipBehavior: Clip.none,
-        children: widget.children.length > 0
+        children: widget.children.isNotEmpty
             ? [
                 _buildTapToCloseFab(),
                 ..._buildExpandingActionButtons(),

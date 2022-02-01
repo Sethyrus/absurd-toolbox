@@ -30,7 +30,7 @@ class ClockScreen extends StatelessWidget {
             ),
           ),
         ],
-        content: TabBarView(
+        content: const TabBarView(
           children: [
             Chronometer(),
             Timer(),

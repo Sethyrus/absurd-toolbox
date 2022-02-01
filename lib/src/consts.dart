@@ -15,7 +15,7 @@ final List<Tool> tools = [
     primaryColor: Colors.yellow,
     secondaryColor: Colors.yellow.shade600,
     route: NotesScreen.routeName,
-    widget: NotesScreen(),
+    widget: const NotesScreen(),
   ),
   Tool(
     name: "Aleatoriedad",
@@ -23,7 +23,7 @@ final List<Tool> tools = [
     primaryColor: Colors.green.shade400,
     secondaryColor: Colors.green,
     route: RafflesScreen.routeName,
-    widget: RafflesScreen(),
+    widget: const RafflesScreen(),
   ),
   Tool(
     name: "Medición de tiempo",
@@ -39,7 +39,7 @@ final List<Tool> tools = [
     primaryColor: Colors.teal.shade300,
     secondaryColor: Colors.teal.shade400,
     route: BarcodeScannerScreen.routeName,
-    widget: BarcodeScannerScreen(),
+    widget: const BarcodeScannerScreen(),
   ),
   Tool(
     name: "Grabadora de voz",
@@ -47,7 +47,7 @@ final List<Tool> tools = [
     primaryColor: Colors.red.shade400,
     secondaryColor: Colors.red,
     route: SoundRecorderScreen.routeName,
-    widget: SoundRecorderScreen(),
+    widget: const SoundRecorderScreen(),
   ),
   Tool(
     name: "Chats",
@@ -63,6 +63,6 @@ final List<Tool> tools = [
     primaryColor: Colors.purple.shade300,
     secondaryColor: Colors.purple.shade400,
     route: FlashlightScreen.routeName,
-    widget: FlashlightScreen(),
+    widget: const FlashlightScreen(),
   ),
 ];

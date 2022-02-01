@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class Lottery extends StatefulWidget {
+  const Lottery({Key? key}) : super(key: key);
+
   @override
   _LotteryState createState() => _LotteryState();
 }
 
 class _LotteryState extends State<Lottery> {
-  List<String> _participants = [];
+  final List<String> _participants = [];
   List<String> _winners = [];
   String _addParticipantsError = '';
-  final _addParticipantsFocusNode = new FocusNode();
+  final _addParticipantsFocusNode = FocusNode();
   final _addParticipantsController = TextEditingController();
   String _winnersError = '';
   final _winnersCountController = TextEditingController();
@@ -42,12 +44,13 @@ class _LotteryState extends State<Lottery> {
   }
 
   void _getWinners() {
-    if (_addParticipantsError != '')
+    if (_addParticipantsError != '') {
       setState(() {
         _addParticipantsError = '';
       });
+    }
 
-    if (_participants.length == 0) {
+    if (_participants.isEmpty) {
       setState(() {
         _winners = [];
         _winnersError = 'Pero añade algún participante';
@@ -65,11 +68,12 @@ class _LotteryState extends State<Lottery> {
   }
 
   void _resetWinners() {
-    if (_winners.length > 0 || _winnersError != '')
+    if (_winners.isNotEmpty || _winnersError != '') {
       setState(() {
         _winners = [];
         _winnersError = '';
       });
+    }
   }
 
   @override
@@ -83,22 +87,22 @@ class _LotteryState extends State<Lottery> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 8),
+              margin: const EdgeInsets.only(bottom: 8),
               width: double.infinity,
-              child: Text(
+              child: const Text(
                 'Sorteo',
                 style: TextStyle(fontSize: 24),
                 textAlign: TextAlign.center,
               ),
             ),
             Container(
-              margin: EdgeInsets.only(bottom: 8),
+              margin: const EdgeInsets.only(bottom: 8),
               child: Column(
                 children: [
                   Row(
@@ -129,9 +133,9 @@ class _LotteryState extends State<Lottery> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
-                              borderSide: BorderSide(width: 1),
+                              borderSide: const BorderSide(width: 1),
                             ),
-                            contentPadding: EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                               vertical: 0,
                               horizontal: 8,
                             ),
@@ -139,10 +143,10 @@ class _LotteryState extends State<Lottery> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(left: 8),
+                        padding: const EdgeInsets.only(left: 8),
                         child: ElevatedButton(
                           onPressed: _addParticipant,
-                          child: Text('Añadir'),
+                          child: const Text('Añadir'),
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               Colors.green.shade400,
@@ -157,12 +161,12 @@ class _LotteryState extends State<Lottery> {
                   ),
                   ..._addParticipantsError != ''
                       ? [
-                          Container(
+                          SizedBox(
                             width: double.infinity,
                             child: Text(
                               _addParticipantsError,
                               textAlign: TextAlign.start,
-                              style: TextStyle(color: Colors.red),
+                              style: const TextStyle(color: Colors.red),
                             ),
                           )
                         ]
@@ -171,36 +175,36 @@ class _LotteryState extends State<Lottery> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(bottom: 8),
-              child: Text(
+              margin: const EdgeInsets.only(bottom: 8),
+              child: const Text(
                 'Participantes',
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            _participants.length == 0
+            _participants.isEmpty
                 ? Container(
-                    child: Text('No hay participantes'),
-                    margin: EdgeInsets.only(bottom: 8),
+                    child: const Text('No hay participantes'),
+                    margin: const EdgeInsets.only(bottom: 8),
                   )
                 : Container(
-                    margin: EdgeInsets.only(bottom: 8),
+                    margin: const EdgeInsets.only(bottom: 8),
                     width: double.infinity,
                     child: Wrap(
                       children: List.generate(
                         _participants.length,
                         (index) => Container(
-                          margin: EdgeInsets.only(bottom: 6, right: 8),
+                          margin: const EdgeInsets.only(bottom: 6, right: 8),
                           child: InkWell(
                             onTap: () => setState(
                               () => _participants.removeAt(index),
                             ),
                             child: Ink(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 vertical: 4,
                                 horizontal: 8,
                               ),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
+                                borderRadius: const BorderRadius.all(
                                   Radius.circular(6),
                                 ),
                                 border: Border.all(
@@ -221,7 +225,7 @@ class _LotteryState extends State<Lottery> {
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
                     onPressed: _getWinners,
-                    child: Text('Realizar sorteo'),
+                    child: const Text('Realizar sorteo'),
                     style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(Colors.green.shade400),
@@ -231,19 +235,19 @@ class _LotteryState extends State<Lottery> {
                 ),
                 ..._winnersError != ''
                     ? [
-                        Container(
+                        SizedBox(
                           width: double.infinity,
                           child: Text(
                             _winnersError,
                             textAlign: TextAlign.end,
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           ),
                         )
                       ]
                     : []
               ],
             ),
-            ..._winners.length > 0
+            ..._winners.isNotEmpty
                 ? [
                     Text('1º ' + _winners[0]),
                     ..._winners.length > 1

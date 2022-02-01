@@ -14,7 +14,7 @@ class ProfileDetails extends StatelessWidget {
         StreamBuilder(
           stream: userProfileService.userProfile,
           builder: (ctx, AsyncSnapshot<UserProfile> userProfile) {
-            return Container(
+            return SizedBox(
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.all(8),
@@ -49,38 +49,38 @@ class ProfileDetails extends StatelessWidget {
                             }),
                       ],
                     ),
-                    Space(size: 8),
-                    Text("Correo electrónico:"),
+                    const Space(size: 8),
+                    const Text("Correo electrónico:"),
                     Text(
                       userProfile.data?.email ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Space(size: 8),
-                    Text(
+                    const Space(size: 8),
+                    const Text(
                       "Nombre de usuario:",
                     ),
                     Text(
                       userProfile.data?.username ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Space(size: 8),
-                    Text(
+                    const Space(size: 8),
+                    const Text(
                       "Descripción:",
                     ),
                     Text(
                       userProfile.data?.description ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Space(size: 8),
+                    const Space(size: 8),
                   ],
                 ),
               ),

@@ -6,6 +6,8 @@ import 'package:torch_light/torch_light.dart';
 class FlashlightScreen extends StatefulWidget {
   static const String routeName = '/flashlight';
 
+  const FlashlightScreen({Key? key}) : super(key: key);
+
   @override
   State<FlashlightScreen> createState() => _FlashlightScreenState();
 }
@@ -85,14 +87,14 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
       statusBarColor: Colors.purple.shade400,
       themeColor: Colors.purple.shade300,
       title: 'Linterna',
-      content: Container(
+      content: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: (!_hasFlashlight && _flashlightPending)
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : Center(
                 child: _hasFlashlight
-                    ? Container(
+                    ? SizedBox(
                         width: 160,
                         height: 160,
                         child: InkWell(
@@ -112,7 +114,7 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
                           ),
                         ),
                       )
-                    : Text("Tu dispositivo no tiene linterna"),
+                    : const Text("Tu dispositivo no tiene linterna"),
               ),
       ),
     );

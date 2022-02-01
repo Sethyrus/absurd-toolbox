@@ -11,6 +11,8 @@ import 'package:permission_handler/permission_handler.dart';
 class SoundRecorderScreen extends StatefulWidget {
   static const String routeName = '/sound-recorder';
 
+  const SoundRecorderScreen({Key? key}) : super(key: key);
+
   @override
   _SoundRecorderScreenState createState() => _SoundRecorderScreenState();
 }
@@ -25,7 +27,7 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
           permissionsService.permissionsSync.microphone ==
               PermissionStatus.denied) {
         permissionsService.setPermission(
-          PermissionName.Microphone,
+          PermissionName.microphone,
           await Permission.microphone.request(),
         );
       }
@@ -33,14 +35,14 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
       showDialog(
         context: context,
         builder: (alertCtx) => AlertDialog(
-          title: Text('Atención'),
-          content: Text(
+          title: const Text('Atención'),
+          content: const Text(
             'Esta función está en desarrollo y es inestable, no se recomienda su uso',
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(alertCtx),
-              child: Text('Aceptar'),
+              child: const Text('Aceptar'),
             ),
           ],
         ),
@@ -57,7 +59,7 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
         themeColor: Colors.red.shade400,
         title: 'Grabadora de sonidos',
         tabBarIndicatorColor: Colors.white,
-        tabBarItems: [
+        tabBarItems: const [
           Tab(
             child: Text(
               'Grabar',
@@ -77,7 +79,7 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
             ),
           ),
         ],
-        content: TabBarView(
+        content: const TabBarView(
           children: [
             Recorder(),
             RecordingsList(),

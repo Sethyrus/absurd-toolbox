@@ -21,13 +21,12 @@ class AuthService {
       "Already started: ${_firebaseAuthSub != null}",
     );
 
-    if (_firebaseAuthSub == null)
-      _firebaseAuthSub = FirebaseAuth.instance.authStateChanges().listen(
-        (User? user) {
-          log("Auth changed", user);
-          _authFetcher.sink.add(user);
-        },
-      );
+    _firebaseAuthSub ??= FirebaseAuth.instance.authStateChanges().listen(
+      (User? user) {
+        log("Auth changed", user);
+        _authFetcher.sink.add(user);
+      },
+    );
   }
 
   void dispose() {

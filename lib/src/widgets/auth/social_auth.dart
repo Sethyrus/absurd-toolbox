@@ -7,13 +7,15 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 enum SocialLoginMode {
-  Google,
+  google,
 }
 
 class SocialAuth extends StatelessWidget {
+  const SocialAuth({Key? key}) : super(key: key);
+
   void socialSignIn(SocialLoginMode loginMode) async {
     switch (loginMode) {
-      case SocialLoginMode.Google:
+      case SocialLoginMode.google:
         {
           GoogleSignIn().signIn().then((googleUser) {
             googleUser?.authentication.then((googleAuth) {
@@ -52,7 +54,7 @@ class SocialAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 24,
       ),
       child: Column(
@@ -62,7 +64,7 @@ class SocialAuth extends StatelessWidget {
           SignInButton(
             Buttons.Google,
             text: "Iniciar sesión con Google",
-            onPressed: () => socialSignIn(SocialLoginMode.Google),
+            onPressed: () => socialSignIn(SocialLoginMode.google),
           ),
         ],
       ),

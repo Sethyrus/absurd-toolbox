@@ -6,10 +6,11 @@ class BarcodeScanner extends StatefulWidget {
   final String scannedValue;
   final bool isValidLink;
 
-  BarcodeScanner({
+  const BarcodeScanner({
+    Key? key,
     required this.scannedValue,
     required this.isValidLink,
-  });
+  }) : super(key: key);
 
   @override
   State<BarcodeScanner> createState() => _BarcodeScannerState();
@@ -22,7 +23,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: widget.scannedValue != ''
           ? [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(bottom: 8),
                 child: Text('Valor escaneado:'),
               ),
@@ -31,7 +32,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                 child: Text(
                   widget.scannedValue,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
               ),
               ElevatedButton(
@@ -46,13 +47,13 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                 onPressed: () => Clipboard.setData(
                   ClipboardData(text: widget.scannedValue),
                 ),
-                child: Text('Copiar al portapapeles'),
+                child: const Text('Copiar al portapapeles'),
               ),
               ...widget.isValidLink
                   ? [
                       ElevatedButton(
                         onPressed: () => launch(widget.scannedValue),
-                        child: Text('Abrir enlace'),
+                        child: const Text('Abrir enlace'),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
                             Colors.teal.shade300,
@@ -66,7 +67,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                   : []
             ]
           : [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(bottom: 8),
                 child: Text(
                   'Ningún valor escaneado',
@@ -74,7 +75,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              Text(
+              const Text(
                 'Pulsa el botón para escanear un QR/código de barras',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16),

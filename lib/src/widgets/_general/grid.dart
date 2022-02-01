@@ -5,11 +5,12 @@ class Grid extends StatelessWidget {
   final double outterMarginsOffset;
   final List<Widget> children;
 
-  Grid({
+  const Grid({
+    Key? key,
     required this.outterMarginsOffset,
     required this.cols,
     required this.children,
-  });
+  }) : super(key: key);
 
   double bottomMargin(int index) => children.length > 2
       ? (index < children.length - 2 ? outterMarginsOffset : 0)

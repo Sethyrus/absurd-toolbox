@@ -2,6 +2,8 @@ import 'package:absurd_toolbox/src/models/dice.dart';
 import 'package:flutter/material.dart';
 
 class DiceRoll extends StatefulWidget {
+  const DiceRoll({Key? key}) : super(key: key);
+
   @override
   State<DiceRoll> createState() => _DiceRollState();
 }
@@ -11,16 +13,16 @@ class _DiceRollState extends State<DiceRoll> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         children: [
-          Text(
+          const Text(
             'Tirar los dados',
             style: TextStyle(fontSize: 24),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -34,7 +36,7 @@ class _DiceRollState extends State<DiceRoll> {
           ),
           ElevatedButton(
             onPressed: () => setState(() => _dice = Dice(Dice.random)),
-            child: Text('Tirar el dado'),
+            child: const Text('Tirar el dado'),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.green.shade400),
               foregroundColor: MaterialStateProperty.all(Colors.black),

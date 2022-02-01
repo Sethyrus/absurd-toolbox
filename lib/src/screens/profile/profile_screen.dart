@@ -11,7 +11,7 @@ class ProfileScreen extends StatelessWidget {
     return Layout(
       statusBarColor: Colors.indigo.shade800,
       themeColor: Colors.indigo,
-      themeStyle: ThemeStyle.Light,
+      themeStyle: ThemeStyle.light,
       title: "Perfil",
       content: Center(
         child: Column(

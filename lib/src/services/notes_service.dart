@@ -73,7 +73,7 @@ class NotesService {
 
     final String? userId = authService.userIdSync;
 
-    notes.forEach((note) {
+    for (var note in notes) {
       _notesCollection
           .doc(userId)
           .collection("items")
@@ -82,7 +82,7 @@ class NotesService {
           .catchError((error) {
         log("Failed to delete note", error);
       });
-    });
+    }
   }
 
   void reorderNote({
@@ -137,28 +137,26 @@ class NotesService {
       "Already started: ${_firebaseNotesSub != null}",
     );
 
-    if (_firebaseNotesSub == null) {
-      _firebaseNotesSub = _notesCollection
-          .doc(authService.userIdSync)
-          .collection('items')
-          .snapshots()
-          .listen((valueChanges) {
-        log("Notes changed", valueChanges.docs);
-        List<Note> notes = valueChanges.docs
-            .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
-            .toList()
-          ..sort((Note a, Note b) {
-            if (a.order == b.order) return 0;
+    _firebaseNotesSub ??= _notesCollection
+        .doc(authService.userIdSync)
+        .collection('items')
+        .snapshots()
+        .listen((valueChanges) {
+      log("Notes changed", valueChanges.docs);
+      List<Note> notes = valueChanges.docs
+          .map((doc) => Note.fromJson({'id': doc.id, ...doc.data()}))
+          .toList()
+        ..sort((Note a, Note b) {
+          if (a.order == b.order) return 0;
 
-            if (a.order > b.order) {
-              return 1;
-            } else {
-              return -1;
-            }
-          });
-        _notesFetcher.sink.add(notes);
-      });
-    }
+          if (a.order > b.order) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
+      _notesFetcher.sink.add(notes);
+    });
   }
 
   void cancelSubscriptions() {

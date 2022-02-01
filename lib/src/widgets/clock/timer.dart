@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Timer extends StatefulWidget {
+  const Timer({Key? key}) : super(key: key);
+
   @override
   State<Timer> createState() => _TimerState();
 }
