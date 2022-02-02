@@ -18,8 +18,9 @@ class Layout extends StatelessWidget {
   final Color primaryColor;
   final ThemeStyle themeStyle;
   final Widget? fab;
-  final List<PopupMenuEntry<String>>? statusBarActions;
-  final Function(String)? onStatusBarActionSelected;
+  final List<Widget>? statusBarActions;
+  final List<PopupMenuEntry<String>>? statusBarDropdownActions;
+  final Function(String)? onStatusBarDropdownActionSelected;
   final List<Widget>? tabBarItems;
   final Color? tabBarIndicatorColor;
   final bool? avoidSafeArea;
@@ -34,7 +35,8 @@ class Layout extends StatelessWidget {
     this.fab,
     this.showAppBar = true,
     this.statusBarActions,
-    this.onStatusBarActionSelected,
+    this.statusBarDropdownActions,
+    this.onStatusBarDropdownActionSelected,
     this.tabBarItems,
     this.tabBarIndicatorColor,
     this.avoidSafeArea,
@@ -43,7 +45,10 @@ class Layout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: generateAppTheme(context, createMaterialColor(primaryColor)),
+      data: generateAppTheme(
+        context,
+        primarySwatch: createMaterialColor(primaryColor),
+      ),
       child: Scaffold(
         appBar: showAppBar == true
             ? AppBar(
@@ -64,15 +69,18 @@ class Layout extends StatelessWidget {
                       ? Colors.white
                       : Colors.black,
                 ),
-                actions: statusBarActions != null
-                    ? [
-                        PopupMenuButton<String>(
-                          onSelected: onStatusBarActionSelected,
-                          itemBuilder: (BuildContext context) =>
-                              statusBarActions ?? [],
-                        )
-                      ]
-                    : null,
+                actions: [
+                  ...statusBarActions != null ? statusBarActions! : [],
+                  ...statusBarDropdownActions != null
+                      ? [
+                          PopupMenuButton<String>(
+                            onSelected: onStatusBarDropdownActionSelected,
+                            itemBuilder: (BuildContext context) =>
+                                statusBarDropdownActions!,
+                          )
+                        ]
+                      : []
+                ],
                 bottom: tabBarItems != null
                     ? TabBar(
                         tabs: tabBarItems ?? [],

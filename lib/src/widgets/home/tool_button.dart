@@ -45,7 +45,7 @@ class ToolButton extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                       minFontSize: 10,
-                      maxFontSize: 12,
+                      maxFontSize: 13,
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,

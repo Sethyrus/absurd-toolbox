@@ -11,14 +11,14 @@ class ProfileDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        StreamBuilder(
-          stream: userProfileService.userProfile,
-          builder: (ctx, AsyncSnapshot<UserProfile> userProfile) {
-            return SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
+        SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: StreamBuilder(
+              stream: userProfileService.userProfile,
+              builder: (ctx, AsyncSnapshot<UserProfile> userProfile) {
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -71,7 +71,7 @@ class ProfileDetails extends StatelessWidget {
                     ),
                     const Space(size: 8),
                     const Text(
-                      "Descripción:",
+                      "Descripción del perfil:",
                     ),
                     Text(
                       userProfile.data?.description ?? '',
@@ -82,10 +82,10 @@ class ProfileDetails extends StatelessWidget {
                     ),
                     const Space(size: 8),
                   ],
-                ),
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ),
         ),
       ],
     );

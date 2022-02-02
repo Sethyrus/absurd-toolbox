@@ -275,8 +275,8 @@ class _NotesScreenState extends State<NotesScreen> {
       primaryColor: tool.primaryColor,
       themeStyle: tool.themeStyle,
       title: _title,
-      statusBarActions: _statusBarActions,
-      onStatusBarActionSelected: _onStatusBarActionSelected,
+      statusBarDropdownActions: _statusBarActions,
+      onStatusBarDropdownActionSelected: _onStatusBarActionSelected,
       content: NotesList(
         onNoteTap: _onNoteTap,
         onNoteLongPress: _startSelection,

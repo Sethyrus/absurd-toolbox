@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/src/screens/app_screens/profile/edit_profile_screen.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/src/widgets/profile/profile_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,14 @@ class ProfileScreen extends StatelessWidget {
       primaryColor: Theme.of(context).primaryColor,
       themeStyle: ThemeStyle.light,
       title: "Perfil",
+      statusBarActions: [
+        IconButton(
+          onPressed: () => Navigator.of(context).pushNamed(
+            EditProfileScreen.routeName,
+          ),
+          icon: const Icon(Icons.edit),
+        ),
+      ],
       content: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

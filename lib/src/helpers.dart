@@ -31,9 +31,12 @@ void showToast(
   );
 }
 
-ThemeData generateAppTheme(BuildContext context, MaterialColor? primarySwatch) {
+ThemeData generateAppTheme(
+  BuildContext context, {
+  MaterialColor primarySwatch = Colors.indigo,
+}) {
   return ThemeData(
-    primarySwatch: primarySwatch ?? Colors.indigo,
+    primarySwatch: primarySwatch,
     primaryColor: Colors.indigo,
     primaryColorDark: Colors.indigo.shade800,
     fontFamily: GoogleFonts.openSans.toString(),
