@@ -14,9 +14,9 @@ class _HeadsOrTailsState extends State<HeadsOrTails> {
   String get headOrTailImage {
     switch (_coin.value) {
       case CoinValue.heads:
-        return 'lib/src/assets/images/coin_head.png';
+        return 'assets/images/coin_head.png';
       case CoinValue.tails:
-        return 'lib/src/assets/images/coin_tail.png';
+        return 'assets/images/coin_tail.png';
       default:
         return '';
     }

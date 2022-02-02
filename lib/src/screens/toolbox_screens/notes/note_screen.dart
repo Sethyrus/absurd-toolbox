@@ -3,11 +3,11 @@ import 'package:absurd_toolbox/src/models/tool.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/notes/notes_screen.dart';
 import 'package:absurd_toolbox/src/services/notes_service.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
+import 'package:absurd_toolbox/src/widgets/notes/ocr_reader.dart';
 import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:uuid/uuid.dart';
 
 class NoteScreen extends StatefulWidget {
@@ -45,6 +45,7 @@ class _NoteScreenState extends State<NoteScreen> {
   );
   final _form = GlobalKey<FormState>();
   final _contentFocusNode = FocusNode();
+  final _contentController = TextEditingController(text: "");
 
   String get _title => _editedNote.id == '' ? 'Nueva nota' : 'Editar nota';
 
@@ -102,6 +103,7 @@ class _NoteScreenState extends State<NoteScreen> {
           setState(() {
             _originalNote = foundNote.clone();
             _editedNote = foundNote.clone();
+            _contentController.text = _editedNote.content;
             _initialized = true;
           });
         }
@@ -118,6 +120,7 @@ class _NoteScreenState extends State<NoteScreen> {
   @override
   void dispose() {
     _contentFocusNode.dispose();
+    _contentController.dispose();
     super.dispose();
   }
 
@@ -230,18 +233,6 @@ class _NoteScreenState extends State<NoteScreen> {
     }
   }
 
-  void _initOCR() {
-    showMaterialModalBottomSheet(
-      context: context,
-      builder: (context) => SingleChildScrollView(
-        controller: ModalScrollController.of(context),
-        child: Material(
-          child: Text("Holas"),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     Tool tool = tools.firstWhere((t) => t.route == NotesScreen.routeName);
@@ -306,6 +297,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         child: TextFormField(
                           expands: true,
                           focusNode: _contentFocusNode,
+                          controller: _contentController,
                           onSaved: (value) {
                             if (value != null) {
                               _editedNote = Note(
@@ -331,7 +323,6 @@ class _NoteScreenState extends State<NoteScreen> {
                               horizontal: 8,
                             ),
                           ),
-                          initialValue: _editedNote.content,
                           maxLines: null,
                           minLines: null,
                         ),
@@ -341,7 +332,14 @@ class _NoteScreenState extends State<NoteScreen> {
                 ),
               ),
               fab: FloatingActionButton(
-                onPressed: _initOCR,
+                onPressed: () => OCRReader.initOCR(context, (text) {
+                  if (_contentController.text == "") {
+                    _contentController.text = text;
+                    return;
+                  }
+
+                  _contentController.text += "\n$text";
+                }),
                 child: const Icon(
                   Icons.photo_camera,
                   color: Colors.black,

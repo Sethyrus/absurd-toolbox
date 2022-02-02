@@ -475,13 +475,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.1.0"
-  flutter_tesseract_ocr:
-    dependency: "direct main"
-    description:
-      name: flutter_tesseract_ocr
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.19"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -534,6 +527,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+  google_ml_kit:
+    dependency: "direct main"
+    description:
+      name: google_ml_kit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.7.3"
   google_polyline_algorithm:
     dependency: transitive
     description:

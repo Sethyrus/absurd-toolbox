@@ -11,6 +11,8 @@
 - [ ] En el sorteo de dados, poder añadir más dados
 - [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] Drag'n'drop de los enlaces de la home
+- [x] OCR
+  - [ ] Poder recortar la imagen
 - [ ] Añadir función de conversor de unidades
 - [ ] Hacer la función de los chats
 - [ ] Establecer colores del tema como los del fondo del logo
