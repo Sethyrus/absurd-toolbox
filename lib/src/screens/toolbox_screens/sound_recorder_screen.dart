@@ -63,27 +63,18 @@ class _SoundRecorderScreenState extends State<SoundRecorderScreen> {
       child: Layout(
         secondaryColor: tool.secondaryColor,
         primaryColor: tool.primaryColor,
-        themeStyle: tool.themeStyle,
+        textThemeStyle: tool.textThemeStyle,
         title: tool.name,
         tabBarIndicatorColor: Colors.white,
         tabBarItems: const [
           Tab(
-            child: Text(
-              'Grabar',
-              style: TextStyle(color: Colors.black),
-            ),
+            child: Text('Grabar'),
           ),
           Tab(
-            child: Text(
-              'Grabaciones',
-              style: TextStyle(color: Colors.black),
-            ),
+            child: Text('Grabaciones'),
           ),
           Tab(
-            child: Text(
-              'Sound buttons',
-              style: TextStyle(color: Colors.black),
-            ),
+            child: Text('Sound buttons'),
           ),
         ],
         content: const TabBarView(

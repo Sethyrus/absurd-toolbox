@@ -9,7 +9,7 @@ class SettingsScreen extends StatelessWidget {
     return Layout(
       secondaryColor: Theme.of(context).primaryColorDark,
       primaryColor: Theme.of(context).primaryColor,
-      themeStyle: ThemeStyle.light,
+      textThemeStyle: TextThemeStyle.light,
       title: "Ajustes",
       content: const Center(),
     );

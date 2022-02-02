@@ -1,7 +1,7 @@
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/screens/app_screens/auth_screen.dart';
 import 'package:absurd_toolbox/src/widgets/_general/space.dart';
-import 'package:absurd_toolbox/src/widgets/auth/auth_input.dart';
+import 'package:absurd_toolbox/src/widgets/_general/input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -121,7 +121,7 @@ class _AuthFormState extends State<AuthForm> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    AuthInput(
+                    Input(
                       autovalidateMode: _autovalidateMode,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
@@ -137,7 +137,7 @@ class _AuthFormState extends State<AuthForm> {
                       prefixIcon: Icons.email,
                       labelText: "E-mail",
                     ),
-                    AuthInput(
+                    Input(
                       autovalidateMode: _autovalidateMode,
                       obscureText: true,
                       validator: (value) {
@@ -153,7 +153,7 @@ class _AuthFormState extends State<AuthForm> {
                       labelText: "Contraseña",
                     ),
                     if (widget.authMode == AuthMode.register)
-                      AuthInput(
+                      Input(
                         autovalidateMode: _autovalidateMode,
                         obscureText: true,
                         validator: widget.authMode == AuthMode.register

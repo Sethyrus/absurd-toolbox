@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/note.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:uuid/uuid.dart';
 
 class NoteScreen extends StatefulWidget {
   static const String routeName = '/note';
@@ -133,7 +132,7 @@ class _NoteScreenState extends State<NoteScreen> {
 
         notesService.addNote(
           Note(
-            id: const Uuid().v4(),
+            id: "",
             title: _editedNote.title,
             content: _editedNote.content,
             tags: _editedNote.tags,
@@ -243,7 +242,7 @@ class _NoteScreenState extends State<NoteScreen> {
             child: Layout(
               secondaryColor: tool.secondaryColor,
               primaryColor: tool.primaryColor,
-              themeStyle: tool.themeStyle,
+              textThemeStyle: tool.textThemeStyle,
               title: _title,
               statusBarDropdownActions: _statusBarActions,
               onStatusBarDropdownActionSelected: _onStatusBarActionSelected,

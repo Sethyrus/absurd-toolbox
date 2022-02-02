@@ -19,21 +19,11 @@ class ClockScreen extends StatelessWidget {
       child: Layout(
         secondaryColor: tool.secondaryColor,
         primaryColor: tool.primaryColor,
-        themeStyle: tool.themeStyle,
+        textThemeStyle: tool.textThemeStyle,
         title: tool.name,
         tabBarItems: const [
-          Tab(
-            child: Text(
-              'Cronómetro',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          Tab(
-            child: Text(
-              'Temporizador',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
+          Tab(child: Text('Cronómetro')),
+          Tab(child: Text('Temporizador')),
         ],
         content: const TabBarView(
           children: [

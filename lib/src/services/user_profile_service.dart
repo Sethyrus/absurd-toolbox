@@ -20,6 +20,8 @@ class UserProfileService {
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection('users');
 
+  UserProfile get userProfileSync => _userProfileFetcher.value;
+
   Stream<UserProfile> get userProfile => _userProfileFetcher.stream;
 
   void createProfile() async {

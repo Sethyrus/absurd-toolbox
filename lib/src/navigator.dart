@@ -1,5 +1,5 @@
-import 'package:absurd_toolbox/src/screens/app_screens/profile/edit_profile_screen.dart';
-import 'package:absurd_toolbox/src/screens/app_screens/profile/profile_screen.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/account/edit_account_screen.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/account/account_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/chats_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/clock_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/flashlight_screen.dart';
@@ -63,16 +63,16 @@ final List<AppNavigator> appNavigator = [
     icon: const Icon(Icons.construction),
   ),
   AppNavigator(
-    label: "Perfil",
+    label: "Cuenta",
     navigator: GlobalKey<NavigatorState>(),
     routes: [
       AppRoute(
         route: '/',
-        screen: const ProfileScreen(),
+        screen: const AccountScreen(),
       ),
       AppRoute(
-        route: EditProfileScreen.routeName,
-        screen: const EditProfileScreen(),
+        route: EditAccountScreen.routeName,
+        screen: const EditAccountScreen(),
       ),
     ],
     icon: const Icon(Icons.person),

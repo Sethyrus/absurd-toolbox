@@ -1,10 +1,12 @@
 import 'package:absurd_toolbox/src/models/raffle.dart';
 import 'package:absurd_toolbox/src/models/tool.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/barcode_scanner_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/chats_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/clock_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/flashlight_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/notes/notes_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/raffles_screen.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/sound_recorder_screen.dart';
 import 'package:absurd_toolbox/src/screens/toolbox_screens/unit_converter_screen.dart';
 import 'package:absurd_toolbox/src/widgets/raffles/dice.dart';
 import 'package:absurd_toolbox/src/widgets/raffles/heads_or_tails.dart';
@@ -45,22 +47,22 @@ final List<Tool> tools = [
     route: BarcodeScannerScreen.routeName,
     widget: const BarcodeScannerScreen(),
   ),
-  // Tool(
-  //   name: "Grabadora de sonido",
-  //   icon: Icons.voicemail,
-  //   primaryColor: Colors.red.shade400,
-  //   secondaryColor: Colors.red,
-  //   route: SoundRecorderScreen.routeName,
-  //   widget: const SoundRecorderScreen(),
-  // ),
-  // Tool(
-  //   name: "Chats",
-  //   icon: Icons.chat,
-  //   primaryColor: Colors.blue.shade400,
-  //   secondaryColor: Colors.blue.shade600,
-  //   route: ChatsScreen.routeName,
-  //   widget: const ChatsScreen(),
-  // ),
+  Tool(
+    name: "Grabadora de sonido",
+    icon: Icons.voicemail,
+    primaryColor: Colors.red.shade400,
+    secondaryColor: Colors.red,
+    route: SoundRecorderScreen.routeName,
+    widget: const SoundRecorderScreen(),
+  ),
+  Tool(
+    name: "Chats",
+    icon: Icons.chat,
+    primaryColor: Colors.blue.shade400,
+    secondaryColor: Colors.blue.shade600,
+    route: ChatsScreen.routeName,
+    widget: const ChatsScreen(),
+  ),
   Tool(
     name: "Linterna",
     icon: Icons.flashlight_on,

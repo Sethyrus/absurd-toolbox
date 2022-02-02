@@ -17,7 +17,7 @@ class UnitConverterScreen extends StatelessWidget {
     return Layout(
       secondaryColor: tool.secondaryColor,
       primaryColor: tool.primaryColor,
-      themeStyle: tool.themeStyle,
+      textThemeStyle: tool.textThemeStyle,
       title: tool.name,
       content: const Center(
         child: Text("Conversor de unidades - En desarrollo"),

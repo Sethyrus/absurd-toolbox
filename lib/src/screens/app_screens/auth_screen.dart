@@ -29,7 +29,7 @@ class _AuthScreenState extends State<AuthScreen> {
       showAppBar: false,
       secondaryColor: Colors.white,
       primaryColor: Theme.of(context).primaryColor,
-      themeStyle: ThemeStyle.light,
+      textThemeStyle: TextThemeStyle.light,
       content: Container(
         width: double.infinity,
         height: double.infinity,

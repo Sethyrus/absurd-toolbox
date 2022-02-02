@@ -273,7 +273,7 @@ class _NotesScreenState extends State<NotesScreen> {
     return Layout(
       secondaryColor: tool.secondaryColor,
       primaryColor: tool.primaryColor,
-      themeStyle: tool.themeStyle,
+      textThemeStyle: tool.textThemeStyle,
       title: _title,
       statusBarDropdownActions: _statusBarActions,
       onStatusBarDropdownActionSelected: _onStatusBarActionSelected,

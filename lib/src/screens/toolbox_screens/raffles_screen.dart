@@ -39,7 +39,7 @@ class _RafflesScreenState extends State<RafflesScreen> {
     return Layout(
       secondaryColor: tool.secondaryColor,
       primaryColor: tool.primaryColor,
-      themeStyle: tool.themeStyle,
+      textThemeStyle: tool.textThemeStyle,
       title: tool.name,
       content: SingleChildScrollView(
         padding: const EdgeInsets.all(8),

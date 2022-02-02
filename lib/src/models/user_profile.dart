@@ -11,6 +11,15 @@ class UserProfile {
     required this.avatar,
   });
 
+  UserProfile clone() {
+    return UserProfile(
+      email: email,
+      username: username,
+      description: description,
+      avatar: avatar,
+    );
+  }
+
   UserProfile.fromJson(Map<String, dynamic> json)
       : email = json['email'] ?? '',
         username = json['username'] ?? '',

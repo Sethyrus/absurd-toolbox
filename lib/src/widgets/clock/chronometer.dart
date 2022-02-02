@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'package:absurd_toolbox/src/consts.dart';
-import 'package:absurd_toolbox/src/models/tool.dart';
-import 'package:absurd_toolbox/src/screens/toolbox_screens/clock_screen.dart';
 import 'package:flutter/material.dart';
 
 class Chronometer extends StatefulWidget {
@@ -66,10 +63,6 @@ class _ChronometerState extends State<Chronometer> {
 
   @override
   Widget build(BuildContext context) {
-    Tool tool = tools.firstWhere(
-      (t) => t.route == ClockScreen.routeName,
-    );
-
     return Container(
       padding: const EdgeInsets.only(
         left: 8,

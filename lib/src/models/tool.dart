@@ -8,11 +8,11 @@ class Tool {
   final String route;
   final IconData icon;
   final Widget widget;
-  final ThemeStyle themeStyle;
+  final TextThemeStyle textThemeStyle;
 
   const Tool({
     Key? key,
-    this.themeStyle = ThemeStyle.dark,
+    this.textThemeStyle = TextThemeStyle.dark,
     required this.name,
     required this.primaryColor,
     required this.secondaryColor,

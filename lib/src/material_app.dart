@@ -1,6 +1,6 @@
-import 'package:absurd_toolbox/src/app_container.dart';
 import 'package:absurd_toolbox/src/services/connectivity_service.dart';
 import 'package:absurd_toolbox/src/services/auth_service.dart';
+import 'package:absurd_toolbox/src/widgets/_general/app_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

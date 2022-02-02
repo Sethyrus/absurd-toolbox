@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 
-enum ThemeStyle {
+enum TextThemeStyle {
   light,
   dark,
 }
@@ -16,7 +16,7 @@ class Layout extends StatelessWidget {
   final bool showAppBar;
   final String? title;
   final Color primaryColor;
-  final ThemeStyle themeStyle;
+  final TextThemeStyle textThemeStyle;
   final Widget? fab;
   final List<Widget>? statusBarActions;
   final List<PopupMenuEntry<String>>? statusBarDropdownActions;
@@ -31,7 +31,7 @@ class Layout extends StatelessWidget {
     required this.primaryColor,
     required this.secondaryColor,
     this.title,
-    this.themeStyle = ThemeStyle.dark,
+    this.textThemeStyle = TextThemeStyle.dark,
     this.fab,
     this.showAppBar = true,
     this.statusBarActions,
@@ -55,7 +55,7 @@ class Layout extends StatelessWidget {
                 title: Text(
                   title ?? '',
                   style: TextStyle(
-                    color: themeStyle == ThemeStyle.light
+                    color: textThemeStyle == TextThemeStyle.light
                         ? Colors.white
                         : Colors.black,
                   ),
@@ -65,7 +65,7 @@ class Layout extends StatelessWidget {
                 ),
                 backgroundColor: primaryColor,
                 iconTheme: IconThemeData(
-                  color: themeStyle == ThemeStyle.light
+                  color: textThemeStyle == TextThemeStyle.light
                       ? Colors.white
                       : Colors.black,
                 ),

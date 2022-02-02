@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,11 +35,27 @@ void showToast(
 ThemeData generateAppTheme(
   BuildContext context, {
   MaterialColor primarySwatch = Colors.indigo,
+  TextThemeStyle textThemeStyle = TextThemeStyle.dark,
 }) {
   return ThemeData(
     primarySwatch: primarySwatch,
     primaryColor: Colors.indigo,
     primaryColorDark: Colors.indigo.shade800,
+    tabBarTheme: TabBarTheme(
+      labelColor:
+          textThemeStyle == TextThemeStyle.dark ? Colors.black : Colors.white,
+      unselectedLabelColor:
+          textThemeStyle == TextThemeStyle.dark ? Colors.black : Colors.white,
+      labelStyle: TextStyle(
+        fontWeight: FontWeight.w500,
+        color:
+            textThemeStyle == TextThemeStyle.dark ? Colors.black : Colors.white,
+      ),
+      unselectedLabelStyle: TextStyle(
+        color:
+            textThemeStyle == TextThemeStyle.dark ? Colors.black : Colors.white,
+      ),
+    ),
     fontFamily: GoogleFonts.openSans.toString(),
     textTheme: GoogleFonts.openSansTextTheme(
       Theme.of(context).textTheme,

@@ -90,7 +90,7 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
     return Layout(
       secondaryColor: tool.secondaryColor,
       primaryColor: tool.primaryColor,
-      themeStyle: tool.themeStyle,
+      textThemeStyle: tool.textThemeStyle,
       title: tool.name,
       content: SizedBox(
         width: double.infinity,
