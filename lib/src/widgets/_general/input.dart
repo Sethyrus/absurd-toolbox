@@ -36,7 +36,7 @@ class Input extends StatelessWidget {
       autovalidateMode: autovalidateMode,
       textInputAction: textInputAction,
       decoration: InputDecoration(
-        alignLabelWithHint: true,
+        alignLabelWithHint: maxLines > 1,
         prefixIcon: prefixIcon != null
             ? Icon(
                 prefixIcon,

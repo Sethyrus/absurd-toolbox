@@ -20,6 +20,11 @@ class UserProfile {
     );
   }
 
+  bool isSameAs(UserProfile profile) => !(profile.email != email ||
+      profile.username != username ||
+      profile.description != description ||
+      profile.avatar != avatar);
+
   UserProfile.fromJson(Map<String, dynamic> json)
       : email = json['email'] ?? '',
         username = json['username'] ?? '',

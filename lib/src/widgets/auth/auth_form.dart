@@ -81,9 +81,7 @@ class _AuthFormState extends State<AuthForm> {
       _autovalidateMode = AutovalidateMode.always;
     });
 
-    final isFormValid = _form.currentState!.validate();
-
-    if (isFormValid) {
+    if (_form.currentState!.validate()) {
       _form.currentState!.save();
 
       if (widget.authMode == AuthMode.login) {

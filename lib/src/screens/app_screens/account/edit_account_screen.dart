@@ -21,11 +21,14 @@ class EditAccountScreen extends StatelessWidget {
           Tab(child: Text('Perfil', style: TextStyle(color: Colors.white))),
           Tab(child: Text('Contraseña', style: TextStyle(color: Colors.white))),
         ],
-        content: const TabBarView(
-          children: [
-            ChangeProfileDetailsForm(),
-            ChangePasswordForm(),
-          ],
+        content: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: TabBarView(
+            children: [
+              ChangeProfileDetailsForm(),
+              ChangePasswordForm(),
+            ],
+          ),
         ),
       ),
     );

@@ -66,12 +66,20 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(
-                            () {
-                              _authMode = _authMode == AuthMode.login
-                                  ? AuthMode.register
-                                  : AuthMode.login;
-                            },
+                          showDialog(
+                            context: context,
+                            builder: (alertCtx) => AlertDialog(
+                              title: const Text('Error'),
+                              content: const Text(
+                                'El registro con correo está desactivado temporalmente, utiliza la autenticación con Google',
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(alertCtx),
+                                  child: const Text('Aceptar'),
+                                ),
+                              ],
+                            ),
                           );
                         },
                         child: Text(

@@ -21,6 +21,7 @@
   - [ ] Guardar estado en un stream/servicio propio para preservar el estado si se sale
 - [ ] Documentar/Añadir comentarios al código
 - [ ] Revisar en qué casos tiene más sentido usar transacciones (Firestore) e implementar
+- [ ] Definir campos no modificables en Firestore
 - [X] Función de OCR en las notas (ML Kit)
 - [X] Establecer colores del tema como los del fondo del logo
 - [X] Añadir una colección "users" a firebase donde almacenar los detalles del perfil de los usuarios

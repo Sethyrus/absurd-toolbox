@@ -44,6 +44,16 @@ class UserProfileService {
     _usersCollection.doc(userData!.uid).set(newUser);
   }
 
+  void updateProfile(UserProfile profile) async {
+    log("Update profile", profile.email);
+
+    final String? userId = authService.userIdSync;
+
+    _usersCollection.doc(userId).update(profile.toJson()).catchError((error) {
+      log("Failed to update profile", error);
+    });
+  }
+
   void initUserProfileSubscription() {
     log(
       "Trying to init user profile subscription",

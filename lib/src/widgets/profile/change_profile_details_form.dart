@@ -40,59 +40,66 @@ class _ChangeProfileDetailsFormState extends State<ChangeProfileDetailsForm> {
     super.initState();
   }
 
-  _submitForm() {}
+  _submitForm() {
+    if (_form.currentState!.validate()) {
+      _form.currentState!.save();
+
+      if (!_originalProfile.isSameAs(_editedProfile)) {
+        userProfileService.updateProfile(_editedProfile);
+      }
+
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: _initialized
-          ? Form(
-              key: _form,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Input(
-                        initialValue: _editedProfile.username,
-                        labelText: "Nombre de usuario",
-                        onSaved: (val) => _editedProfile = UserProfile(
-                          email: _editedProfile.email,
-                          username: val!,
-                          description: _editedProfile.description,
-                          avatar: _editedProfile.avatar,
-                        ),
-                        validator: (val) {
-                          if (val == null || val == "") {
-                            return "El nombre de usuario no puede estar vacío";
-                          } else if (val.length < 3) {
-                            return "El nombre de usuario no puede tener menos de 3 caracteres";
-                          }
-                        },
-                        textInputAction: TextInputAction.next,
+    return _initialized
+        ? Form(
+            key: _form,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Input(
+                      initialValue: _editedProfile.username,
+                      labelText: "Nombre de usuario",
+                      onSaved: (val) => _editedProfile = UserProfile(
+                        email: _editedProfile.email,
+                        username: val!,
+                        description: _editedProfile.description,
+                        avatar: _editedProfile.avatar,
                       ),
-                      Input(
-                        initialValue: _editedProfile.description,
-                        labelText: "Descripción del perfil",
-                        onSaved: (val) => _editedProfile = UserProfile(
-                          email: _editedProfile.email,
-                          username: _editedProfile.username,
-                          description: val!,
-                          avatar: _editedProfile.avatar,
-                        ),
-                        maxLines: 6,
+                      validator: (val) {
+                        if (val == null || val == "") {
+                          return "El nombre de usuario no puede estar vacío";
+                        } else if (val.length < 3) {
+                          return "El nombre de usuario no puede tener menos de 3 caracteres";
+                        }
+                      },
+                      textInputAction: TextInputAction.next,
+                    ),
+                    Input(
+                      initialValue: _editedProfile.description,
+                      labelText: "Descripción del perfil",
+                      onSaved: (val) => _editedProfile = UserProfile(
+                        email: _editedProfile.email,
+                        username: _editedProfile.username,
+                        description: val!,
+                        avatar: _editedProfile.avatar,
                       ),
-                    ],
-                  ),
-                  ElevatedButton(
-                    onPressed: _submitForm,
-                    child: const Text("Guardar cambios"),
-                  ),
-                ],
-              ),
-            )
-          : const SizedBox.shrink(),
-    );
+                      maxLines: 6,
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: _submitForm,
+                  child: const Text("Guardar cambios"),
+                ),
+              ],
+            ),
+          )
+        : const SizedBox.shrink();
   }
 }

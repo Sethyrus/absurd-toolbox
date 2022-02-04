@@ -11,7 +11,7 @@ class SettingsScreen extends StatelessWidget {
       primaryColor: Theme.of(context).primaryColor,
       textThemeStyle: TextThemeStyle.light,
       title: "Ajustes",
-      content: const Center(),
+      content: const Center(child: Text("Ajustes - En desarrollo")),
     );
   }
 }
