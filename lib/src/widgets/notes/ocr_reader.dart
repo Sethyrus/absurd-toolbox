@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:absurd_toolbox/src/consts.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
+import 'package:absurd_toolbox/src/models/tool.dart';
+import 'package:absurd_toolbox/src/screens/toolbox_screens/notes/notes_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class OCRReader extends StatefulWidget {
@@ -54,6 +60,8 @@ class _OCRReaderState extends State<OCRReader> {
 
   @override
   Widget build(BuildContext context) {
+    Tool tool = tools.firstWhere((t) => t.route == NotesScreen.routeName);
+
     return SafeArea(
       child: _isOCRAvailable
           ? Stack(
@@ -71,28 +79,58 @@ class _OCRReaderState extends State<OCRReader> {
                         log("Take picture!");
                         EasyLoading.show();
                         _cameraController?.takePicture().then((image) {
-                          log("Camera captured", image);
+                          log("Camera captured image", image);
 
-                          final inputImage = InputImage.fromFilePath(
-                            image.path,
-                          );
+                          ImageCropper.cropImage(
+                              sourcePath: image.path,
+                              aspectRatioPresets: [
+                                CropAspectRatioPreset.square,
+                                CropAspectRatioPreset.ratio3x2,
+                                CropAspectRatioPreset.original,
+                                CropAspectRatioPreset.ratio4x3,
+                                CropAspectRatioPreset.ratio16x9
+                              ],
+                              androidUiSettings: AndroidUiSettings(
+                                hideBottomControls: true,
+                                toolbarTitle: 'Recorta el texto',
+                                toolbarColor: tool.primaryColor,
+                                toolbarWidgetColor: Colors.black,
+                                initAspectRatio: CropAspectRatioPreset.original,
+                                lockAspectRatio: false,
+                              ),
+                              iosUiSettings: const IOSUiSettings(
+                                minimumAspectRatio: 1.0,
+                              )).then((file) {
+                            log("Cropped image", file);
 
-                          textDetector
-                              .processImage(inputImage)
-                              .then((recognisedText) {
-                            List<String> recognizedList = [];
+                            if (file != null) {
+                              final inputImage = InputImage.fromFilePath(
+                                file.path,
+                              );
 
-                            for (TextBlock block in recognisedText.blocks) {
-                              recognizedList.add(block.text);
+                              textDetector
+                                  .processImage(inputImage)
+                                  .then((recognisedText) {
+                                List<String> recognizedList = [];
+
+                                for (TextBlock block in recognisedText.blocks) {
+                                  recognizedList.add(block.text);
+                                }
+
+                                log("OCR text list", recognizedList);
+
+                                widget.onRead(recognizedList.join("\n"));
+
+                                EasyLoading.dismiss();
+
+                                Navigator.of(context).pop();
+                              });
+                            } else {
+                              log("OCR file is null");
+                              widget.onRead("");
+                              EasyLoading.dismiss();
+                              Navigator.of(context).pop();
                             }
-
-                            log("OCR text list", recognizedList);
-
-                            widget.onRead(recognizedList.join("\n"));
-
-                            EasyLoading.dismiss();
-
-                            Navigator.of(context).pop();
                           });
                         });
                       },
