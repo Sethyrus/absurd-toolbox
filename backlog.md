@@ -1,4 +1,11 @@
 # TODO
+
+- [X] Cronómetro
+  - [ ] Mejorar diseño, más a lo reloj de Google
+  - [ ] Botón de pausa
+  - [ ] Botón de reinicio
+  - [ ] Botón de "lap" y mostrar "laps"
+  - [ ] Guardar estado en un stream/servicio propio para preservar el estado si se sale
 - [ ] Funcionalidad para todos los campos de las notas
   - [X] Archiving
     - [ ] Mover funcionalidad al notesService
@@ -9,16 +16,10 @@
 - [ ] En el sorteo de dados, poder añadir más dados
 - [ ] Mover claves de API a un archivo .env, fuera de git
 - [ ] Drag'n'drop de los enlaces de la home
-- [x] OCR
-  - [ ] Poder recortar la imagen
+- [X] OCR
+  - [X] Poder recortar la imagen
 - [ ] Añadir función de conversor de unidades
 - [ ] Hacer la función de los chats
-- [x] Cronómetro
-  - [ ] Mejorar diseño, más a lo reloj de Google
-  - [ ] Botón de pausa
-  - [ ] Botón de reinicio
-  - [ ] Botón de "lap" y mostrar "laps"
-  - [ ] Guardar estado en un stream/servicio propio para preservar el estado si se sale
 - [ ] Documentar/Añadir comentarios al código
 - [ ] Revisar en qué casos tiene más sentido usar transacciones (Firestore) e implementar
 - [ ] Definir campos no modificables en Firestore
@@ -36,11 +37,13 @@
 - [X] Probar FittedBoxes en los ToolButtons para mejorar el estilo
 
 # Bugs
-- [X] Al iniciar la app (con sesión previa) aparece un error de Notes y UserProfile en la consola de depuración (used after being disposed)
-- [X] El alert al eliminar varias notas retrocede a home en lugar de cerrarse
 
-# Useful resources:
-- https://docs.flutter.dev/cookbook/effects/nested-nav
+- You tell me
+
+# Useful dev resources:
+
+- Misc
+  - https://docs.flutter.dev/cookbook/effects/nested-nav
 - BLoC
   - https://medium.com/codechai/architecting-your-flutter-project-bd04e144a8f1
   - https://www.didierboelens.com/2018/12/reactive-programming-streams-bloc-practical-use-cases/
