@@ -38,6 +38,7 @@
 
 # Bugs
 
+- [ ] Al pulsar dos veces sobre el botón de login hay un pete
 - You tell me
 
 # Useful dev resources:
