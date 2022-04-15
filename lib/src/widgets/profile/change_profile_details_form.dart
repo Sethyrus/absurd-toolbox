@@ -77,6 +77,8 @@ class _ChangeProfileDetailsFormState extends State<ChangeProfileDetailsForm> {
                         } else if (val.length < 3) {
                           return "El nombre de usuario no puede tener menos de 3 caracteres";
                         }
+
+                        return null;
                       },
                       textInputAction: TextInputAction.next,
                     ),

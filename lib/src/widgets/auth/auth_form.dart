@@ -128,6 +128,8 @@ class _AuthFormState extends State<AuthForm> {
                         } else if (!isEmailValid(value)) {
                           return "El e-mail no tiene un formato válido";
                         }
+
+                        return null;
                       },
                       onSaved: (value) {
                         _authData['email'] = value ?? '';
@@ -142,6 +144,8 @@ class _AuthFormState extends State<AuthForm> {
                         if (value == null || value.length < 6) {
                           return "La contraseña debe tener al menos 6 caracteres";
                         }
+
+                        return null;
                       },
                       controller: _passwordController,
                       onSaved: (value) {
@@ -159,6 +163,8 @@ class _AuthFormState extends State<AuthForm> {
                                 if (value != _passwordController.text) {
                                   return "Las contraseñas no coinciden";
                                 }
+
+                                return null;
                               }
                             : null,
                         prefixIcon: Icons.lock,

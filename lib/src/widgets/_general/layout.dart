@@ -89,14 +89,10 @@ class Layout extends StatelessWidget {
                     : null,
               )
             : !kIsWeb && Platform.isIOS
-                ? EmptyAppBar(
-                    statusBarColor: secondaryColor,
-                  )
+                ? EmptyAppBar(statusBarColor: secondaryColor)
                 : null,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle(
-            statusBarColor: secondaryColor,
-          ),
+          value: SystemUiOverlayStyle(statusBarColor: secondaryColor),
           child: avoidSafeArea == true ? content : SafeArea(child: content),
         ),
         floatingActionButton: fab,

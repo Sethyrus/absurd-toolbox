@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:absurd_toolbox/src/consts.dart';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/models/tool.dart';
@@ -81,26 +79,29 @@ class _OCRReaderState extends State<OCRReader> {
                         _cameraController?.takePicture().then((image) {
                           log("Camera captured image", image);
 
-                          ImageCropper.cropImage(
-                              sourcePath: image.path,
-                              aspectRatioPresets: [
-                                CropAspectRatioPreset.square,
-                                CropAspectRatioPreset.ratio3x2,
-                                CropAspectRatioPreset.original,
-                                CropAspectRatioPreset.ratio4x3,
-                                CropAspectRatioPreset.ratio16x9
-                              ],
-                              androidUiSettings: AndroidUiSettings(
-                                hideBottomControls: true,
-                                toolbarTitle: 'Recorta el texto',
-                                toolbarColor: tool.primaryColor,
-                                toolbarWidgetColor: Colors.black,
-                                initAspectRatio: CropAspectRatioPreset.original,
-                                lockAspectRatio: false,
-                              ),
-                              iosUiSettings: const IOSUiSettings(
-                                minimumAspectRatio: 1.0,
-                              )).then((file) {
+                          ImageCropper()
+                              .cropImage(
+                            sourcePath: image.path,
+                            aspectRatioPresets: [
+                              CropAspectRatioPreset.square,
+                              CropAspectRatioPreset.ratio3x2,
+                              CropAspectRatioPreset.original,
+                              CropAspectRatioPreset.ratio4x3,
+                              CropAspectRatioPreset.ratio16x9
+                            ],
+                            androidUiSettings: AndroidUiSettings(
+                              hideBottomControls: true,
+                              toolbarTitle: 'Recorta el texto',
+                              toolbarColor: tool.primaryColor,
+                              toolbarWidgetColor: Colors.black,
+                              initAspectRatio: CropAspectRatioPreset.original,
+                              lockAspectRatio: false,
+                            ),
+                            iosUiSettings: const IOSUiSettings(
+                              minimumAspectRatio: 1.0,
+                            ),
+                          )
+                              .then((file) {
                             log("Cropped image", file);
 
                             if (file != null) {

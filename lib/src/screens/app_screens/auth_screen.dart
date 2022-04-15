@@ -19,7 +19,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  AuthMode _authMode = AuthMode.login;
+  final AuthMode _authMode = AuthMode.login;
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +29,13 @@ class _AuthScreenState extends State<AuthScreen> {
       showAppBar: false,
       secondaryColor: Colors.white,
       primaryColor: Theme.of(context).primaryColor,
-      textThemeStyle: TextThemeStyle.light,
       content: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
+        decoration: const BoxDecoration(color: Colors.white),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 32,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,10 +44,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 AuthForm(authMode: _authMode),
                 const SocialAuth(),
                 Container(
-                  padding: const EdgeInsets.only(
-                    top: 24,
-                    bottom: 24,
-                  ),
+                  padding: const EdgeInsets.only(top: 24, bottom: 24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -60,9 +52,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         _authMode == AuthMode.login
                             ? '¿No tienes cuenta? '
                             : "¿Ya tienes cuenta? ",
-                        style: TextStyle(
-                          color: Colors.grey.shade500,
-                        ),
+                        style: TextStyle(color: Colors.grey.shade500),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -86,9 +76,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           _authMode == AuthMode.login
                               ? 'Crea una'
                               : "Iniciar sesión",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       )
                     ],
