@@ -19,7 +19,7 @@ void loaderConfig() {
     ..textColor = Colors.white
     ..maskColor = Colors.black
     ..maskType = EasyLoadingMaskType.black
-    ..userInteractions = true;
+    ..userInteractions = true; // TODO comprobar, debería ser false
 }
 
 void main() async {
