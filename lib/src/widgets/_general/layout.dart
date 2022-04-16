@@ -42,12 +42,25 @@ class Layout extends StatelessWidget {
     this.avoidSafeArea,
   }) : super(key: key);
 
+  SystemUiOverlayStyle get systemOverlayStyle {
+    return SystemUiOverlayStyle(
+      statusBarColor: secondaryColor,
+      statusBarIconBrightness: textThemeStyle == TextThemeStyle.dark
+          ? Brightness.dark
+          : Brightness.light,
+      statusBarBrightness: textThemeStyle == TextThemeStyle.dark
+          ? Brightness.light
+          : Brightness.dark,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: generateAppTheme(
         context,
         primarySwatch: createMaterialColor(primaryColor),
+        // textThemeStyle: textThemeStyle,
       ),
       child: Scaffold(
         appBar: showAppBar == true
@@ -60,9 +73,7 @@ class Layout extends StatelessWidget {
                         : Colors.black,
                   ),
                 ),
-                systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarColor: secondaryColor,
-                ),
+                systemOverlayStyle: systemOverlayStyle,
                 backgroundColor: primaryColor,
                 iconTheme: IconThemeData(
                   color: textThemeStyle == TextThemeStyle.light
@@ -92,7 +103,8 @@ class Layout extends StatelessWidget {
                 ? EmptyAppBar(statusBarColor: secondaryColor)
                 : null,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle(statusBarColor: secondaryColor),
+          // value: SystemUiOverlayStyle.dark,
+          value: systemOverlayStyle,
           child: avoidSafeArea == true ? content : SafeArea(child: content),
         ),
         floatingActionButton: fab,
