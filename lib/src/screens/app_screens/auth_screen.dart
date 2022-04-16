@@ -1,3 +1,5 @@
+import 'package:absurd_toolbox/src/screens/app_screens/auth_title.dart';
+import 'package:absurd_toolbox/src/screens/app_screens/reset_password.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:absurd_toolbox/src/widgets/_general/space.dart';
 import 'package:absurd_toolbox/src/widgets/auth/auth_form.dart';
@@ -23,8 +25,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-
     return Layout(
       showAppBar: false,
       secondaryColor: Colors.white,
@@ -40,48 +40,10 @@ class _AuthScreenState extends State<AuthScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Space(size: deviceSize.height * 0.075),
+                AuthTitle(authMode: _authMode),
                 AuthForm(authMode: _authMode),
                 const SocialAuth(),
-                Container(
-                  padding: const EdgeInsets.only(top: 24, bottom: 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        _authMode == AuthMode.login
-                            ? '¿No tienes cuenta? '
-                            : "¿Ya tienes cuenta? ",
-                        style: TextStyle(color: Colors.grey.shade500),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (alertCtx) => AlertDialog(
-                              title: const Text('Error'),
-                              content: const Text(
-                                'El registro con correo está desactivado temporalmente, utiliza la autenticación con Google',
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.pop(alertCtx),
-                                  child: const Text('Aceptar'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        child: Text(
-                          _authMode == AuthMode.login
-                              ? 'Crea una'
-                              : "Iniciar sesión",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                ResetPassword(authMode: _authMode),
               ],
             ),
           ),

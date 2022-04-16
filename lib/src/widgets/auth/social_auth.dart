@@ -52,21 +52,21 @@ class SocialAuth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.only(
-        top: 24,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SignInButton(
-            Buttons.Google,
-            text: "Iniciar sesión con Google",
-            onPressed: () => socialSignIn(SocialLoginMode.google),
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SignInButton(
+              Buttons.Google,
+              text: "Iniciar sesión con Google",
+              onPressed: () => socialSignIn(SocialLoginMode.google),
+            ),
+          ],
+        ),
       ),
     );
   }
