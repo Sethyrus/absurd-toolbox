@@ -26,9 +26,9 @@ class _AuthScreenState extends State<AuthScreen> {
     final deviceSize = MediaQuery.of(context).size;
 
     return Layout(
-      showAppBar: false,
-      secondaryColor: Colors.white,
       primaryColor: Theme.of(context).primaryColor,
+      secondaryColor: Colors.white,
+      showAppBar: false,
       content: Container(
         width: double.infinity,
         height: double.infinity,

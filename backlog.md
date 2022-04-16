@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Contador
 - [X] Cronómetro
   - [ ] Mejorar diseño, más a lo reloj de Google
   - [ ] Botón de pausa

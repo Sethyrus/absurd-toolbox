@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/src/app_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:absurd_toolbox/src/material_app.dart';
@@ -19,7 +20,23 @@ void loaderConfig() {
     ..textColor = Colors.white
     ..maskColor = Colors.black
     ..maskType = EasyLoadingMaskType.black
-    ..userInteractions = true; // TODO comprobar, debería ser false
+    ..userInteractions = false;
+}
+
+class _MyApp extends StatelessWidget {
+  // Dummy focusNode al que hacer foco para quitarlo de otros
+  final FocusNode _focusNode = FocusNode();
+
+  _MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      // Elimina el foco de cualquier input al pulsar sobre un espacio libre
+      onTap: () => FocusScope.of(context).requestFocus(_focusNode),
+      child: const AppWrapper(),
+    );
+  }
 }
 
 void main() async {
@@ -34,21 +51,5 @@ void main() async {
   initializeDateFormatting('es_ES');
   // Se inicializa la configuración del loader
   loaderConfig();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  // Dummy focusNode al que hacer foco para quitarlo de otros
-  final FocusNode _focusNode = FocusNode();
-
-  MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      // Elimina el foco de cualquier input al pulsar sobre un espacio libre
-      onTap: () => FocusScope.of(context).requestFocus(_focusNode),
-      child: const MyMaterialApp(),
-    );
-  }
+  runApp(_MyApp());
 }

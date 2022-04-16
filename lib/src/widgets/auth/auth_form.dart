@@ -3,8 +3,8 @@ import 'package:absurd_toolbox/src/screens/app_screens/auth_screen.dart';
 import 'package:absurd_toolbox/src/widgets/_general/space.dart';
 import 'package:absurd_toolbox/src/widgets/_general/input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class AuthForm extends StatefulWidget {
   final AuthMode authMode;
@@ -104,16 +104,17 @@ class _AuthFormState extends State<AuthForm> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              NeumorphicText(
                 widget.authMode == AuthMode.login
                     ? 'Iniciar sesión'
                     : 'Crear cuenta',
-                style: const TextStyle(
+                style: NeumorphicStyle(color: Colors.black),
+                textStyle: NeumorphicTextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const Space(size: 16),
+              const Space(size: 32),
               Form(
                 key: _form,
                 child: Column(
@@ -134,7 +135,7 @@ class _AuthFormState extends State<AuthForm> {
                       onSaved: (value) {
                         _authData['email'] = value ?? '';
                       },
-                      prefixIcon: Icons.email,
+                      prefixIcon: Icons.email_outlined,
                       labelText: "E-mail",
                     ),
                     Input(
@@ -151,7 +152,7 @@ class _AuthFormState extends State<AuthForm> {
                       onSaved: (value) {
                         _authData['password'] = value ?? '';
                       },
-                      prefixIcon: Icons.lock,
+                      prefixIcon: Icons.lock_outline,
                       labelText: "Contraseña",
                     ),
                     if (widget.authMode == AuthMode.register)
@@ -173,15 +174,14 @@ class _AuthFormState extends State<AuthForm> {
                     const Space(size: 16),
                     Container(
                       alignment: Alignment.centerRight,
-                      child: ElevatedButton(
+                      child: NeumorphicButton(
                         onPressed: onSubmit,
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(128),
-                            ),
-                          ),
-                        ),
+                        // style: NeumorphicStyle(
+                        //   color: Colors.white,
+                        //   boxShape: NeumorphicBoxShape.roundRect(
+                        //     BorderRadius.circular(128),
+                        //   ),
+                        // ),
                         child: Text(
                           widget.authMode == AuthMode.login
                               ? 'Iniciar sesión'

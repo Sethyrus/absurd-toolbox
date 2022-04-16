@@ -34,13 +34,17 @@ void showToast(
 
 ThemeData generateAppTheme(
   BuildContext context, {
-  MaterialColor primarySwatch = Colors.indigo,
+  // MaterialColor primarySwatch = Colors.indigo,
+  MaterialColor? primarySwatch,
   TextThemeStyle textThemeStyle = TextThemeStyle.dark,
 }) {
   return ThemeData(
-    primarySwatch: primarySwatch,
-    primaryColor: Colors.indigo,
-    primaryColorDark: Colors.indigo.shade800,
+    primarySwatch:
+        primarySwatch ?? createMaterialColor(const Color(0xFF777777)),
+    primaryColor: createMaterialColor(const Color(0xFF777777)),
+    primaryColorDark: createMaterialColor(const Color(0xFF444444)),
+    // primaryColor: Colors.indigo,
+    // primaryColorDark: Colors.indigo.shade800,
     tabBarTheme: TabBarTheme(
       labelColor:
           textThemeStyle == TextThemeStyle.dark ? Colors.black : Colors.white,
