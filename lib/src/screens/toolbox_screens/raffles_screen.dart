@@ -2,7 +2,7 @@ import 'package:absurd_toolbox/src/consts.dart';
 import 'package:absurd_toolbox/src/models/raffle.dart';
 import 'package:absurd_toolbox/src/models/tool.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
-import 'package:absurd_toolbox/src/widgets/_general/custom_dropdown_button.dart';
+import 'package:absurd_toolbox/src/widgets/_general/dropdown_selector.dart';
 import 'package:flutter/material.dart';
 
 class RafflesScreen extends StatefulWidget {
@@ -45,7 +45,7 @@ class _RafflesScreenState extends State<RafflesScreen> {
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            CustomDropdownButton<Raffle>(
+            DropdownSelector<Raffle>(
               items: _dropdownItems,
               onChanged: (r) => _onSelectRaffle(r),
               hint: _selectedRaffle.name,

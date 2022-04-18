@@ -33,7 +33,6 @@ class _AuthFormState extends State<AuthForm> {
     super.dispose();
   }
 
-  // TODO mostrar toast en caso de errores
   void register() async {
     EasyLoading.show();
 
@@ -45,9 +44,13 @@ class _AuthFormState extends State<AuthForm> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         log("FirebaseAuthException", 'The password provided is too weak.');
+        showToast(context, "La contraseña es demasiado débil");
       } else if (e.code == 'email-already-in-use') {
-        log("FirebaseAuthException",
-            'The account already exists for that email.');
+        log(
+          "FirebaseAuthException",
+          'The account already exists for that email.',
+        );
+        showToast(context, "Este correo ya está en uso");
       }
     } catch (e) {
       log("FirebaseAuthException uncontrolled", e);
@@ -56,7 +59,6 @@ class _AuthFormState extends State<AuthForm> {
     EasyLoading.dismiss();
   }
 
-  // TODO mostrar toast en caso de errores
   void emailSignIn() async {
     EasyLoading.show();
 
@@ -68,8 +70,16 @@ class _AuthFormState extends State<AuthForm> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         log("FirebaseAuthException", 'No user found for that email.');
+        showToast(
+          context,
+          "Los datos introducidos no coinciden con ningún usuario",
+        );
       } else if (e.code == 'wrong-password') {
         log("FirebaseAuthException", 'Wrong password provided for that user.');
+        showToast(
+          context,
+          "Los datos introducidos no coinciden con ningún usuario",
+        );
       }
     }
 

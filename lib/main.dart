@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:absurd_toolbox/src/app_wrapper.dart';
+import 'package:absurd_toolbox/src/widgets/_general/app_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +19,7 @@ void loaderConfig() {
     ..textColor = Colors.white
     ..maskColor = Colors.black
     ..maskType = EasyLoadingMaskType.black
-    ..userInteractions = true; // TODO comprobar, debería ser false
+    ..userInteractions = true;
 }
 
 class _MyApp extends StatelessWidget {

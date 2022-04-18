@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomDropdownButton<T> extends StatelessWidget {
+class DropdownSelector<T> extends StatelessWidget {
   final List<DropdownMenuItem<T>>? items;
   final void Function(T?)? onChanged;
   final String hint;
@@ -8,7 +8,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
   final Color iconColor;
   final Color backgroundColor;
 
-  const CustomDropdownButton({
+  const DropdownSelector({
     Key? key,
     required this.items,
     required this.onChanged,
@@ -43,10 +43,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
             underline: const SizedBox.shrink(),
             icon: Container(
               padding: const EdgeInsets.only(right: 8),
-              child: Icon(
-                Icons.keyboard_arrow_down,
-                color: iconColor,
-              ),
+              child: Icon(Icons.keyboard_arrow_down, color: iconColor),
             ),
           ),
           decoration: BoxDecoration(

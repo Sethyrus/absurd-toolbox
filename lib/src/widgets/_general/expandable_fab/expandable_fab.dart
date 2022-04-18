@@ -76,6 +76,7 @@ class _ExpandableFabState extends State<ExpandableFab>
         ),
       );
     }
+
     return children;
   }
 

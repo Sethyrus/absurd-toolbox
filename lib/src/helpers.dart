@@ -1,5 +1,4 @@
 import 'package:absurd_toolbox/src/consts.dart';
-import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +18,7 @@ bool isEmailValid(String email) => RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
     ).hasMatch(email);
 
+// TODO Añadir "modo", para cambiar el fondo en función de esto
 void showToast(
   BuildContext context,
   String text, {
