@@ -98,3 +98,5 @@ final List<Raffle> raffles = [
     widget: const DiceRoll(),
   ),
 ];
+
+const int luminanceThreshold = 150;

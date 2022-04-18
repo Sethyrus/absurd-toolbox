@@ -1,3 +1,4 @@
+import 'package:absurd_toolbox/src/consts.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,27 +36,44 @@ void showToast(
 
 ThemeData generateAppTheme(
   BuildContext context, {
-  MaterialColor primarySwatch = Colors.indigo,
-  TextThemeStyle textThemeStyle = TextThemeStyle.dark,
+  required Color primaryColor,
+  required Color secondaryColor,
+  SystemUiOverlayStyle? systemOverlayStyle,
 }) {
+  final double primaryLuminance = computeLuminance(primaryColor);
+
+  systemOverlayStyle = systemOverlayStyle;
+
+  if (systemOverlayStyle == null) {
+    final double secondaryLuminance = computeLuminance(secondaryColor);
+
+    systemOverlayStyle = SystemUiOverlayStyle(
+      statusBarColor: secondaryColor,
+      statusBarIconBrightness: secondaryLuminance > luminanceThreshold
+          ? Brightness.dark
+          : Brightness.light,
+      statusBarBrightness: secondaryLuminance > luminanceThreshold
+          ? Brightness.light
+          : Brightness.dark,
+    );
+  }
+
+  Color appBarTextColor =
+      primaryLuminance > luminanceThreshold ? Colors.black : Colors.white;
+
   return ThemeData(
-    primarySwatch: primarySwatch,
+    primarySwatch: createMaterialColor(primaryColor),
     primaryColor: Colors.indigo,
     primaryColorDark: Colors.indigo.shade800,
+    appBarTheme: AppBarTheme(systemOverlayStyle: systemOverlayStyle),
     tabBarTheme: TabBarTheme(
-      labelColor:
-          textThemeStyle == TextThemeStyle.dark ? Colors.black : Colors.white,
-      unselectedLabelColor:
-          textThemeStyle == TextThemeStyle.dark ? Colors.black : Colors.white,
+      labelColor: appBarTextColor,
+      unselectedLabelColor: appBarTextColor,
       labelStyle: TextStyle(
         fontWeight: FontWeight.w500,
-        color:
-            textThemeStyle == TextThemeStyle.dark ? Colors.black : Colors.white,
+        color: appBarTextColor,
       ),
-      unselectedLabelStyle: TextStyle(
-        color:
-            textThemeStyle == TextThemeStyle.dark ? Colors.black : Colors.white,
-      ),
+      unselectedLabelStyle: TextStyle(color: appBarTextColor),
     ),
     fontFamily: GoogleFonts.openSans.toString(),
     textTheme: GoogleFonts.openSansTextTheme(
@@ -84,4 +102,8 @@ MaterialColor createMaterialColor(Color color) {
   }
 
   return MaterialColor(color.value, swatch);
+}
+
+double computeLuminance(Color color) {
+  return (0.2126 * color.red) + (0.7152 * color.green) + (0.0722 * color.blue);
 }

@@ -1,7 +1,6 @@
 import 'package:absurd_toolbox/src/screens/app_screens/auth_title.dart';
 import 'package:absurd_toolbox/src/screens/app_screens/reset_password.dart';
 import 'package:absurd_toolbox/src/widgets/_general/layout.dart';
-import 'package:absurd_toolbox/src/widgets/_general/space.dart';
 import 'package:absurd_toolbox/src/widgets/auth/auth_form.dart';
 import 'package:absurd_toolbox/src/widgets/auth/social_auth.dart';
 import 'package:flutter/material.dart';

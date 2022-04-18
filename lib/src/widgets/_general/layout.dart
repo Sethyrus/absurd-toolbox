@@ -1,8 +1,8 @@
+import 'dart:io';
 import 'package:absurd_toolbox/src/helpers.dart';
 import 'package:absurd_toolbox/src/widgets/_general/empty_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 enum TextThemeStyle {
@@ -24,8 +24,9 @@ class Layout extends StatelessWidget {
   final List<Widget>? tabBarItems;
   final Color? tabBarIndicatorColor;
   final bool? avoidSafeArea;
+  late final SystemUiOverlayStyle _systemOverlayStyle;
 
-  const Layout({
+  Layout({
     Key? key,
     required this.content,
     required this.primaryColor,
@@ -40,15 +41,16 @@ class Layout extends StatelessWidget {
     this.tabBarItems,
     this.tabBarIndicatorColor,
     this.avoidSafeArea,
-  }) : super(key: key);
+  }) : super(key: key) {
+    const int luminanceLimit = 150;
+    final double secondaryLuminance = computeLuminance(secondaryColor);
 
-  SystemUiOverlayStyle get systemOverlayStyle {
-    return SystemUiOverlayStyle(
+    _systemOverlayStyle = SystemUiOverlayStyle(
       statusBarColor: secondaryColor,
-      statusBarIconBrightness: textThemeStyle == TextThemeStyle.dark
+      statusBarIconBrightness: secondaryLuminance > luminanceLimit
           ? Brightness.dark
           : Brightness.light,
-      statusBarBrightness: textThemeStyle == TextThemeStyle.dark
+      statusBarBrightness: secondaryLuminance > luminanceLimit
           ? Brightness.light
           : Brightness.dark,
     );
@@ -59,27 +61,15 @@ class Layout extends StatelessWidget {
     return Theme(
       data: generateAppTheme(
         context,
-        primarySwatch: createMaterialColor(primaryColor),
-        // textThemeStyle: textThemeStyle,
+        primaryColor: primaryColor,
+        secondaryColor: secondaryColor,
+        systemOverlayStyle: _systemOverlayStyle,
       ),
       child: Scaffold(
         appBar: showAppBar == true
             ? AppBar(
-                title: Text(
-                  title ?? '',
-                  style: TextStyle(
-                    color: textThemeStyle == TextThemeStyle.light
-                        ? Colors.white
-                        : Colors.black,
-                  ),
-                ),
-                systemOverlayStyle: systemOverlayStyle,
+                title: Text(title ?? ''),
                 backgroundColor: primaryColor,
-                iconTheme: IconThemeData(
-                  color: textThemeStyle == TextThemeStyle.light
-                      ? Colors.white
-                      : Colors.black,
-                ),
                 actions: [
                   ...statusBarActions != null ? statusBarActions! : [],
                   ...statusBarDropdownActions != null
@@ -103,8 +93,7 @@ class Layout extends StatelessWidget {
                 ? EmptyAppBar(statusBarColor: secondaryColor)
                 : null,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
-          // value: SystemUiOverlayStyle.dark,
-          value: systemOverlayStyle,
+          value: _systemOverlayStyle,
           child: avoidSafeArea == true ? content : SafeArea(child: content),
         ),
         floatingActionButton: fab,
